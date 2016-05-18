@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<header class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="/static/img/logo.svg" /></a>
+        </div>
+        
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                </ul>
+                </li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</header>
+
+<style>
+    .form-xs .form-control {
+        width: auto;
+        height: auto;
+        display: inline;
+        font-size: 85%;
+        padding: 4px 6px;
+    }
+    
+    .mt10 {
+        margin-top: 10px !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <span>АЗС №</span>
+        </div>
+        <div class="col-xs-6 text-right">
+            <div class="form-xs">
+                <select class="form-control">
+                    <option value="34">34</option>
+                    <option value="158">158</option>
+                    <option value="TE/21-3A">TE/21-3A</option>
+                </select>
+            </div>
+        </div>
+    </div><!-- /.row -->
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="row" role="tab" id="headingOne">
+            <a class="col-xs-12" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Время
+            </a>
+        </div>
+        <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="row mt10">
+                <div class="col-xs-3">Дата</div>
+                <div class="col-xs-9 text-right">
+                    <div class="form-xs">
+                        <select class="form-control"><option value="18">18</option><option value="19">19</option></select>
+                        <select class="form-control"><option value="05">мая</option><option value="06">июня</option></select>
+                        <select class="form-control"><option value="2016">2016</option><option value="2015">2015</option></select>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+            <div class="row mt10">
+                <div class="col-xs-6">Время подхода к кассе</div>
+                <div class="col-xs-6 text-right">
+                    <div class="form-xs">
+                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                        :
+                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+            <div class="row mt10">
+                <div class="col-xs-6">Время приема заказа</div>
+                <div class="col-xs-6 text-right">
+                    <div class="form-xs">
+                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                        :
+                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+            <div class="row mt10">
+                <div class="col-xs-6">Время получения заказа</div>
+                <div class="col-xs-6 text-right">
+                    <div class="form-xs">
+                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                        :
+                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+            <div class="row mt10">
+                <div class="col-xs-6">Общее время ожидания</div>
+                <div class="col-xs-6 text-right">
+                    <div class="form-xs">
+                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                        минут
+                    </div>
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.collapse -->
+        <div class="row" role="tab" id="headingTwo">
+            <a class="col-xs-12 collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Визуальные стандарты <!-- ВИЗУАЛЬНЫЕ СТАНДАРТЫ (ЦЕНОВАЯ СТЕЛА, ВЪЕЗД/ВЫЕЗД, ФРИЗ НАВЕСА, ЗАПРАВОЧНАЯ ПЛОЩАДКА) -->									
+            </a>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="row">
+                <div class="col-xs-12">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.collapse -->
+    </div><!-- /#accordion -->
+    
+    
+    
+</div><!-- /.container -->
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        require(['jquery', 'bootstrap'], function ($) {
+            // exec code on document.ready event
+            $(function () {
+                // nothing to do
+            })
+        })
+    </script>
+{% endblock %}

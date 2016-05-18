@@ -7,7 +7,6 @@ from flask import render_template
 from frontui import app
 
 @app.route('/')
-@app.route('/home')
 def home():
     """Renders the home page."""
     return render_template(
@@ -16,3 +15,12 @@ def home():
         year=datetime.now().year,
     )
 
+
+@app.route('/qlist')
+@app.route('/qlist/')
+def questionnaire():
+    """Renders questionnaire page"""
+    return render_template(
+        'questionnaire.html',
+        title='Контрольный лист посещения'
+    )
