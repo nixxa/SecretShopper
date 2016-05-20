@@ -12,18 +12,6 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#"><img src="/static/img/logo.svg" /></a>
-            <div class="azs-form">
-                <div class="azs-form-label">АЗС №</div>
-                <div class="azs-form-select">
-                    <div class="form-xs">
-                        <select class="form-control">
-                            <option value="34">34</option>
-                            <option value="158">158</option>
-                            <option value="TE/21-3A">TE/21-3A</option>
-                        </select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
         </div>
         
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -51,83 +39,87 @@
     <div class="tab-content">
         <div class="tab-pane active" role="tabpanel" id="dates">
             <div class="row mt10">
-                <div class="col-xs-3"><label>Дата</label></div>
+                <div class="col-xs-3">
+                    <label class="mobile-form">АЗС</label>
+                </div>
+                <div class="col-xs-9">
+                    <select class="form-control mobile-form">
+                        <option value="34">34</option>
+                        <option value="349">349</option>
+                        <option value="TA/472">TA/472</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-3">
+                    <label class="mobile-form">Дата</label>
+                </div>
                 <div class="col-xs-9 text-right">
+                    <input type="text" name="check_date" class="form-control mobile-form" placeholder="Укажите дату проверки" />
+                </div>
+            </div><!-- /.row -->
+            <div class="row mt10">
+                <div class="col-xs-8"><label class="mobile-form">Подошел к кассе в</label></div>
+                <div class="col-xs-4 text-right">
                     <div class="form-xs">
-                        <select class="form-control"><option value="18">18</option><option value="19">19</option></select>
-                        <select class="form-control"><option value="05">мая</option><option value="06">июня</option></select>
-                        <select class="form-control"><option value="2016">2016</option><option value="2015">2015</option></select>
+                        <input type="text" name="cashbox_at" class="form-control mobile-form" placeholder="12:00" />
                     </div>
                 </div>
             </div><!-- /.row -->
             <div class="row mt10">
-                <div class="col-xs-6"><label>Время подхода к кассе</label></div>
-                <div class="col-xs-6 text-right">
+                <div class="col-xs-8"><label class="mobile-form">Заказ принят в</label></div>
+                <div class="col-xs-4 text-right">
                     <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                        <input type="text" name="ordered_at" class="form-control mobile-form" placeholder="12:00" />
                     </div>
                 </div>
             </div><!-- /.row -->
             <div class="row mt10">
-                <div class="col-xs-6"><label>Время приема заказа</label></div>
-                <div class="col-xs-6 text-right">
+                <div class="col-xs-8"><label class="mobile-form">Заказ получен в</label></div>
+                <div class="col-xs-4 text-right">
                     <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                        <input type="text" name="got_at" class="form-control mobile-form" placeholder="12:00" />
                     </div>
                 </div>
             </div><!-- /.row -->
             <div class="row mt10">
-                <div class="col-xs-6"><label>Время получения заказа</label></div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-            <div class="row mt10">
-                <div class="col-xs-6"><label>Общее время ожидания</label></div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        минут
-                    </div>
+                <div class="col-xs-8"><label class="mobile-form">Время ожидания (минут)</label></div>
+                <div class="col-xs-4 text-right">
+                    <select class="form-control mobile-form auto-width" name="wait_time">
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                    </select>
                 </div>
             </div><!-- /.row -->
         <!--</div><!-- /.tab-panel #dates
         <div class="tab-pane" role="tabpanel" id="visual">-->
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="">
+                    <input type="checkbox" name="visual_1" id="visual_1" value="">
                     Стела без повреждений, чистая, указаны все цены, светятся все элементы (в темное время суток)
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="">
+                    <input type="checkbox" name="visual_2" value="">
                     Газон и дорожное покрытие (включая бордюрный камень) очищены от мусора, грязи, (снега и льда зимой)
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="">
+                    <input type="checkbox" name="visual_3" value="">
                     Все фонари общего освещения горят (в темное время суток)
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="">
+                    <input type="checkbox" name="visual_4" value="">
                     Заправочные островки и топливораздаточные колонки (ТРК) чистые, без повреждений
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="">
+                    <input type="checkbox" name="visual_5" value="">
                     У ТРК нет видимых не обработанных разливов топлива
                 </label>
             </div>
