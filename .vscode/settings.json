@@ -1,0 +1,4 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "python.linting.pylintPath": "C:/Users/IGoyda/AppData/Local/Programs/Python/Python35-32/Scripts/pylint.exe --load-plugins pylint_flask"
+}

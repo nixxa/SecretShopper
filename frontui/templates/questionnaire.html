@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<header class="navbar navbar-default">
-    <div class="container-fluid">
+<header class="navbar navbar-default navbar-fixed-top navbar-mobile">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -12,6 +12,18 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#"><img src="/static/img/logo.svg" /></a>
+            <div class="azs-form">
+                <div class="azs-form-label">АЗС №</div>
+                <div class="azs-form-select">
+                    <div class="form-xs">
+                        <select class="form-control">
+                            <option value="34">34</option>
+                            <option value="158">158</option>
+                            <option value="TE/21-3A">TE/21-3A</option>
+                        </select>
+                    </div>
+                </div>
+            </div><!-- /.row -->
         </div>
         
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -32,109 +44,534 @@
 </header>
 
 <style>
-    .form-xs .form-control {
-        width: auto;
-        height: auto;
-        display: inline;
-        font-size: 85%;
-        padding: 4px 6px;
-    }
-    
-    .mt10 {
-        margin-top: 10px !important;
-    }
+
 </style>
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-6">
-            <span>АЗС №</span>
-        </div>
-        <div class="col-xs-6 text-right">
-            <div class="form-xs">
-                <select class="form-control">
-                    <option value="34">34</option>
-                    <option value="158">158</option>
-                    <option value="TE/21-3A">TE/21-3A</option>
-                </select>
+    <form>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Дата и время
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="row mt10">
+                            <div class="col-xs-3"><label>Дата</label></div>
+                            <div class="col-xs-9 text-right">
+                                <div class="form-xs">
+                                    <select class="form-control"><option value="18">18</option><option value="19">19</option></select>
+                                    <select class="form-control"><option value="05">мая</option><option value="06">июня</option></select>
+                                    <select class="form-control"><option value="2016">2016</option><option value="2015">2015</option></select>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <div class="row mt10">
+                            <div class="col-xs-6"><label>Время подхода к кассе</label></div>
+                            <div class="col-xs-6 text-right">
+                                <div class="form-xs">
+                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    :
+                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <div class="row mt10">
+                            <div class="col-xs-6"><label>Время приема заказа</label></div>
+                            <div class="col-xs-6 text-right">
+                                <div class="form-xs">
+                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    :
+                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <div class="row mt10">
+                            <div class="col-xs-6"><label>Время получения заказа</label></div>
+                            <div class="col-xs-6 text-right">
+                                <div class="form-xs">
+                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    :
+                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <div class="row mt10">
+                            <div class="col-xs-6"><label>Общее время ожидания</label></div>
+                            <div class="col-xs-6 text-right">
+                                <div class="form-xs">
+                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    минут
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Визуальные стандарты (ценовая стелла, въезд/выезд, фриз навеса, заправочная площадка)
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" data-toggle="toggle">
+                                Стелла без повреждений, чистая, указаны все цены, светятся все элементы (в темное время суток)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" data-toggle="toggle">
+                                Газон и дорожное покрытие (включая бордюрный камень) очищены от мусора, грязи, (снега и льда зимой)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" data-toggle="toggle">
+                                Все фонари общего освещения горят (в темное время суток)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" data-toggle="toggle">
+                                Заправочные островки и топливораздаточные колонки (ТРК) чистые, без повреждений
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" data-toggle="toggle">
+                                У ТРК нет видимых не обработанных разливов топлива
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Оператор АЗС (внешний вид) и обслуживание на заправочной площадке
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <label>
+                            <div class="mb5">Оператор АЗС</div>
+                            <input type="text" class="form-control" placeholder="Фамилия Имя" />
+                        </label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор АЗС одет в полную униформу, выглядит опрятно и чисто
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Имеется табличка с указанием имени, фамилии, должности (бейдж)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор АЗС НЕ жует жвачку, НЕ принимает пищу, НЕ разговаривает по телефону
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор поприветствовал Вас доброжелательно и вежливо
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор уточнил вид топлива
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор повторил вслух вид топлива и сообщил номер ТРК
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор НЕ положил крышку бензобака на автомобиль
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор НЕ пролил бензин на а/м
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор своевременно вынул пистолет из бака после заправки
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Оператор поблагодарил и пригласил приехать снова
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFour">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                        Здание операторной АЗС/магазина (АЗК)
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                    <div class="panel-body">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Стекла окон фасада и двери без повреждений, чистые 
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Отсутствуют объявления/информация, написанные от руки
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Территория вокруг здания  чистая, без мусора (снега и льда зимой), урна для мусора заполнена не более чем на 2/3
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Пол чистый, мусора нет (в здании магазина)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Полки без повреждений, чистые, заполнены товаром, все товары с ценниками, нет просроченного товара
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Столы в кафе чистые, стулья аккуратно выровненные
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                На витрине представлено не менее 15 готовых пончиков - при наличии кафе
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Нет "шубы" в морозильных ларях
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Двери в подсобные помещения закрыты
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Телевизор работает на новостном канале без звука/с минимальным звуком
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                В торговом зале хорошо слышна запись музыки и рекламных объявлений
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFive">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                        Туалетные помещения (при наличии)
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                    <div class="panel-body">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Туалет: пол, стены - чистые, сантехника чистая, без видимых повреждений
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Туалет: туалетная бумага, крючки для одежды и объявление "Не бросать в унитаз" в наличии
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Туалет: соблюдается график уборки туалета
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Туалет: мыльный раствор в диспенсере в наличии
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSix">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                        Оператор-кассир (внешний вид) - при возможности рассмотреть
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                    <div class="panel-body">
+                        <label>
+                            <div class="mb5">Оператор-кассир</div>
+                            <input type="text" class="form-control" placeholder="Фамилия Имя" />
+                        </label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Одет в полную униформу, выглядит опрятно и презентабельно, пирсинг и яркие украшения отсутствуют
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Имеется табличка с указанием имени, фамилии, должности (бейдж)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Оператор-кассир на кассе кафе одет в фартук и козырек
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Чистые руки/ногти, отсутствие колец (исключение обручальное)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Длинные волосы собраны (у женщин), сотрудник чисто выбрит/усы, борода аккуратно подстрижены (у мужчин)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: НЕ жует жвачку, НЕ принимает пищу, НЕ разговаривает по телефону
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingSeven">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                        Оператор-кассир (обслуживание на кассе)
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                    <div class="panel-body">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Установил зрительный контакт, улыбнулся доброжелательно и вежливо
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Поприветствовал клиента
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Выяснил потребность клиента
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Предложил приобрести большее кол-во топлива (торговля с плюсом)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Грамотно презентовал ассортимент кафе - при наличии кафе
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Предложил приобрести дополнительное блюдо из ассортимента кафе
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Уточнил наличие/ предложил приобрести карту "Астра"
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Повторил вслух заказ клиента, получил обратную связь, озвучил сумму заказа
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Проговорил вслух сумму, полученную от клиента
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Выдал номер заказа 
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Правильно произвел расчет на ККМ ("пробил" весь заказ, ввел сумму полученную от клиента)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Выдал чек, проговорил вслух и выдал сумму сдачи (при заправке по пластиковым картам - 2 чека)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Быстро и правильно собрал заказ (выпечка, напитки и т.д.) - при наличии кафе
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Кассир: Поблагодарил и пригласил приехать снова
+                            </label>
+                        </div>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingEight">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                        Кафе
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+                    <div class="panel-body">
+                        <p>
+                            Кофе, приобретенный на станции:
+                            <div class="radio"><label><input type="radio" name="cafe"> не вкусный</label></div>
+                            <div class="radio"><label><input type="radio" name="cafe"> нормальный</label></div>
+                            <div class="radio"><label><input type="radio" name="cafe"> очень вкусный</label></div>         
+                            Комментарии к кофе:
+                            <textarea rows="2" class="form-control"></textarea>
+                        </p>
+                        <p>
+                            Блин, приобретенный на станции:
+                            <div class="radio"><label><input type="radio" name="cir"> не вкусный</label></div>
+                            <div class="radio"><label><input type="radio" name="cir"> нормальный</label></div>
+                            <div class="radio"><label><input type="radio" name="cir"> очень вкусный</label></div>         
+                            Комментарии к блинам:
+                            <textarea rows="2" class="form-control"></textarea>
+                        </p>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingNine">
+                    <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                        Общее впечатление
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
+                    <div class="panel-body">
+                        <p>
+                            Атмосфера на станции:
+                            <div class="radio"><label><input type="radio" name="atm"> не доброжелательная</label></div>
+                            <div class="radio"><label><input type="radio" name="atm"> нейтральная</label></div>
+                            <div class="radio"><label><input type="radio" name="atm"> гостеприимная</label></div>         
+                            Комментарии:
+                            <textarea rows="2" class="form-control"></textarea>
+                        </p>
+                    </div><!-- /.panel-body -->
+                </div><!-- /.panel-collapse -->
+            </div><!-- /.panel -->
+        </div><!-- /.panel-group -->
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Должность</label>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Ф.И.О.</label>
+                    <input type="text" class="form-control">
+                </div>
             </div>
         </div>
-    </div><!-- /.row -->
-    <div id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="row" role="tab" id="headingOne">
-            <a class="col-xs-12" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Время
-            </a>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right ml5">Сохранить</button>
+                <button type="submit" class="btn btn-default pull-right">Отмена</button>
+            </div>
         </div>
-        <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="row mt10">
-                <div class="col-xs-3">Дата</div>
-                <div class="col-xs-9 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="18">18</option><option value="19">19</option></select>
-                        <select class="form-control"><option value="05">мая</option><option value="06">июня</option></select>
-                        <select class="form-control"><option value="2016">2016</option><option value="2015">2015</option></select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-            <div class="row mt10">
-                <div class="col-xs-6">Время подхода к кассе</div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-            <div class="row mt10">
-                <div class="col-xs-6">Время приема заказа</div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-            <div class="row mt10">
-                <div class="col-xs-6">Время получения заказа</div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        :
-                        <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-            <div class="row mt10">
-                <div class="col-xs-6">Общее время ожидания</div>
-                <div class="col-xs-6 text-right">
-                    <div class="form-xs">
-                        <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
-                        минут
-                    </div>
-                </div>
-            </div><!-- /.row -->
-        </div><!-- /.collapse -->
-        <div class="row" role="tab" id="headingTwo">
-            <a class="col-xs-12 collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Визуальные стандарты <!-- ВИЗУАЛЬНЫЕ СТАНДАРТЫ (ЦЕНОВАЯ СТЕЛА, ВЪЕЗД/ВЫЕЗД, ФРИЗ НАВЕСА, ЗАПРАВОЧНАЯ ПЛОЩАДКА) -->									
-            </a>
-        </div>
-        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="row">
-                <div class="col-xs-12">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-            </div><!-- /.row -->
-        </div><!-- /.collapse -->
-    </div><!-- /#accordion -->
-    
-    
-    
+    </form>
 </div><!-- /.container -->
-
+        
 {% endblock %}
 
 {% block scripts %}

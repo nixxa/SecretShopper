@@ -9,8 +9,8 @@ require.config({
 			'/static/content/jquery-2.2.3/jquery.min'
 		],
 		'bootstrap': [
-			'//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
-			'/static/content/bootstrap-3.3.6/js/bootstrap.min'
+			'//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap',
+			'/static/content/bootstrap-3.3.6/js/bootstrap'
 		],
 		'moment': '/static/scripts/moment-with-locales',
 	}

@@ -4,7 +4,12 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template
+from flask.ext.mobility.decorators import mobile_template
+from flask.ext.mobility import Mobility
 from frontui import app
+
+
+Mobility(app)
 
 @app.route('/')
 def home():
@@ -18,9 +23,10 @@ def home():
 
 @app.route('/qlist')
 @app.route('/qlist/')
-def questionnaire():
+@mobile_template('{mobile/}questionnaire.html')
+def questionnaire(template):
     """Renders questionnaire page"""
     return render_template(
-        'questionnaire.html',
+        template,
         title='Контрольный лист посещения'
     )
