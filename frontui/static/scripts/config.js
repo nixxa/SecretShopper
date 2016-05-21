@@ -2,6 +2,7 @@
 require.config({
 	shim: {
 		'bootstrap': { 'deps': ['jquery'] },
+		'date-input': { 'deps': ['jquery'] },
 	},
 	paths: {
 		'jquery': [
@@ -13,5 +14,6 @@ require.config({
 			'/static/content/bootstrap-3.3.6/js/bootstrap'
 		],
 		'moment': '/static/scripts/moment-with-locales',
+		'date-input': '/static/content/datetime-input/js/date-input'
 	}
 });

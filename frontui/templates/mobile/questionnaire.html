@@ -55,7 +55,10 @@
                     <label class="mobile-form">Дата</label>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <input type="text" name="check_date" class="form-control mobile-form" placeholder="Укажите дату проверки" />
+                    <input type="text" name="check_date" 
+                            class="form-control mobile-form" 
+                            placeholder="Укажите дату проверки"
+                            data-toggle="date-input" />
                 </div>
             </div><!-- /.row -->
             <div class="row mt10">
@@ -489,7 +492,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        require(['jquery', 'bootstrap'], function ($) {
+        require(['jquery', 'bootstrap', 'date-input'], function ($) {
             // exec code on document.ready event
             $(function () {
                 // nothing to do
