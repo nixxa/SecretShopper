@@ -1,0 +1,83 @@
+.date-input-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -200px;
+    height: 200px;
+    z-index: 9999;
+    background: #fff;
+    -webkit-transition: bottom 0.5s;
+    -moz-transition: bottom 0.5s;
+    transition: bottom 0.5s;
+}
+
+.date-input-container.in {
+    bottom: 0;  
+}
+
+.date-input-container .controls {
+    background-color: #fff;
+    padding: 8px;
+    height: 40px;
+    text-align: right;
+}
+
+.date-input-container .chooser {
+    height: 160px;
+    padding: 10px;
+}
+
+.date-input-container .chooser .view {
+    opacity: 0;
+    position: fixed;
+    height: 40px;
+    bottom: 95px;
+    left: 10px;
+    right: 10px;
+    border: 2px solid #333;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+}
+
+.date-input-container .chooser .view.in {
+    opacity: 1;
+}
+
+.date-input-container .day-column {
+    float: left;
+    height: 140px;
+    overflow-y: scroll;
+    width: 25%;
+    text-align: right;
+}
+.date-input-container .month-column {
+    float: left;
+    height: 140px;
+    overflow-y: scroll;
+    width: 50%;
+    text-align: center;
+}
+.date-input-container .year-column {
+    float: left;
+    height: 140px;
+    overflow-y: scroll;
+    width: 25%;
+    text-align: left;
+}
+
+.date-input-container .column-cell > div {
+    padding: 5px 15px;
+}
+
+.date-input-container .selected > div {
+    font-weight: bold;
+}
+
+.date-input-container .btn-set,.btn-cancel {
+    padding: 8px;
+}
+
+.shadow-bg {
+    background-color: #aaa !important;
+}
