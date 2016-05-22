@@ -153,8 +153,16 @@ body {
 /* --- end margins and paddings --- */
 
 /* --- begin mobile form styles --- */
+input[type='date'],
+input[type='time'] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
 input[type='text'],
 input[type='number'],
+input[type='date'],
+input[type='time'],
 select,
 textarea {
   font-size: 16px !important;
