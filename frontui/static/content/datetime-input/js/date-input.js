@@ -1,4 +1,13 @@
-/* Date input control */
+/*  Date input control
+    Using:
+    In HTML:
+    <input type="text" name="check_date" 
+        data-toggle="date-input"
+        data-isodate="2016-05-21"
+        value="21 Май 2016" />
+    Or manually in JS:
+        $('input[name="check_date"]').DateInput();
+*/
 define(function(require) {
     var $ = require('jquery');
     
