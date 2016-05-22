@@ -163,6 +163,7 @@ define(function(require) {
 
         
         // set onclick function
+        $field.attr('readonly', 'true');
         $field.on('click', function (evt) {
             evt.preventDefault();
             evt.stopPropagation ? evt.stopPropagation() : (evt.cancelBubble=true);
