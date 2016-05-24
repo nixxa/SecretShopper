@@ -8,8 +8,8 @@
  *              .js-section-badge-value
  *              .js-section-badge-total
  *      .js-section-body
- *          .question
- *              .btn-group
+ *          .js-question
+ *              .js-question-btns
  */
 define([
     'require',
