@@ -32,11 +32,11 @@
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">Link</a></li>
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                </ul>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav><!-- /.navbar-collapse -->
@@ -112,389 +112,167 @@
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingTwo">
-                    <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Визуальные стандарты (ценовая стелла, въезд/выезд, фриз навеса, заправочная площадка)
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Визуальные стандарты (ценовая стелла, въезд/выезд, фриз навеса, заправочная площадка)
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page1']|length }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="" data-toggle="toggle">
-                                Стелла без повреждений, чистая, указаны все цены, светятся все элементы (в темное время суток)
-                            </label>
+                    <div class="panel-body js-section-body">
+                        {% for item in questions['page1'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="" data-toggle="toggle">
-                                Газон и дорожное покрытие (включая бордюрный камень) очищены от мусора, грязи, (снега и льда зимой)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="" data-toggle="toggle">
-                                Все фонари общего освещения горят (в темное время суток)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="" data-toggle="toggle">
-                                Заправочные островки и топливораздаточные колонки (ТРК) чистые, без повреждений
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="" data-toggle="toggle">
-                                У ТРК нет видимых не обработанных разливов топлива
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingThree">
-                    <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Оператор АЗС (внешний вид) и обслуживание на заправочной площадке
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Оператор АЗС (внешний вид) и обслуживание на заправочной площадке
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page2']|length+1 }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                    <div class="panel-body">
+                    <div class="panel-body js-section-body">
                         <label>
                             <div class="mb5">Оператор АЗС</div>
-                            <input type="text" class="form-control" placeholder="Фамилия Имя" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
                         </label>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор АЗС одет в полную униформу, выглядит опрятно и чисто
-                            </label>
+                        {% for item in questions['page2'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Имеется табличка с указанием имени, фамилии, должности (бейдж)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор АЗС НЕ жует жвачку, НЕ принимает пищу, НЕ разговаривает по телефону
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор поприветствовал Вас доброжелательно и вежливо
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор уточнил вид топлива
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор повторил вслух вид топлива и сообщил номер ТРК
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор НЕ положил крышку бензобака на автомобиль
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор НЕ пролил бензин на а/м
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор своевременно вынул пистолет из бака после заправки
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Оператор поблагодарил и пригласил приехать снова
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingFour">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                        Здание операторной АЗС/магазина (АЗК)
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                            Здание операторной АЗС/магазина (АЗК)
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page3']|length }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Стекла окон фасада и двери без повреждений, чистые 
-                            </label>
+                    <div class="panel-body js-section-body">
+                        {% for item in questions['page3'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Отсутствуют объявления/информация, написанные от руки
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Территория вокруг здания  чистая, без мусора (снега и льда зимой), урна для мусора заполнена не более чем на 2/3
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Пол чистый, мусора нет (в здании магазина)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Полки без повреждений, чистые, заполнены товаром, все товары с ценниками, нет просроченного товара
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Столы в кафе чистые, стулья аккуратно выровненные
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                На витрине представлено не менее 15 готовых пончиков - при наличии кафе
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Нет "шубы" в морозильных ларях
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Двери в подсобные помещения закрыты
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Телевизор работает на новостном канале без звука/с минимальным звуком
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                В торговом зале хорошо слышна запись музыки и рекламных объявлений
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingFive">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                        Туалетные помещения (при наличии)
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                            Туалетные помещения (при наличии)
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page4']|length }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Туалет: пол, стены - чистые, сантехника чистая, без видимых повреждений
-                            </label>
+                    <div class="panel-body js-section-body">
+                        {% for item in questions['page4'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Туалет: туалетная бумага, крючки для одежды и объявление "Не бросать в унитаз" в наличии
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Туалет: соблюдается график уборки туалета
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Туалет: мыльный раствор в диспенсере в наличии
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingSix">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-                        Оператор-кассир (внешний вид) - при возможности рассмотреть
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                            Оператор-кассир (внешний вид) - при возможности рассмотреть
+                        </a>
+                         <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page5']|length+1 }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-                    <div class="panel-body">
+                    <div class="panel-body js-section-body">
                         <label>
                             <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control" placeholder="Фамилия Имя" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" />
                         </label>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Одет в полную униформу, выглядит опрятно и презентабельно, пирсинг и яркие украшения отсутствуют
-                            </label>
+                        {% for item in questions['page5'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Имеется табличка с указанием имени, фамилии, должности (бейдж)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Оператор-кассир на кассе кафе одет в фартук и козырек
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Чистые руки/ногти, отсутствие колец (исключение обручальное)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Длинные волосы собраны (у женщин), сотрудник чисто выбрит/усы, борода аккуратно подстрижены (у мужчин)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: НЕ жует жвачку, НЕ принимает пищу, НЕ разговаривает по телефону
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingSeven">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                        Оператор-кассир (обслуживание на кассе)
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                            Оператор-кассир (обслуживание на кассе)
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page6']|length }}</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Установил зрительный контакт, улыбнулся доброжелательно и вежливо
-                            </label>
+                    <div class="panel-body js-section-body">
+                        {% for item in questions['page6'] %}
+                        <div class="question js-question">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item['label'] }}</label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Поприветствовал клиента
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Выяснил потребность клиента
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Предложил приобрести большее кол-во топлива (торговля с плюсом)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Грамотно презентовал ассортимент кафе - при наличии кафе
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Предложил приобрести дополнительное блюдо из ассортимента кафе
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Уточнил наличие/ предложил приобрести карту "Астра"
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Повторил вслух заказ клиента, получил обратную связь, озвучил сумму заказа
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Проговорил вслух сумму, полученную от клиента
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Выдал номер заказа 
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Правильно произвел расчет на ККМ ("пробил" весь заказ, ввел сумму полученную от клиента)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Выдал чек, проговорил вслух и выдал сумму сдачи (при заправке по пластиковым картам - 2 чека)
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Быстро и правильно собрал заказ (выпечка, напитки и т.д.) - при наличии кафе
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Кассир: Поблагодарил и пригласил приехать снова
-                            </label>
-                        </div>
+                        {% endfor %}
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
@@ -550,25 +328,11 @@
             </div><!-- /.panel -->
         </div><!-- /.panel-group -->
         <div class="row">
-            <div class="col-xs-6">
-                <div class="form-group">
-                    <label>Должность</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-xs-6">
-                <div class="form-group">
-                    <label>Ф.И.О.</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-xs-12">
                 <button type="submit" class="btn btn-primary pull-right ml5">Сохранить</button>
                 <button type="submit" class="btn btn-default pull-right">Отмена</button>
             </div>
-        </div>
+        </div><!-- /.row -->
     </form>
 </div><!-- /.container -->
         
@@ -576,10 +340,9 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        require(['jquery', 'bootstrap'], function ($) {
+        require(['jquery', 'bootstrap', 'questionnaire.view'], function ($) {
             // exec code on document.ready event
             $(function () {
-                // nothing to do
             })
         })
     </script>

@@ -47,6 +47,9 @@ body {
 .ml5 {
     margin-left: 5px !important;
 }
+.mr5 {
+    margin-right: 5px !important;
+}
 /* --- /margins and paddings --- */
 
 label {
@@ -62,4 +65,16 @@ label {
 .checkbox input[type="checkbox"], 
 .checkbox-inline input[type="checkbox"] {
     margin-top: 4px;
+}
+
+.question .btn {
+    width: 54px;
+}
+
+.badge.badge-success {
+    background-color: #5cb85c;
+}
+
+.badge.badge-danger {
+    background-color: #d9534f;
 }
