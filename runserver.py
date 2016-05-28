@@ -17,7 +17,4 @@ if __name__ == '__main__':
         app.debug = True
         app.config['DEBUG'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-    if MODE == 'PROD':
-        logging.basicConfig(filename='app.log', format='%(asctime)s %(message)s', level=logging.DEBUG)
-        logging.debug('Starting app in %s mode' % MODE)
     app.run(HOST, PORT)
