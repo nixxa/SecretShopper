@@ -17,7 +17,7 @@ DATA = DataProvider()
 with open('./frontui/app_data/objects.json', 'r', encoding='utf8') as objects_file:
     for item in json.load(objects_file):
         DATA.add_object(ObjectInfo(item))
-with open('./app_data/checklist.json', 'r', encoding='utf8') as checklist_file:
+with open('./frontui/app_data/checklist.json', 'r', encoding='utf8') as checklist_file:
     DATA.checklist = ChecklistInfo.from_json(json.load(checklist_file))
 
 import frontui.views
