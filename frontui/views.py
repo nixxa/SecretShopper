@@ -7,7 +7,7 @@ from datetime import datetime
 from flask import render_template
 from flask.ext.mobility.decorators import mobile_template
 from flask.ext.mobility import Mobility
-from frontui import APP as app, DATA
+from frontui import app, DATA
 from frontui.view_models import QListViewModel
 
 
