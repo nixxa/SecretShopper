@@ -10,13 +10,13 @@ from frontui.models import ObjectInfo, ChecklistInfo
 # create an application
 app = Flask(__name__)
 # set prod logging
-MODE = os.environ.get('APP_MODE', 'DEBUG')
-if MODE == 'PROD':
-    logging.basicConfig(filename='app.log', format='%(asctime)s %(message)s', level=logging.DEBUG)
-    logging.debug('Starting app in %s mode' % MODE)
-else:
-    app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
-    app.logger.setLevel(logging.DEBUG)
+#MODE = os.environ.get('APP_MODE', 'DEBUG')
+#if MODE == 'PROD':
+#    logging.basicConfig(filename='app.log', format='%(asctime)s %(message)s', level=logging.DEBUG)
+#    logging.debug('Starting app in %s mode' % MODE)
+#else:
+#    app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
+#    app.logger.setLevel(logging.DEBUG)
 # create data provider
 DATA = DataProvider()
 # fill data from files
