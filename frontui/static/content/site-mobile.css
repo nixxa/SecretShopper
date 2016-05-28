@@ -150,6 +150,9 @@ body {
 .ml5 {
     margin-left: 5px !important;
 }
+.mr5 {
+    margin-right: 5px !important;
+}
 /* --- end margins and paddings --- */
 
 /* --- begin mobile form styles --- */
@@ -197,5 +200,13 @@ input.mobile-form {
 }
 select.mobile-form {
   padding: 4px 6px;
+}
+.question {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-top: 1px solid #ddd;
+}
+.question .btn {
+    width: 54px;
 }
 /* --- end mobile form styles --- */

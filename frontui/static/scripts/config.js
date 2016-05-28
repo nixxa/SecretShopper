@@ -15,6 +15,6 @@ require.config({
 		],
 		'moment': '/static/scripts/moment-with-locales',
 		'date-input': '/static/content/datetime-input/js/date-input',
-		'questionnaire.view': '/static/scripts/questionnaire.view'
+		'checklist.view': '/static/scripts/checklist.view'
 	}
 });

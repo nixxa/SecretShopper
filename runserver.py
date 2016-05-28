@@ -3,7 +3,7 @@ This script runs the frontui application using a development server.
 """
 
 from os import environ
-from frontui import app
+from frontui import APP as app
 
 if __name__ == '__main__':
     HOST = environ.get('SERVER_HOST', 'localhost')

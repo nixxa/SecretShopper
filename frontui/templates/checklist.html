@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="container">
-    <form action="/save_questionnaire" method="POST">
+    <form action="/save_list" method="POST">
         <div class="panel-group js-form" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingOne">
                     <h4 class="panel-title js-section-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Дата и время
+                            {{ checklist.pages[0].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
@@ -26,9 +26,9 @@
                                 <div class="form-xs">
                                 <select class="form-control js-question" name="object_name">
                                     <option value="">[ ... выберите из списка ... ]</option>
-                                    <option value="34">34</option>
-                                    <option value="349">349</option>
-                                    <option value="TA/472">TA/472</option>
+                                    {% for obj in objects %}
+                                    <option value="{{ obj.num }}">{{ obj.num }} - {{ obj.title }}</option>
+                                    {% endfor %}
                                 </select>
                                 </div>
                             </div>
@@ -148,23 +148,24 @@
                 <div class="panel-heading" role="tab" id="headingTwo">
                     <h4 class="panel-title js-section-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Визуальные стандарты (ценовая стелла, въезд/выезд, фриз навеса, заправочная площадка)
+                            {{ checklist.pages[1].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page1']|length }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[1].questions|length }}</span></small>
                         </div>
                     </h4>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body js-section-body">
-                        {% for item in questions['page1'] %}
+                        {% for item in checklist.pages[1].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -174,11 +175,12 @@
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title js-section-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Оператор АЗС (внешний вид) и обслуживание на заправочной площадке
+                            {{ checklist.pages[2].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page2']|length+1 }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[2].questions|length+1 }}</span></small>
                         </div>
                     </h4>
                 </div>
@@ -188,13 +190,13 @@
                             <div class="mb5">Оператор АЗС</div>
                             <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
                         </label>
-                        {% for item in questions['page2'] %}
+                        {% for item in checklist.pages[2].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -204,23 +206,24 @@
                 <div class="panel-heading" role="tab" id="headingFour">
                     <h4 class="panel-title js-section-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                            Здание операторной АЗС/магазина (АЗК)
+                            {{ checklist.pages[3].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page3']|length }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[3].questions|length }}</span></small>
                         </div>
                     </h4>
                 </div>
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                     <div class="panel-body js-section-body">
-                        {% for item in questions['page3'] %}
+                        {% for item in checklist.pages[3].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -230,23 +233,24 @@
                 <div class="panel-heading" role="tab" id="headingFive">
                     <h4 class="panel-title js-section-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                            Туалетные помещения (при наличии)
+                            {{ checklist.pages[4].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page4']|length }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[4].questions|length }}</span></small>
                         </div>
                     </h4>
                 </div>
                 <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                     <div class="panel-body js-section-body">
-                        {% for item in questions['page4'] %}
+                        {% for item in checklist.pages[4].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -256,11 +260,12 @@
                 <div class="panel-heading" role="tab" id="headingSix">
                     <h4 class="panel-title js-section-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-                            Оператор-кассир (внешний вид) - при возможности рассмотреть
+                            {{ checklist.pages[5].title }}
                         </a>
                          <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page5']|length+1 }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[5].questions|length+1 }}</span></small>
                         </div>
                     </h4>
                 </div>
@@ -270,13 +275,13 @@
                             <div class="mb5">Оператор-кассир</div>
                             <input type="text" class="form-control js-question" placeholder="Фамилия Имя" />
                         </label>
-                        {% for item in questions['page5'] %}
+                        {% for item in checklist.pages[5].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -286,23 +291,24 @@
                 <div class="panel-heading" role="tab" id="headingSeven">
                     <h4 class="panel-title js-section-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                            Оператор-кассир (обслуживание на кассе)
+                            {{ checklist.pages[6].title }}
                         </a>
                         <div class="pull-right">
                             <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">{{ questions['page6']|length }}</span></small>
+                                <span class="js-section-badge-value">0</span> из 
+                                <span class="js-section-badge-total">{{ checklist.pages[6].questions|length }}</span></small>
                         </div>
                     </h4>
                 </div>
                 <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                     <div class="panel-body js-section-body">
-                        {% for item in questions['page6'] %}
+                        {% for item in checklist.pages[6].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item['field_name'] }}">
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item['label'] }}</label>
+                            <label>{{ item.label }}</label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -312,7 +318,7 @@
                 <div class="panel-heading" role="tab" id="headingEight">
                     <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                        Кафе
+                        {{ checklist.pages[7].title }}
                     </a>
                     </h4>
                 </div>
@@ -341,7 +347,7 @@
                 <div class="panel-heading" role="tab" id="headingNine">
                     <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-                        Общее впечатление
+                        {{ checklist.pages[8].title }}
                     </a>
                     </h4>
                 </div>
@@ -372,7 +378,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        require(['jquery', 'bootstrap', 'questionnaire.view'], function ($) {
+        require(['jquery', 'bootstrap', 'checklist.view'], function ($) {
             // exec code on document.ready event
             $(function () {
                 // nothing to do
