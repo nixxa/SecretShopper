@@ -8,6 +8,7 @@ from flask import render_template
 from flask.ext.mobility.decorators import mobile_template
 from flask.ext.mobility import Mobility
 from frontui import app
+from frontui.view_models import QListViewModel
 
 
 Mobility(app)
@@ -23,7 +24,6 @@ def home():
 
 
 @app.route('/qlist')
-@app.route('/qlist/')
 @mobile_template('{mobile/}questionnaire.html')
 def questionnaire(template):
     """Renders questionnaire page"""
@@ -97,4 +97,18 @@ def questionnaire(template):
         template,
         questions=questions,
         title='Контрольный лист посещения'
+    )
+
+
+@app.route('/save_questionnaire', methods=['POST'])
+@mobile_template('{mobile/}questionnaire_saved.html')
+def save(template):
+    """ Save questionnaire and render success page """
+    model = QListViewModel()
+    model.num = '1234-5678'
+    model.object_name = 'АЗС №5468'
+    return render_template(
+        template,
+        model=model,
+        title='Список'
     )

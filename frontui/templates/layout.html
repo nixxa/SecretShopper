@@ -12,6 +12,34 @@
 </head>
 
 <body>
+    <header class="navbar navbar-default navbar-fixed-top navbar-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="/static/img/logo.svg" /></a>
+            </div>
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false">
+                <!--<ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+                    </li>
+                </ul>-->
+            </nav><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </header>
     {% block content %}{% endblock %}
     <!-- BEGIN scripts -->
 	<script src="/static/scripts/require.js"></script>

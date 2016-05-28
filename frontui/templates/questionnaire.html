@@ -1,72 +1,69 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-<header class="navbar navbar-default navbar-fixed-top navbar-mobile">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img src="/static/img/logo.svg" /></a>
-            <div class="azs-form">
-                <div class="azs-form-label">АЗС №</div>
-                <div class="azs-form-select">
-                    <div class="form-xs">
-                        <select class="form-control">
-                            <option value="34">34</option>
-                            <option value="158">158</option>
-                            <option value="TE/21-3A">TE/21-3A</option>
-                        </select>
-                    </div>
-                </div>
-            </div><!-- /.row -->
-        </div>
-        
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</header>
-
-<style>
-
-</style>
-
 <div class="container">
-    <form>
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
+    <form action="/save_questionnaire" method="POST">
+        <div class="panel-group js-form" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Дата и время
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Дата и время
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">заполнено 
+                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">11</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
+                    <div class="panel-body js-section-body">
+                        <div class="row mt10">
+                            <div class="col-xs-3">
+                                <label>АЗС</label>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="form-xs">
+                                <select class="form-control js-question" name="object_name">
+                                    <option value="">[ ... выберите из списка ... ]</option>
+                                    <option value="34">34</option>
+                                    <option value="349">349</option>
+                                    <option value="TA/472">TA/472</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
                         <div class="row mt10">
                             <div class="col-xs-3"><label>Дата</label></div>
                             <div class="col-xs-9 text-right">
                                 <div class="form-xs">
-                                    <select class="form-control"><option value="18">18</option><option value="19">19</option></select>
-                                    <select class="form-control"><option value="05">мая</option><option value="06">июня</option></select>
-                                    <select class="form-control"><option value="2016">2016</option><option value="2015">2015</option></select>
+                                    <select class="form-control js-question" id="day">
+                                        <option value="">[...]</option>
+                                        {% for i in range(1, 32) %}
+                                        <option value="{{i}}">{{i}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="form-control js-question" id="month">
+                                        <option value="">[...]</option>
+                                        <option value="01">января</option>
+                                        <option value="02">февраля</option>
+                                        <option value="03">марта</option>
+                                        <option value="04">апреля</option>
+                                        <option value="05">мая</option>
+                                        <option value="06">июня</option>
+                                        <option value="07">июля</option>
+                                        <option value="08">августа</option>
+                                        <option value="09">сентября</option>
+                                        <option value="10">октября</option>
+                                        <option value="11">ноября</option>
+                                        <option value="12">декабря</option>
+                                    </select>
+                                    <select class="form-control js-question" id="year">
+                                        <option value="">[...]</option>
+                                        {% for i in range(2016, 2014, -1) %}
+                                        <option value="{{i}}">{{i}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.row -->
@@ -74,9 +71,19 @@
                             <div class="col-xs-6"><label>Время подхода к кассе</label></div>
                             <div class="col-xs-6 text-right">
                                 <div class="form-xs">
-                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    <select class="form-control js-question" id="hour1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 23) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                     :
-                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                    <select class="form-control js-question" id="minute1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 59) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.row -->
@@ -84,9 +91,19 @@
                             <div class="col-xs-6"><label>Время приема заказа</label></div>
                             <div class="col-xs-6 text-right">
                                 <div class="form-xs">
-                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    <select class="form-control js-question" id="hour2" data-rel-field="hour1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 23) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                     :
-                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                    <select class="form-control js-question" id="minute2" data-rel-field="minute1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 59) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.row -->
@@ -94,9 +111,19 @@
                             <div class="col-xs-6"><label>Время получения заказа</label></div>
                             <div class="col-xs-6 text-right">
                                 <div class="form-xs">
-                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    <select class="form-control js-question" id="hour3" data-rel-field="hour1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 23) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                     :
-                                    <select class="form-control"><option value="00">00</option><option value="01">01</option></select>
+                                    <select class="form-control js-question" id="minute3" data-rel-field="minute1">
+                                        <option value="">[...]</option>
+                                        {% for i in range(00, 59) %}
+                                        <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div><!-- /.row -->
@@ -104,7 +131,12 @@
                             <div class="col-xs-6"><label>Общее время ожидания</label></div>
                             <div class="col-xs-6 text-right">
                                 <div class="form-xs">
-                                    <select class="form-control"><option value="12">12</option><option value="13">13</option></select>
+                                    <select class="form-control js-question" id="min-diff">
+                                        <option value="">[...]</option>
+                                        {% for i in range(0, 59) %}
+                                        <option value="{{'%d' % i}}">{{ '%d' % i}}</option>
+                                        {% endfor %}
+                                    </select>
                                     минут
                                 </div>
                             </div>
@@ -329,7 +361,7 @@
         </div><!-- /.panel-group -->
         <div class="row">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-primary pull-right ml5">Сохранить</button>
+                <button type="submit" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
                 <button type="submit" class="btn btn-default pull-right">Отмена</button>
             </div>
         </div><!-- /.row -->
@@ -343,6 +375,7 @@
         require(['jquery', 'bootstrap', 'questionnaire.view'], function ($) {
             // exec code on document.ready event
             $(function () {
+                // nothing to do
             })
         })
     </script>
