@@ -5,7 +5,7 @@ The flask application package.
 #import json
 #import os
 from flask import Flask
-#from frontui.data import DataProvider
+from frontui.data import DataProvider
 #from frontui.models import ObjectInfo, ChecklistInfo
 # create an application
 app = Flask(__name__)
@@ -18,7 +18,7 @@ app = Flask(__name__)
 #    app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
 #    app.logger.setLevel(logging.DEBUG)
 # create data provider
-#DATA = DataProvider()
+DATA = DataProvider()
 # fill data from files
 #with open('./app_data/objects.json', 'r') as objects_file:
 #    for item in json.load(objects_file):
