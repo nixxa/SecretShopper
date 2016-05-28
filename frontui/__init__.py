@@ -6,7 +6,7 @@ import json
 import os
 from flask import Flask
 from frontui.data import DataProvider
-from frontui.models import ObjectInfo, ChecklistInfo
+#from frontui.models import ObjectInfo, ChecklistInfo
 # create an application
 app = Flask(__name__)
 # set prod logging
