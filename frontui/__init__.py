@@ -14,7 +14,7 @@ app.logger.setLevel(logging.DEBUG)
 # create data provider
 DATA = DataProvider()
 # fill data from files
-with open('./app_data/objects.json', 'r') as objects_file:
+with open('./frontui/app_data/objects.json', 'r') as objects_file:
     for item in json.load(objects_file):
         DATA.add_object(ObjectInfo(item))
 #with open('./app_data/checklist.json', 'r') as checklist_file:
