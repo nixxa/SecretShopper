@@ -25,21 +25,21 @@ def home():
 
 @app.route('/checklist')
 @mobile_template('{mobile/}checklist.html')
-def questionnaire(template):
+def checklist(template):
     """Renders questionnaire page"""
     objects = DATA.objects
-    checklist = DATA.checklist
+    questions = DATA.checklist
     return render_template(
         template,
         objects=objects,
-        checklist=checklist,
+        checklist=questions,
         title='Контрольный лист посещения'
     )
 
 
 @app.route('/save_list', methods=['POST'])
 @mobile_template('{mobile/}checklist_saved.html')
-def save(template):
+def checklist_save(template):
     """ Save questionnaire and render success page """
     model = QListViewModel()
     model.num = '1234-5678'

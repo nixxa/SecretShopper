@@ -8,7 +8,7 @@ from frontui.data import DataProvider
 from frontui.models import ObjectInfo, ChecklistInfo
 # create an application
 app = Flask(__name__)
-# set prod logging
+# set logging
 app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
 app.logger.setLevel(logging.DEBUG)
 # create data provider

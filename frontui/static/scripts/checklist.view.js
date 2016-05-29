@@ -64,23 +64,25 @@ define([
             
             var $question = $grp.parents('.js-question');
             $question.attr('data-filled', '1');
+            var $input = $question.find('input[type=hidden]');
+            $input.val($target.val());
 
             changeBadge($question);
         });
         // init handler for inputs
-        $('input.js-question').change(function (evt) {
+        $('input.js-question,select.js-question,textarea.js-question').change(function (evt) {
             var $target = $(evt.target);
             if ($target.val() !== '') {
                 $target.attr('data-filled', '1');
                 changeBadge($target);
             }
         });
-        // init handler for selects
-        $('select.js-question').change(function (evt) {
+        $('.js-question input[type=radio]').change(function (evt) {
             var $target = $(evt.target);
             if ($target.val() !== '') {
-                $target.attr('data-filled', '1');
-                changeBadge($target);
+                var $question = $target.parents('.js-question');
+                $question.attr('data-filled', '1');
+                changeBadge($question);
             }
         });
         // init handlers for hours and minutes

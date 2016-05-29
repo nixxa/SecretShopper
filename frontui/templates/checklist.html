@@ -11,8 +11,11 @@
                             {{ checklist.pages[0].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из <span class="js-section-badge-total">11</span></small>
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span> 
+                                <span class="js-section-badge-total">11</span></small>
                         </div>
                     </h4>
                 </div>
@@ -36,6 +39,7 @@
                         <div class="row mt10">
                             <div class="col-xs-3"><label>Дата</label></div>
                             <div class="col-xs-9 text-right">
+                                <input type="hidden" name="p1_r1" value="" />
                                 <div class="form-xs">
                                     <select class="form-control js-question" id="day">
                                         <option value="">[...]</option>
@@ -70,6 +74,7 @@
                         <div class="row mt10">
                             <div class="col-xs-6"><label>Время подхода к кассе</label></div>
                             <div class="col-xs-6 text-right">
+                                <input type="hidden" name="p1_r2" value="" />
                                 <div class="form-xs">
                                     <select class="form-control js-question" id="hour1">
                                         <option value="">[...]</option>
@@ -90,6 +95,7 @@
                         <div class="row mt10">
                             <div class="col-xs-6"><label>Время приема заказа</label></div>
                             <div class="col-xs-6 text-right">
+                                <input type="hidden" name="p1_r3" value="" />
                                 <div class="form-xs">
                                     <select class="form-control js-question" id="hour2" data-rel-field="hour1">
                                         <option value="">[...]</option>
@@ -110,6 +116,7 @@
                         <div class="row mt10">
                             <div class="col-xs-6"><label>Время получения заказа</label></div>
                             <div class="col-xs-6 text-right">
+                                <input type="hidden" name="p1_r4" value="" />
                                 <div class="form-xs">
                                     <select class="form-control js-question" id="hour3" data-rel-field="hour1">
                                         <option value="">[...]</option>
@@ -130,6 +137,7 @@
                         <div class="row mt10">
                             <div class="col-xs-6"><label>Общее время ожидания</label></div>
                             <div class="col-xs-6 text-right">
+                                <input type="hidden" name="p1_r5" value="" />
                                 <div class="form-xs">
                                     <select class="form-control js-question" id="min-diff">
                                         <option value="">[...]</option>
@@ -151,8 +159,10 @@
                             {{ checklist.pages[1].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[1].questions|length }}</span></small>
                         </div>
                     </h4>
@@ -161,11 +171,14 @@
                     <div class="panel-body js-section-body">
                         {% for item in checklist.pages[1].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
-                            <label>{{ item.label }}</label>
+                            <label>
+                            {{ item.label }}
+                            </label>
                         </div>
                         {% endfor %}
                     </div><!-- /.panel-body -->
@@ -178,8 +191,10 @@
                             {{ checklist.pages[2].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span> 
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[2].questions|length+1 }}</span></small>
                         </div>
                     </h4>
@@ -192,7 +207,8 @@
                         </label>
                         {% for item in checklist.pages[2].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
@@ -209,8 +225,10 @@
                             {{ checklist.pages[3].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[3].questions|length }}</span></small>
                         </div>
                     </h4>
@@ -219,7 +237,8 @@
                     <div class="panel-body js-section-body">
                         {% for item in checklist.pages[3].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
@@ -236,8 +255,10 @@
                             {{ checklist.pages[4].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[4].questions|length }}</span></small>
                         </div>
                     </h4>
@@ -246,7 +267,8 @@
                     <div class="panel-body js-section-body">
                         {% for item in checklist.pages[4].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
@@ -263,8 +285,10 @@
                             {{ checklist.pages[5].title }}
                         </a>
                          <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[5].questions|length+1 }}</span></small>
                         </div>
                     </h4>
@@ -277,7 +301,8 @@
                         </label>
                         {% for item in checklist.pages[5].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
@@ -294,8 +319,10 @@
                             {{ checklist.pages[6].title }}
                         </a>
                         <div class="pull-right">
-                            <small class="text-danger js-section-badge">заполнено 
-                                <span class="js-section-badge-value">0</span> из 
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
                                 <span class="js-section-badge-total">{{ checklist.pages[6].questions|length }}</span></small>
                         </div>
                     </h4>
@@ -304,7 +331,8 @@
                     <div class="panel-body js-section-body">
                         {% for item in checklist.pages[6].questions %}
                         <div class="question js-question">
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group" name="{{ item.field_name }}">
+                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
                                 <button type="button" class="btn btn-default" value="yes">ДА</button>
                                 <button type="button" class="btn btn-default" value="no">НЕТ</button>
                             </div>
@@ -314,53 +342,73 @@
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingEight">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                        {{ checklist.pages[7].title }}
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                            {{ checklist.pages[7].title }}
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
+                                <span class="js-section-badge-total">4</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
-                    <div class="panel-body">
-                        <p>
+                    <div class="panel-body js-section-body">
+                        <div class="js-question">
                             Кофе, приобретенный на станции:
-                            <div class="radio"><label><input type="radio" name="cafe"> не вкусный</label></div>
-                            <div class="radio"><label><input type="radio" name="cafe"> нормальный</label></div>
-                            <div class="radio"><label><input type="radio" name="cafe"> очень вкусный</label></div>         
+                            <div class="radio"><label><input type="radio" name="p8_r1" value="не вкусный"> не вкусный</label></div>
+                            <div class="radio"><label><input type="radio" name="p8_r1" value="нормальный"> нормальный</label></div>
+                            <div class="radio"><label><input type="radio" name="p8_r1" value="очень вкусный"> очень вкусный</label></div>  
+                        </div>
+                        <div>       
                             Комментарии к кофе:
-                            <textarea rows="2" class="form-control"></textarea>
-                        </p>
-                        <p>
+                            <textarea rows="2" class="form-control js-question" name="p8_r2"></textarea>
+                        </div>
+                        <div class="js-question">
                             Блин, приобретенный на станции:
-                            <div class="radio"><label><input type="radio" name="cir"> не вкусный</label></div>
-                            <div class="radio"><label><input type="radio" name="cir"> нормальный</label></div>
-                            <div class="radio"><label><input type="radio" name="cir"> очень вкусный</label></div>         
+                            <div class="radio"><label><input type="radio" name="p8_r3" value="не вкусный"> не вкусный</label></div>
+                            <div class="radio"><label><input type="radio" name="p8_r3" value="нормальный"> нормальный</label></div>
+                            <div class="radio"><label><input type="radio" name="p8_r3" value="очень вкусный"> очень вкусный</label></div>
+                        </div>
+                        <div>      
                             Комментарии к блинам:
-                            <textarea rows="2" class="form-control"></textarea>
-                        </p>
+                            <textarea rows="2" class="form-control js-question" name="p8_r4"></textarea>
+                        </div>
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->
-            <div class="panel panel-default">
+            <div class="panel panel-default js-section">
                 <div class="panel-heading" role="tab" id="headingNine">
-                    <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-                        {{ checklist.pages[8].title }}
-                    </a>
+                    <h4 class="panel-title js-section-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                            {{ checklist.pages[8].title }}
+                        </a>
+                        <div class="pull-right">
+                            <small class="text-danger js-section-badge">
+                                <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                                <span class="js-section-badge-value">0</span>
+                                <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
+                                <span class="js-section-badge-total">2</span></small>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
-                    <div class="panel-body">
-                        <p>
+                    <div class="panel-body js-section-body">
+                        <div class="js-question">
                             Атмосфера на станции:
-                            <div class="radio"><label><input type="radio" name="atm"> не доброжелательная</label></div>
-                            <div class="radio"><label><input type="radio" name="atm"> нейтральная</label></div>
-                            <div class="radio"><label><input type="radio" name="atm"> гостеприимная</label></div>         
+                            <div class="radio"><label><input type="radio" name="p9_r1" value="не доброжелательная"> не доброжелательная</label></div>
+                            <div class="radio"><label><input type="radio" name="p9_r1" value="нейтральная"> нейтральная</label></div>
+                            <div class="radio"><label><input type="radio" name="p9_r1" value="гостеприимная"> гостеприимная</label></div>
+                        </div>
+                        <div>         
                             Комментарии:
-                            <textarea rows="2" class="form-control"></textarea>
-                        </p>
+                            <textarea rows="2" class="form-control js-question" name="p9_r2"></textarea>
+                        </div>
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
             </div><!-- /.panel -->

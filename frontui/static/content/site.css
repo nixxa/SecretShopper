@@ -67,7 +67,21 @@ label {
     margin-top: 4px;
 }
 
-.question .btn {
+.question {
+    margin-bottom: 8px;
+}
+
+.question label {
+    margin-left: 115px;
+    display: table-cell;
+}
+.question .btn-group {
+    display: table-cell;
+    width: 115px;
+    vertical-align: top;
+}
+
+.question .btn-group .btn {
     width: 54px;
 }
 
