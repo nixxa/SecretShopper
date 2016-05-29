@@ -24,6 +24,9 @@ var/
 .installed.cfg
 *.egg
 
+# Application debug data files
+frontui/app_data/checklists/**/*.json
+
 # VisualStudio files
 web.config
 .vs/

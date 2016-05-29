@@ -44,7 +44,7 @@
                                     <select class="form-control js-question" id="day">
                                         <option value="">[...]</option>
                                         {% for i in range(1, 32) %}
-                                        <option value="{{i}}">{{i}}</option>
+                                        <option value="{{'%02d' % i}}">{{i}}</option>
                                         {% endfor %}
                                     </select>
                                     <select class="form-control js-question" id="month">
@@ -297,7 +297,7 @@
                     <div class="panel-body js-section-body">
                         <label>
                             <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
                         </label>
                         {% for item in checklist.pages[5].questions %}
                         <div class="question js-question">
@@ -393,7 +393,7 @@
                                 <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                                 <span class="js-section-badge-value">0</span>
                                 <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                                <span class="js-section-badge-total">2</span></small>
+                                <span class="js-section-badge-total">1</span></small>
                         </div>
                     </h4>
                 </div>
@@ -407,7 +407,7 @@
                         </div>
                         <div>         
                             Комментарии:
-                            <textarea rows="2" class="form-control js-question" name="p9_r2"></textarea>
+                            <textarea rows="2" class="form-control" name="p9_r2"></textarea>
                         </div>
                     </div><!-- /.panel-body -->
                 </div><!-- /.panel-collapse -->
@@ -415,8 +415,8 @@
         </div><!-- /.panel-group -->
         <div class="row">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
-                <button type="submit" class="btn btn-default pull-right">Отмена</button>
+                <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
+                <button type="cancel" class="btn btn-default pull-right">Отмена</button>
             </div>
         </div><!-- /.row -->
     </form>

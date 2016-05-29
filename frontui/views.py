@@ -3,8 +3,9 @@ Routes and views for the flask application.
 """
 # pylint: disable=line-too-long
 
+import uuid
 from datetime import datetime
-from flask import render_template
+from flask import render_template, request
 from flask.ext.mobility.decorators import mobile_template
 from flask.ext.mobility import Mobility
 from frontui import app, DATA
@@ -41,9 +42,19 @@ def checklist(template):
 @mobile_template('{mobile/}checklist_saved.html')
 def checklist_save(template):
     """ Save questionnaire and render success page """
+    objects = DATA.objects
+    object_num = request.form['object_name']
+    app.logger.debug('ObjectNum %s' % object_num)
+    selected_obj = next((x for x in objects if x.num == object_num), None)
+    selected_date = request.form['p1_r1']
+    data = dict()
+    data['uid'] = str(uuid.uuid4())
+    for key in request.form:
+        data[key] = request.form[key]
+    DATA.save_checklist(object_num, selected_date, data)
     model = QListViewModel()
-    model.num = '1234-5678'
-    model.object_name = 'АЗС №5468'
+    model.num = data['uid']
+    model.object_name = selected_obj.num + '-' + selected_obj.title
     return render_template(
         template,
         model=model,

@@ -37,12 +37,19 @@ define([
         $('#form-save').attr('disabled', 'disabled');
         $('#form-save').click(function (e) {
             var $target = $(e.target);
-            if ($target.attr('disabled') !== '') {
+            if ($target.attr('disabled') != undefined) {
                 return;
             }
             
             e.preventDefault();
             // create JSON and submit form
+            $('input[name="p1_r1"]').val($('#year').val() + '-' + $('#month').val() + '-' + $('#day').val());
+            $('input[name="p1_r2"]').val($('#hour1').val() + ':' + $('#minute1').val());
+            $('input[name="p1_r3"]').val($('#hour2').val() + ':' + $('#minute2').val());
+            $('input[name="p1_r4"]').val($('#hour3').val() + ':' + $('#minute3').val());
+            $('input[name="p1_r5"]').val($('#min-diff').val());
+            
+            $('form').submit();
         });
         // init all questions, setting they not filled
         $.each($('.js-question'), function () {
