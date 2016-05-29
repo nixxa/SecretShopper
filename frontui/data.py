@@ -21,7 +21,7 @@ class DataProvider:
 
     def save_checklist(self, obj_num, obj_date, obj_dict):
         """ Save checklist data """
-        obj_json = json.dumps(obj_dict, sort_keys=True, indent=4)
+        obj_json = json.dumps(obj_dict, sort_keys=True, indent=4, ensure_ascii=False)
         filedir = self.checklists_dir + '/' + obj_num
         if not os.path.exists(filedir):
             os.makedirs(filedir)
