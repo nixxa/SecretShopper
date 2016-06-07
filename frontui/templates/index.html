@@ -1,4 +1,23 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+<h2>Список объектов</h2>
+
+{% for obj in objects %}
+<div class="media">
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object" />
+        </a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a href="/checklist/{{obj.num}}">{{ obj.type }} - {{ obj.title }}</a>
+        </h4>
+        <p>Адрес: {{ obj.address }}</p>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}

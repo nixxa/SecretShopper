@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Отчеты по объектам</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>##</th>
+            <th>Имя объекта</th>
+            <th>Всего отчетов</th>
+            <th>Новых отчетов</th>
+            <th>Последний отчет</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in objects %}
+            <tr>
+                <td>{{obj.num}}</td>
+                <td>{{obj.type}}-{{obj.title}}<br/><small>{{obj.address}}</small></td>
+                <td>10</td>
+                <td>1</td>
+                <td><a href="/report/0">вчера, проверен</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

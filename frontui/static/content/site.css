@@ -10,23 +10,8 @@ body {
 
 .navbar-brand img {
     height: 25px;
-}
-
-.navbar .azs-form {
-    margin-left: 60px;
-    padding-top: 8px;
-}
-
-.azs-form .azs-form-label {
-    display: inline-block;
-    vertical-align: bottom;
-    color: #fefefe;
-    font-size: 140%;
-}
-
-.azs-form .azs-form-select {
-    display: inline-block;
-    margin-left: 10px;
+    display: inline;
+    margin-right: 8px;
 }
 
 .form-xs .form-control {

@@ -10,6 +10,8 @@ from flask.ext.mobility.decorators import mobile_template
 from werkzeug.local import LocalProxy
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
+from frontui.auth import authorize
+
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
@@ -17,25 +19,30 @@ logger = LocalProxy(lambda: current_app.logger)
 @ui.route('/')
 def home():
     """Renders the home page."""
+    database = DataProvider()
+    objects = database.objects
     return render_template(
         'index.html',
-        title='Home Page',
+        title='Список объектов|Тайный покупатель',
+        objects=objects,
         year=datetime.now().year,
     )
 
 
-@ui.route('/checklist')
+@ui.route('/checklist/<num>')
 @mobile_template('{mobile/}checklist.html')
-def checklist(template):
+def checklist(template, num):
     """Renders questionnaire page"""
     database = DataProvider()
     objects = database.objects
+    selected_obj = next((x for x in objects if x.num == num), None)
     questions = database.checklist
     return render_template(
         template,
         objects=objects,
+        selected=selected_obj,
         checklist=questions,
-        title='Контрольный лист посещения'
+        title='Контрольный лист посещения|Тайный покупатель'
     )
 
 
@@ -61,4 +68,18 @@ def checklist_save(template):
         template,
         model=model,
         title='Список'
+    )
+
+
+@ui.route('/reports')
+@mobile_template('{mobile/}reports.html')
+@authorize
+def reports(template):
+    """ Отчеты по объектам """
+    database = DataProvider()
+    objects = database.objects
+    return render_template(
+        template,
+        objects=objects,
+        title='Отчеты'
     )

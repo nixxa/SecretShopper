@@ -1,14 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>Контрольный лист посещения сохранен</h2>
-    <ul class="list-unstyled">
-        <li>Номер листа: <a href="/qview/{{ model.num }}">#{{ model.num }}</a></li>
-        <li>Объект: {{ model.object_name }}</li>
-        <li>Дата: {{ model.save_date.strftime('%d-%m-%Y') }}</li>
-    </ul>
-</div>
+<h2>Контрольный лист посещения сохранен</h2>
+<ul class="list-unstyled">
+    <li>Номер листа: <a href="/qview/{{ model.num }}">#{{ model.num }}</a></li>
+    <li>Объект: {{ model.object_name }}</li>
+    <li>Дата: {{ model.save_date.strftime('%d-%m-%Y') }}</li>
+</ul>
 {% endblock %}
 
 {% block scripts %}
