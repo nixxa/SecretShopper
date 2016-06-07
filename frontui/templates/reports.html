@@ -19,7 +19,7 @@
             <tr>
                 <td>{{obj.num}}</td>
                 <td>{{obj.type}}-{{obj.title}}<br/><small>{{obj.address}}</small></td>
-                <td>10</td>
+                <td>{{ checklists[obj.num]|length }}</td>
                 <td>1</td>
                 <td><a href="/report/0">вчера, проверен</a></td>
             </tr>

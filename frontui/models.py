@@ -81,3 +81,14 @@ class ChecklistInfo:
             if page is not None:
                 checklist.pages.append(page)
         return checklist
+
+
+class Checklist:
+    """ Filled checklist with data """
+    def __init__(self, json_data=None):
+        self.object_info = None
+        self.checklist_info = None
+        if json_data is not None:
+            self.__dict__ = json_data
+        return
+

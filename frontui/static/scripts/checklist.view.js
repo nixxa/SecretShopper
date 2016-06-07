@@ -53,7 +53,10 @@ define([
         });
         // init all questions, setting they not filled
         $.each($('.js-question'), function () {
-            $(this).attr('data-filled', '0');
+            var filled = $(this).attr('data-filled');
+            if (filled == undefined) {
+                $(this).attr('data-filled', '0');
+            }
         });
         // init mouse handlers for checkboxes
         $('.js-question-btns .btn').click(function (evt) {

@@ -78,8 +78,15 @@ def reports(template):
     """ Отчеты по объектам """
     database = DataProvider()
     objects = database.objects
+    checklists = dict()
+    for item in database.checklists:
+        num = item.object_info.num
+        if num not in checklists:
+            checklists[num] = list()
+        checklists[num].append(item)
     return render_template(
         template,
         objects=objects,
+        checklists=checklists,
         title='Отчеты'
     )

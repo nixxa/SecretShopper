@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="form-xs">
-                            <select class="form-control js-question" name="object_name">
+                            <select class="form-control js-question" name="object_name" {% if selected %}data-filled="1"{% endif %}>
                                 <option value="">[ ... выберите из списка ... ]</option>
                                 {% for obj in objects %}
                                 <option value="{{ obj.num }}" {% if obj.num == selected.num %}selected{% endif %}>{{ obj.num }} - {{ obj.title }}</option>
