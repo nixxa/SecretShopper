@@ -1,12 +1,11 @@
 """
 This script runs the frontui application using a development server.
 """
-
-
 from os import environ
-from frontui import app
+from frontui.app import create_app
 
 if __name__ == '__main__':
+    app = create_app()
     HOST = environ.get('SERVER_HOST', 'localhost')
     MODE = environ.get('APP_MODE', 'DEBUG')
     try:

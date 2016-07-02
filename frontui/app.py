@@ -12,6 +12,10 @@ def create_app():
     # set logging
     app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
     app.logger.setLevel(logging.DEBUG)
+    # register blueprints
     app.register_blueprint(ui)
+    # register mobility
     Mobility(app)
+    # register jinja exts
+    app.jinja_env.tests['equalto'] = lambda x, y: x == y
     return app

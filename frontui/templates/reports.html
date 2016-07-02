@@ -20,10 +20,37 @@
                 <td>{{obj.num}}</td>
                 <td>{{obj.type}}-{{obj.title}}<br/><small>{{obj.address}}</small></td>
                 <td>{{ checklists[obj.num]|length }}</td>
-                <td>1</td>
-                <td><a href="/report/0">вчера, проверен</a></td>
+                <td>{{ new_checklists[obj.num]|length }}</td>
+                <td>
+                    {% if checklists[obj.num]|length > 0 %}
+                    {% set last_rep = checklists[obj.num]|last %}
+                    <a href="/report/{{ last_rep.uid }}">
+                        {% if last_rep.create_date %}
+                            <span class="js-datetime-from" 
+                                data-datetime="{{ last_rep.create_date.strftime('%Y-%m-%dT%H:%M:%S') }}">
+                            </span>,
+                        {% endif %}
+                        {% if last_rep.state == 'new' %}
+                            новый
+                        {% elif last_rep.state == 'verified' %}
+                            проверен
+                        {% endif %}
+                    </a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        require(['moment', 'jquery'], function (moment, $) {
+            $.each($('.js-datetime-from'), function () {
+                var $this = $(this);
+                $this.text(moment.utc($this.data('datetime')).fromNow());
+            });
+        });
+    </script>
 {% endblock %}

@@ -58,6 +58,9 @@ def checklist_save(template):
     selected_date = request.form['p1_r1']
     data = dict()
     data['uid'] = str(uuid.uuid4())
+    data['state'] = 'new'
+    data['create_date'] = datetime.utcnow()
+    data['verify_date'] = None
     for key in request.form:
         data[key] = request.form[key]
     database.save_checklist(object_num, selected_date, data)
@@ -79,14 +82,23 @@ def reports(template):
     database = DataProvider()
     objects = database.objects
     checklists = dict()
+    new_checklists = dict()
+    # fill all checklists
     for item in database.checklists:
         num = item.object_info.num
         if num not in checklists:
             checklists[num] = list()
         checklists[num].append(item)
+    # fill only new checklists
+    for item in [x for x in database.checklists if x.state == 'new']:
+        num = item.object_info.num
+        if num not in new_checklists:
+            new_checklists[num] = list()
+        new_checklists[num].append(item)
     return render_template(
         template,
         objects=objects,
         checklists=checklists,
+        new_checklists=new_checklists,
         title='Отчеты'
     )

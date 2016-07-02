@@ -1,4 +1,5 @@
 """ Data models """
+from datetime import datetime
 
 
 class ObjectInfo:
@@ -8,6 +9,7 @@ class ObjectInfo:
         self.type = ''
         self.title = ''
         self.address = ''
+        self.with_cafe = False
         if json_data is not None:
             self.parse(json_data)
 
@@ -17,6 +19,7 @@ class ObjectInfo:
         self.type = json_data['object_type']
         self.title = json_data['object_title']
         self.address = json_data['object_address']
+        self.with_cafe = json_data['with_cafe']
 
     @staticmethod
     def from_json(json_data):
@@ -88,7 +91,14 @@ class Checklist:
     def __init__(self, json_data=None):
         self.object_info = None
         self.checklist_info = None
+        self.state = 'new'
+        self.create_date = datetime.utcnow()
+        self.verify_date = None
         if json_data is not None:
             self.__dict__ = json_data
+            if 'create_date' in json_data:
+                self.create_date = datetime.strptime(
+                    json_data['create_date'],
+                    '%Y-%m-%dT%H:%M:%S')
         return
 

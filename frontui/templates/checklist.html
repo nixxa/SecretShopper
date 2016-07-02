@@ -288,16 +288,22 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[5].questions|length+1 }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[5].questions|length+2 }}</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body js-section-body">
-                    <label>
-                        <div class="mb5">Оператор-кассир</div>
-                        <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
-                    </label>
+                    <div class="mb10">
+                        <label>
+                            <div class="mb5">Оператор-кассир</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
+                        </label>
+                        <label>
+                            <div class="mb5">Оператор-кассир в кафе</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" />
+                        </label>
+                    </div>
                     {% for item in checklist.pages[5].questions %}
                     <div class="question js-question">
                         <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
@@ -341,6 +347,7 @@
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
+        {% if selected.with_cafe %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title js-section-title">
@@ -381,6 +388,7 @@
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
+        {% endif %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingNine">
                 <h4 class="panel-title js-section-title">

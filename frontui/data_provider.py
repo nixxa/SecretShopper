@@ -3,8 +3,16 @@
 import json
 import os
 import frontui.linq as linq
+import datetime
 from frontui.models import ObjectInfo, ChecklistInfo, Checklist
 from flask import current_app
+
+
+class DateTimeAwareEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime('%Y-%m-%dT%H:%M:%S')
+        return json.JSONEncoder.default(self, obj)
 
 
 class Singleton(object):
@@ -57,7 +65,7 @@ class DataProvider(Singleton):
 
     def save_checklist(self, obj_num, obj_date, obj_dict):
         """ Save checklist data """
-        obj_json = json.dumps(obj_dict, sort_keys=True, indent=4, ensure_ascii=False)
+        obj_json = json.dumps(obj_dict, sort_keys=True, indent=4, ensure_ascii=False, cls=DateTimeAwareEncoder)
         filedir = self.checklists_dir + '/' + obj_num
         if not os.path.exists(filedir):
             os.makedirs(filedir)
