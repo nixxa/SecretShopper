@@ -31,33 +31,73 @@ define([
         }
     };
     
-    // document.onload
-    $(function () {
-        // disable save button
-        $('#form-save').attr('disabled', 'disabled');
-        $('#form-save').click(function (e) {
-            var $target = $(e.target);
-            if ($target.attr('disabled') != undefined) {
-                return;
+    function initForm() {
+        if ($('input[name="p1_r1"]').val() !== '') {
+            var parts = $('input[name="p1_r1"]').val().split('-');
+            $('#year').val(parts[0]);
+            $('#month').val(parts[1]);
+            $('#day').val(parts[2]);
+            // trigger events to set data-filled attributes
+            $('#year').trigger('change');
+            $('#month').trigger('change');
+            $('#day').trigger('change');
+        }
+        if ($('input[name="p1_r2"]').val() !== '') {
+            var parts = $('input[name="p1_r2"]').val().split(':');
+            $('#hour1').val(parts[0]);
+            $('#minute1').val(parts[1]);
+            // trigger change events to set data-filled
+            $('#hour1').trigger('change');
+            $('#minute1').trigger('change');
+        }
+        if ($('input[name="p1_r3"]').val() !== '') {
+            var parts = $('input[name="p1_r3"]').val().split(':');
+            $('#hour2').val(parts[0]);
+            $('#minute2').val(parts[1]);
+            // trigger change events to set data-filled
+            $('#hour2').trigger('change');
+            $('#minute2').trigger('change');
+        }
+        if ($('input[name="p1_r4"]').val() !== '') {
+            var parts = $('input[name="p1_r4"]').val().split(':');
+            $('#hour3').val(parts[0]);
+            $('#minute3').val(parts[1]);
+            // trigger change events to set data-filled
+            $('#hour3').trigger('change');
+            $('#minute3').trigger('change');
+        }
+        if ($('input[name="operator_fullname"]').val() !== '') {
+            $('input[name="operator_fullname"]').trigger('change');
+        }
+        if ($('input[name="accounter_fullname"]').val() !== '') {
+            $('input[name="accounter_fullname"]').trigger('change');
+        }
+        if ($('input[name="accounter_cafe_fullname"]').val() !== '') {
+            $('input[name="accounter_cafe_fullname"]').trigger('change');
+        }
+        $.each($('input[type=hidden]'), function () {
+            var $this = $(this);
+            if ($this.val() !== '' && $this.attr('role') === 'checkbox') {
+                var $target = $this.parent().find('button[value=' + $this.val() + ']');
+                $target.addClass('active');
+                $target.html('<i class="glyphicon glyphicon-ok mr5"></i>' + $target.html());
+                $target.blur();
+                $this.parent().attr('data-filled', '1');
+                changeBadge($this.parent());
             }
-            
-            e.preventDefault();
-            // create JSON and submit form
-            $('input[name="p1_r1"]').val($('#year').val() + '-' + $('#month').val() + '-' + $('#day').val());
-            $('input[name="p1_r2"]').val($('#hour1').val() + ':' + $('#minute1').val());
-            $('input[name="p1_r3"]').val($('#hour2').val() + ':' + $('#minute2').val());
-            $('input[name="p1_r4"]').val($('#hour3').val() + ':' + $('#minute3').val());
-            $('input[name="p1_r5"]').val($('#min-diff').val());
-            
-            $('form').submit();
         });
-        // init all questions, setting they not filled
+    }
+
+    function clearQuestions() {
         $.each($('.js-question'), function () {
             var filled = $(this).attr('data-filled');
             if (filled == undefined) {
                 $(this).attr('data-filled', '0');
             }
         });
+    }
+
+    function initHandlers() {
         // init mouse handlers for checkboxes
         $('.js-question-btns .btn').click(function (evt) {
             evt.preventDefault();
@@ -115,5 +155,33 @@ define([
                 changeBadge($('#min-diff'));
             }
         });
+    }
+
+    // document.onload
+    $(function () {
+        // init all questions, setting they not filled
+        clearQuestions();
+        // init all handlers
+        initHandlers();
+        // disable save button
+        $('#form-save').attr('disabled', 'disabled');
+        // set save handler
+        $('#form-save').click(function (e) {
+            var $target = $(e.target);
+            if ($target.attr('disabled') != undefined) {
+                return;
+            }
+            
+            e.preventDefault();
+            // create JSON and submit form
+            $('input[name="p1_r1"]').val($('#year').val() + '-' + $('#month').val() + '-' + $('#day').val());
+            $('input[name="p1_r2"]').val($('#hour1').val() + ':' + $('#minute1').val());
+            $('input[name="p1_r3"]').val($('#hour2').val() + ':' + $('#minute2').val());
+            $('input[name="p1_r4"]').val($('#hour3').val() + ':' + $('#minute3').val());
+            $('input[name="p1_r5"]').val($('#min-diff').val());
+            
+            $('form').submit();
+        });
+        initForm();
     });
 });

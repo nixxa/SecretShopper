@@ -47,9 +47,12 @@
 {% block scripts %}
     <script type="text/javascript">
         require(['moment', 'jquery'], function (moment, $) {
-            $.each($('.js-datetime-from'), function () {
-                var $this = $(this);
-                $this.text(moment.utc($this.data('datetime')).fromNow());
+            $(function () {
+                moment.locale('ru');
+                $.each($('.js-datetime-from'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).fromNow());
+                });
             });
         });
     </script>

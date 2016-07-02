@@ -11,6 +11,7 @@ from werkzeug.local import LocalProxy
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
+from frontui.linq import first_or_default
 
 
 ui = Blueprint('ui', __name__, template_folder='templates')
@@ -101,4 +102,22 @@ def reports(template):
         checklists=checklists,
         new_checklists=new_checklists,
         title='Отчеты'
+    )
+
+
+@ui.route('/report/<uid>')
+@mobile_template('{mobile/}report.html')
+@authorize
+def report(template, uid):
+    """ Render object report for verify """
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    questions = database.checklist
+    return render_template(
+        template,
+        values=item,
+        checklist=questions,
+        selected=item.object_info,
+        objects=database.objects,
+        title='Отчет'
     )
