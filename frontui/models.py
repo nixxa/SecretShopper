@@ -94,11 +94,25 @@ class Checklist:
         self.state = 'new'
         self.create_date = datetime.utcnow()
         self.verify_date = None
+        self.date = None
         if json_data is not None:
             self.__dict__ = json_data
             if 'create_date' in json_data:
                 self.create_date = datetime.strptime(
                     json_data['create_date'],
                     '%Y-%m-%dT%H:%M:%S')
+            if 'p1_r1' in json_data:
+                self.date = datetime.strptime(
+                    json_data['p1_r1'],
+                    '%Y-%m-%d')
+        return
+
+    def update(self, form_data):
+        """ Update field from dictionary object """
+        if form_data is None:
+            return
+        if not isinstance(form_data, dict):
+            return
+        self.__dict__.update(form_data)
         return
 

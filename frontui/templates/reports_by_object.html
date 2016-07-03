@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Отчеты по объекту {{ selected.type }}-{{ selected.title }}
+    <br>
+    <small>{{ selected.address }}</small>
+</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>##</th>
+            <th>Дата отчета</th>
+            <th>Статус отчета</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in new_checklists %}
+            <tr>
+                <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
+                <td>
+                    {% if obj.create_date %}
+                        <span class="js-datetime-from" data-datetime="{{ obj.create_date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    {% else %}
+                        <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    {% endif %}
+                </td>
+                <td>новый</td>
+                <td>
+                    <a href="/report/{{obj.uid}}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% for obj in checklists %}
+            <tr>
+                <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
+                <td>
+                    {% if obj.create_date %}
+                        <span class="js-datetime-from" data-datetime="{{ obj.create_date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    {% else %}
+                        <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if obj.state == 'new' %}
+                        новый
+                    {% elif obj.state == 'verified' %}
+                        проверен
+                    {% elif obj.state == 'completed' %}
+                        подтвержден
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/report/{{obj.uid}}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        require(['moment', 'jquery'], function (moment, $) {
+            $(function () {
+                moment.locale('ru');
+                $.each($('.js-datetime-from'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).fromNow());
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -5,7 +5,7 @@ Routes and views for the flask application.
 
 import uuid
 from datetime import datetime
-from flask import render_template, request, Blueprint, current_app
+from flask import render_template, request, Blueprint, current_app, redirect
 from flask.ext.mobility.decorators import mobile_template
 from werkzeug.local import LocalProxy
 from frontui.view_models import QListViewModel
@@ -105,6 +105,35 @@ def reports(template):
     )
 
 
+@ui.route('/reports/<obj_num>')
+@mobile_template('{mobile/}reports_by_object.html')
+@authorize
+def reports_by_object(template, obj_num):
+    """ Render reports for object """
+    database = DataProvider()
+    objects = database.objects
+    selected_obj = first_or_default(objects, lambda x: x.num == obj_num)
+    checklists = list()
+    new_checklists = list()
+    # fill all checklists
+    for item in [x for x in database.checklists if x.state != 'new']:
+        num = item.object_info.num
+        if num == obj_num:
+            checklists.append(item)
+    # fill only new checklists
+    for item in [x for x in database.checklists if x.state == 'new']:
+        num = item.object_info.num
+        if num == obj_num:
+            new_checklists.append(item)
+    return render_template(
+        template,
+        selected=selected_obj,
+        checklists=checklists,
+        new_checklists=new_checklists,
+        title='Отчеты'
+    )
+
+
 @ui.route('/report/<uid>')
 @mobile_template('{mobile/}report.html')
 @authorize
@@ -121,3 +150,20 @@ def report(template, uid):
         objects=database.objects,
         title='Отчет'
     )
+
+
+@ui.route('/report/verify', methods=['POST'])
+@authorize
+def verify():
+    """ Save verified checklist """
+    database = DataProvider()
+    data = dict()
+    for key in request.form:
+        data[key] = request.form[key]
+    uid = data['uid']
+    obj = first_or_default(database.checklists, lambda x: x.uid == uid)
+    obj.update(data)
+    obj.state = 'verified'
+    obj.verify_date = datetime.utcnow()
+    database.update_checklist(obj)
+    return redirect('/reports')

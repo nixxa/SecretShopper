@@ -11,7 +11,7 @@
             <th>Имя объекта</th>
             <th>Всего отчетов</th>
             <th>Новых отчетов</th>
-            <th>Последний отчет</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -22,21 +22,7 @@
                 <td>{{ checklists[obj.num]|length }}</td>
                 <td>{{ new_checklists[obj.num]|length }}</td>
                 <td>
-                    {% if checklists[obj.num]|length > 0 %}
-                    {% set last_rep = checklists[obj.num]|last %}
-                    <a href="/report/{{ last_rep.uid }}">
-                        {% if last_rep.create_date %}
-                            <span class="js-datetime-from" 
-                                data-datetime="{{ last_rep.create_date.strftime('%Y-%m-%dT%H:%M:%S') }}">
-                            </span>,
-                        {% endif %}
-                        {% if last_rep.state == 'new' %}
-                            новый
-                        {% elif last_rep.state == 'verified' %}
-                            проверен
-                        {% endif %}
-                    </a>
-                    {% endif %}
+                    <a href="/reports/{{obj.num}}">подробнее</a>
                 </td>
             </tr>
         {% endfor %}

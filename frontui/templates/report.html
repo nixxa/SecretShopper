@@ -4,6 +4,7 @@
 <h2>Режим проверки.</h2>
 <span class="help-block">В режиме проверки можно исправить заполненную анкету</span>
 <form action="/report/verify" method="POST">
+    <input type="hidden" name="uid" value="{{ values['uid'] }}" />
     <div class="panel-group js-form" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingOne">
@@ -303,7 +304,7 @@
                         </label>
                         <label>
                             <div class="mb5">Оператор-кассир в кафе</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" value="{{ accounter_cafe_fullname }}" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" value="{{ values.accounter_cafe_fullname }}" />
                         </label>
                     </div>
                     {% for item in checklist.pages[5].questions %}
@@ -424,8 +425,12 @@
     </div><!-- /.panel-group -->
     <div class="row">
         <div class="col-xs-12">
-            <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
-            <a href="/" class="btn btn-default pull-right">Отмена</a>
+            {% if values.state == 'new' %}
+                <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
+                <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
+            {% else %}
+                <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Вернуться</a>
+            {% endif %}
         </div>
     </div><!-- /.row -->
 </form><!-- /form -->
