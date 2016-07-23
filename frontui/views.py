@@ -4,9 +4,11 @@ Routes and views for the flask application.
 # pylint: disable=line-too-long
 
 import uuid
+import os
 from datetime import datetime
-from flask import render_template, request, Blueprint, current_app, redirect
+from flask import render_template, request, Blueprint, current_app, redirect, session
 from flask.ext.mobility.decorators import mobile_template
+from werkzeug import secure_filename
 from werkzeug.local import LocalProxy
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
@@ -16,6 +18,7 @@ from frontui.linq import first_or_default
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @ui.route('/')
 def home():
@@ -71,8 +74,55 @@ def checklist_save(template):
     return render_template(
         template,
         model=model,
-        title='Список'
+        title='Контрольны лист посещения|Тайный покупатель'
     )
+
+
+@ui.route('/checklist/view/<uid>')
+@mobile_template('{mobile/}checklist_saved.html')
+def checklist_view(template, uid):
+    """ View saved checklist by ID """
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    session['checklist-uid'] = uid
+    model = QListViewModel()
+    model.num = uid
+    model.object_name = item.object_info.num + '-' + item.object_info.title
+    return render_template(
+        template,
+        model=model,
+        title='Контрольный лист посещения|Тайный покупатель'
+    )
+
+
+@ui.route('/file/upload', methods=['POST'])
+def upload():
+    """ Upload and save file """
+    uid = session['checklist-uid']
+    if uid is None:
+        return 'No active checklist', 500
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        return 'No file part', 500
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        return 'No selected file', 500
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        # create dir for checklist
+        filedir = os.path.join(current_app.config['UPLOAD_FOLDER'], uid)
+        if not os.path.exists(filedir):
+            os.makedirs(filedir)
+        file.save(os.path.join(filedir, filename))
+    return '', 200
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @ui.route('/reports')

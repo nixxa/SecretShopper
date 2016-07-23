@@ -11,10 +11,7 @@
  *          .js-question
  *              .js-question-btns
  */
-define([
-    'require',
-    'jquery'
-], function(require, $) {
+define(['require','jquery','bootstrap', 'dropzone'], function(require, $, bootstrap, dropzone) {
     'use strict';
     
     function changeBadge($question) {

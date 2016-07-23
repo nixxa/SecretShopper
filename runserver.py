@@ -2,6 +2,7 @@
 This script runs the frontui application using a development server.
 """
 from os import environ
+from flask.ext.debugtoolbar import DebugToolbarExtension
 from frontui.app import create_app
 
 if __name__ == '__main__':
@@ -13,7 +14,9 @@ if __name__ == '__main__':
     except ValueError:
         PORT = 5555
     if MODE == 'DEBUG':
+        # register flask-debugtoolbar
         app.debug = True
         app.config['DEBUG'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+        #app.dtb = DebugToolbarExtension(app)        
     app.run(HOST, PORT)

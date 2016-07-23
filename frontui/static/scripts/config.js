@@ -13,8 +13,8 @@ require.config({
 			'//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap',
 			'/static/content/bootstrap-3.3.6/js/bootstrap'
 		],
-		'moment': '/static/scripts/moment-with-locales',
+		'moment': '/static/content/momentjs/moment-with-locales',
 		'date-input': '/static/content/datetime-input/js/date-input',
-		'checklist.view': '/static/scripts/checklist.view'
+		'dropzone': '/static/content/dropzonejs/dropzone'
 	}
 });

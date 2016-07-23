@@ -26,6 +26,7 @@ var/
 
 # Application debug data files
 frontui/app_data/checklists/**/*.json
+frontui/uploads/
 
 # VisualStudio files
 web.config

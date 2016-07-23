@@ -23,6 +23,9 @@ body {
 }
 
 /* --- margins and paddings --- */
+.mb20 {
+    margin-bottom: 20px !important;
+}
 .mt10 {
     margin-top: 10px !important;
 }
@@ -79,4 +82,15 @@ label {
 
 .badge.badge-danger {
     background-color: #d9534f;
+}
+
+.dropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.dropzone .dz-message {
+    font-weight: 400;
 }
