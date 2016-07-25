@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Контрольный лист посещения сохранен</h2>
 <ul class="list-unstyled">
-    <li>Номер листа: <a href="/cjecklist/view/{{ model.num }}">#{{ model.num }}</a></li>
+    <li>Номер листа: <a href="/checklist/view/{{ model.num }}">#{{ model.num }}</a></li>
     <li>Объект: {{ model.object_name }}</li>
     <li>Дата: {{ model.save_date.strftime('%d-%m-%Y') }}</li>
 </ul>

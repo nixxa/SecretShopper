@@ -2,7 +2,8 @@
 require.config({
 	shim: {
 		'bootstrap': { 'deps': ['jquery'] },
-		'date-input': { 'deps': ['jquery'] }
+		'date-input': { 'deps': ['jquery'] },
+		'dropzone': { 'deps' : ['jquery'] }
 	},
 	paths: {
 		'jquery': [
@@ -15,6 +16,7 @@ require.config({
 		],
 		'moment': '/static/content/momentjs/moment-with-locales',
 		'date-input': '/static/content/datetime-input/js/date-input',
-		'dropzone': '/static/content/dropzonejs/dropzone'
+		'dropzone': '/static/content/dropzonejs/dropzone',
+		'audiojs': '/static/content/audiojs/audio.min'
 	}
 });

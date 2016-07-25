@@ -11,7 +11,8 @@
  *          .js-question
  *              .js-question-btns
  */
-define(['require','jquery','bootstrap', 'dropzone'], function(require, $, bootstrap, dropzone) {
+define(['require','jquery','bootstrap', 'dropzone', 'audiojs'], 
+    function(require, $, bootstrap, dropzone, audiojs) {
     'use strict';
     
     function changeBadge($question) {
@@ -154,6 +155,12 @@ define(['require','jquery','bootstrap', 'dropzone'], function(require, $, bootst
         });
     }
 
+    function initAudio() {
+        window.audiojs.events.ready(function() {
+            var as = window.audiojs.createAll();
+        });
+    }
+
     // document.onload
     $(function () {
         // init all questions, setting they not filled
@@ -180,5 +187,6 @@ define(['require','jquery','bootstrap', 'dropzone'], function(require, $, bootst
             $('form').submit();
         });
         initForm();
+        initAudio();        
     });
 });

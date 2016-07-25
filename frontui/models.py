@@ -95,6 +95,7 @@ class Checklist:
         self.create_date = datetime.utcnow()
         self.verify_date = None
         self.date = None
+        self.files = list()
         if json_data is not None:
             self.__dict__ = json_data
             if 'create_date' in json_data:
@@ -115,4 +116,3 @@ class Checklist:
             return
         self.__dict__.update(form_data)
         return
-

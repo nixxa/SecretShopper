@@ -5,11 +5,13 @@ Routes and views for the flask application.
 
 import uuid
 import os
+import sys
 from datetime import datetime
-from flask import render_template, request, Blueprint, current_app, redirect, session
+from flask import render_template, request, Blueprint, current_app, redirect, session, send_file
 from flask.ext.mobility.decorators import mobile_template
 from werkzeug import secure_filename
 from werkzeug.local import LocalProxy
+from PIL import Image
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
@@ -18,7 +20,10 @@ from frontui.linq import first_or_default
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'm4a', 'wav', 'mp3', 'ogg'])
+IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg'])
+MAX_PIXELS = 1200
 
 @ui.route('/')
 def home():
@@ -114,15 +119,69 @@ def upload():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         # create dir for checklist
-        filedir = os.path.join(current_app.config['UPLOAD_FOLDER'], uid)
+        filedir = os.path.join(
+            current_app.config['UPLOAD_FOLDER'],
+            item.date.strftime('%Y'),
+            item.date.strftime('%m'),
+            item.object_info.num,
+            uid)
         if not os.path.exists(filedir):
             os.makedirs(filedir)
-        file.save(os.path.join(filedir, filename))
+        filepath = os.path.join(filedir, filename)
+        file.save(filepath)
+        # open as image and resize if needed
+        try:
+            image = Image.open(filepath)
+            ratio = min(MAX_PIXELS / image.width, MAX_PIXELS / image.height)
+            if ratio < 1:
+                image.thumbnail((image.width * ratio, image.height * ratio))
+                image.save(filepath)
+        except Exception as e:
+            logger.error(e.__repr__())
+        # save file info in checklist
+        if item.files is None:
+            item.files = list()
+        file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
+        if file_info is None:
+            file_info = dict()
+            item.files.append(file_info)
+        file_info['filename'] = filename
+        file_info['local_path'] = filepath
+        file_info['remote_path'] = ''
+        if image_file(filename):
+            file_info['filetype'] = 'image'
+        elif audio_file(filename):
+            file_info['filetype'] = 'audio'
+        # update checklist in DB
+        database.update_checklist(item)
     return '', 200
 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+def image_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS
+
+
+def audio_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in AUDIO_EXTENSIONS
+
+
+@ui.route('/uploads/<uid>/<filename>')
+@authorize
+def view_file(uid, filename):
+    """ Return saved filename """
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    if item is None:
+        return 'File not exists', 404
+    file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
+    if file_info is None:
+        return 'File not exists', 404
+    local_path = file_info['local_path'].replace('./frontui/', '')
+    return send_file(local_path)
 
 
 @ui.route('/reports')

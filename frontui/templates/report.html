@@ -425,6 +425,32 @@
     </div><!-- /.panel-group -->
     <div class="row">
         <div class="col-xs-12">
+            <h4>Файлы</h4>
+            {% for f in values.files %}
+                {% if f['filetype'] == 'image' %}
+                    <a href="/uploads/{{values.uid}}/{{f['filename']}}" target="_blank">
+                    <img src="/uploads/{{values.uid}}/{{f['filename']}}" 
+                        alt="{{ f['filename'] }}" 
+                        class="img-thumbnail"
+                        width="150"
+                        height="150"></a>
+                {% endif %}
+            {% endfor %}
+            <h4>Аудио</h4>
+            {% for f in values.files %}
+                {% if f['filetype'] == 'audio' %}
+                    <div class="audiojs">
+                        <audio src="/uploads/{{values.uid}}/{{f['filename']}}" preload="auto" />
+                    </div>
+                    <div class="audiojs_title">
+                        <a href="/uploads/{{values.uid}}/{{f['filename']}}" target="_blank">Скачать</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
             {% if values.state == 'new' %}
                 <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
                 <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
