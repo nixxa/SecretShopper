@@ -1,23 +1,27 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-<h2>Список объектов</h2>
-
-{% for obj in objects %}
-<div class="media">
-    <div class="media-left">
-        <a href="#">
-            <img class="media-object" />
-        </a>
+<h2>
+    <span>Список объектов</span>
+</h2>
+<div class="row">
+{% for grouper, list in objects|groupby('type') %}
+<div class="col-xs-12 col-sm-12 col-md-4">
+    <div class="page-header"><h4>{{ grouper }}</h4></div>
+    {% for obj in list|sort(attribute='sort_num') %}
+    <div class="media" data-num="{{obj.num}}" data-title="{{obj.title}}">
+        <div class="media-body">
+            <h4 class="media-heading">
+                <a href="/checklist/{{obj.num}}">#{{obj.num}} - {{ obj.title }}</a>
+            </h4>
+            <p>Адрес: {{ obj.address }}</p>
+        </div>
     </div>
-    <div class="media-body">
-        <h4 class="media-heading">
-            <a href="/checklist/{{obj.num}}">{{obj.num}}. {{ obj.type }} - {{ obj.title }}</a>
-        </h4>
-        <p>Адрес: {{ obj.address }}</p>
-    </div>
+    {% endfor %}
 </div>
 {% endfor %}
+</div>
+{% endblock %}
 
+{% block scripts %}
 {% endblock %}

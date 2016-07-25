@@ -83,7 +83,22 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
                 $this.parent().attr('data-filled', '1');
                 changeBadge($this.parent());
             }
+            if ($this.val() !== '' && $this.attr('role') === 'radio') {
+                var $target = $this.parent().find('input[type="radio"][value="' + $this.val() + '"]');
+                $target.attr('checked', 'checked');
+                $this.parent().attr('data-filled', '1');
+                changeBadge($this.parent());
+            }
         });
+        if ($('textarea[name="p8_r2"]').val() !== '') {
+            $('textarea[name="p8_r2"]').trigger('change');
+        }
+        if ($('textarea[name="p8_r4"]').val() !== '') {
+            $('textarea[name="p8_r4"]').trigger('change');
+        }
+        if ($('textarea[name="p9_r2"]').val() !== '') {
+            $('textarea[name="p9_r2"]').trigger('change');
+        }
     }
 
     function clearQuestions() {

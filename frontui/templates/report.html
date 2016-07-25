@@ -369,6 +369,7 @@
             <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
                 <div class="panel-body js-section-body">
                     <div class="js-question">
+                        <input type="hidden" value="{{ values['p8_r1'] }}" role="radio" />
                         Кофе, приобретенный на станции:
                         <div class="radio"><label><input type="radio" name="p8_r1" value="не вкусный"> не вкусный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="нормальный"> нормальный</label></div>
@@ -376,9 +377,10 @@
                     </div>
                     <div>       
                         Комментарии к кофе:
-                        <textarea rows="2" class="form-control js-question" name="p8_r2"></textarea>
+                        <textarea rows="2" class="form-control js-question" name="p8_r2">{{ values.p8_r2 }}</textarea>
                     </div>
                     <div class="js-question">
+                        <input type="hidden" value="{{ values['p8_r3'] }}" role="radio" />
                         Блин, приобретенный на станции:
                         <div class="radio"><label><input type="radio" name="p8_r3" value="не вкусный"> не вкусный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r3" value="нормальный"> нормальный</label></div>
@@ -386,7 +388,7 @@
                     </div>
                     <div>      
                         Комментарии к блинам:
-                        <textarea rows="2" class="form-control js-question" name="p8_r4"></textarea>
+                        <textarea rows="2" class="form-control js-question" name="p8_r4">{{ values.p8_r4 }}</textarea>
                     </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -410,6 +412,7 @@
             <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
                 <div class="panel-body js-section-body">
                     <div class="js-question">
+                        <input type="hidden" value="{{ values['p9_r1'] }}" role="radio" />
                         Атмосфера на станции:
                         <div class="radio"><label><input type="radio" name="p9_r1" value="не доброжелательная"> не доброжелательная</label></div>
                         <div class="radio"><label><input type="radio" name="p9_r1" value="нейтральная"> нейтральная</label></div>
@@ -417,7 +420,7 @@
                     </div>
                     <div>         
                         Комментарии:
-                        <textarea rows="2" class="form-control" name="p9_r2"></textarea>
+                        <textarea rows="2" class="form-control" name="p9_r2">{{ values.p9_r2 }}</textarea>
                     </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->

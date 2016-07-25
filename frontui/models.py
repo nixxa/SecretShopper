@@ -6,20 +6,27 @@ class ObjectInfo:
     """ Object info """
     def __init__(self, json_data=None):
         self.num = ''
+        self.sort_num = 0
         self.type = ''
         self.title = ''
         self.address = ''
         self.with_cafe = False
+        self.with_shop = False
         if json_data is not None:
             self.parse(json_data)
 
     def parse(self, json_data):
         """ Parse JSON """
         self.num = json_data['object_num']
+        try:
+            self.sort_num = int(self.num)
+        except:
+            self.sort_num = -1
         self.type = json_data['object_type']
         self.title = json_data['object_title']
         self.address = json_data['object_address']
         self.with_cafe = json_data['with_cafe']
+        self.with_shop = json_data['with_shop']
 
     @staticmethod
     def from_json(json_data):
