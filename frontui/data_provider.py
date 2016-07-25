@@ -50,6 +50,8 @@ class DataProvider(Singleton):
                 with open(dirpath + '/' + fname, 'r', encoding='utf8') as file:
                     json_data = json.load(file)
                 item = Checklist(json_data)
+                if not hasattr(item, 'files'):
+                    item.files = list()
                 obj_info = linq.first_or_default(self.objects, lambda x: x.num == json_data['object_name'])
                 item.object_info = obj_info
                 item.checklist_info = self.checklist

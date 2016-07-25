@@ -19,6 +19,12 @@ define(['jquery', 'dropzone'], function($, dropzone) {
     }
 
     $(document).ready(function () {
+        try {
+            Dropzone.discover();
+        }
+        catch (e) {
+            // nothing to do
+        }
         initFileUpload();
     });
 });
