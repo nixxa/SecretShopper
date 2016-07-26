@@ -1,10 +1,22 @@
 """ Auth decorator """
 import functools
-from flask import request, Response
+from flask import request, Response, session
+
+USERS = [ 
+    ('admin', 'secret', 'internal'),
+    ('valar', 'valar', 'external')
+]
 
 def check_auth(username, password):
     """ Checks credentials """
-    return username == 'admin' and password == 'secret'
+    completed = False
+    for item in USERS:
+        checked = item[0] == username and item[1] == password
+        if checked:
+            session['user_name'] = item[0]
+            session['user_role'] = item[2]
+        completed = completed or checked
+    return completed
 
 
 def authenticate():

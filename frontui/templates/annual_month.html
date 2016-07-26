@@ -1,0 +1,686 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Отчет за {{model['date'].strftime('%B %Y')}}</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th style="min-width: 360px" colspan="2">Тайный покупатель</th>
+            <th colspan="{{model['kiosks_count']}}">Киоск</th>
+            <th colspan="{{model['shops_count']}}">АЗК с магазином</th>
+            <th colspan="{{model['cafes_count']}}">АЗК с магазином и кафе</th>
+        </tr>
+        <tr>
+            <th colspan="2">АЗС №</th>
+            {% for item in model['kiosks'] %}
+            <th>{{item.num}}</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+            <th colspan="2">{{item.num}}</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            <th colspan="2">{{item.num}}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2">Наименование</th>
+            {% for item in model['kiosks'] %}
+            <th>{{item.title}}</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+            <th colspan="2">{{item.title}}</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            <th colspan="2">{{item.title}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th colspan="2">Адрес</th>
+            {% for item in model['kiosks'] %}
+            <td><small>{{item.address}}</small></td>
+            {% endfor %}
+            {% for item in model['shops'] %}
+            <td colspan="2"><small>{{item.address}}</small></td>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            <td colspan="2"><small>{{item.address}}</small></td>
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[0].questions %}
+        <tr>
+            <th colspan="2">{{ question.label }}</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        <tr>
+            <th colspan="2">Код проверяющего</th>
+            {% for item in model['kiosks'] %}
+            <td>тп</td>
+            {% endfor %}
+            {% for item in model['shops'] %}
+            <td>тп</td><td>тп</td>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            <td>тп</td><td>тп</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2">Оператор АЗС</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1]['operator_fullname']}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1]['operator_fullname']}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2">Оператор-кассир</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1]['accounter_fullname']}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1]['accounter_fullname']}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <!-- page 2 -->
+        <tr class="bg-success">
+            <th>1</th>
+            <th>{{ model['checklist'].pages[1].title }}</th>
+            {% for item in model['kiosks'] %}
+                <th>20</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+                <th>20</th><th>20</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                <th>20</th><th>20</th>
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[1].questions %}
+        <tr>
+            <td>1.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 3 -->
+        <tr class="bg-success">
+            <th>2</th>
+            <th>{{ model['checklist'].pages[2].title }}</th>
+            {% for item in model['kiosks'] %}
+                <th>15</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+                <th>15</th><th>15</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                <th>15</th><th>15</th>
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[2].questions %}
+        <tr>
+            <td>2.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 4 -->
+        <tr class="bg-success">
+            <th>3</th>
+            <th>{{ model['checklist'].pages[3].title }}</th>
+            {% for item in model['kiosks'] %}
+                <th>49</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+                <th>49</th><th>49</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                <th>49</th><th>49</th>
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[3].questions %}
+        <tr>
+            <td>3.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 5 -->
+        <tr class="bg-success">
+            <th>4</th>
+            <th>{{ model['checklist'].pages[4].title }}</th>
+            {% for item in model['kiosks'] %}
+                <th>15</th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+                <th>35</th><th>35</th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if item.num == '33' %}
+                <th>50</th><th>50</th>
+                {% else %}
+                <th>55</th><th>55</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[4].questions %}
+        <tr>
+            <td>4.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 6 -->
+        <tr class="bg-success">
+            <th>5</th>
+            <th>{{ model['checklist'].pages[5].title }}</th>
+            {% for item in model['kiosks'] %}
+                {% if item.num == '83' or item.num == '140' %}
+                <th>0</th>
+                {% else %}
+                <th>21</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if item.num == '1' %}
+                <th>0</th><th>0</th>
+                {% elif item.num == '22' %}
+                <th>28</th><th>28</th>
+                {% else %}
+                <th>21</th><th>21</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if item.num == '33' %}
+                <th>0</th><th>0</th>
+                {% else %}
+                <th>28</th><th>28</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[5].questions %}
+        <tr>
+            <td>5.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 7 -->
+        <tr class="bg-success">
+            <th>6</th>
+            <th>{{ model['checklist'].pages[6].title }}</th>
+            {% for item in model['kiosks'] %}
+                {% if item.num == '83' or item.num == '140' %}
+                <th>0</th>
+                {% else %}
+                <th>0</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if item.num == '1' %}
+                <th>25</th><th>25</th>
+                {% elif item.num == '22' %}
+                <th>25</th><th>25</th>
+                {% else %}
+                <th>25</th><th>25</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if item.num == '33' %}
+                <th>30</th><th>30</th>
+                {% else %}
+                <th>30</th><th>30</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[6].questions %}
+        <tr>
+            <td>6.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <!-- page 8 -->
+        <tr class="bg-success">
+            <th>7</th>
+            <th>{{ model['checklist'].pages[7].title }}</th>
+            {% for item in model['kiosks'] %}
+                {% if item.num == '83'%}
+                <th>130</th>
+                {% elif item.num == '140' %}
+                <th>90</th>
+                {% else %}
+                <th>100</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if item.num == '1' %}
+                <th>100</th><th>100</th>
+                {% elif item.num == '22' %}
+                <th>130</th><th>130</th>
+                {% else %}
+                <th>100</th><th>100</th>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if item.num == '33' %}
+                <th>130</th><th>130</th>
+                {% else %}
+                <th>130</th><th>130</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% for question in model['checklist'].pages[7].questions %}
+        <tr>
+            <td>7.{{loop.index}}</td>
+            <td>{{ question.label }}</td>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+                {% if model[item.num] %}
+                    {% if model[item.num]|length > 0 %}
+                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    {% else %}
+                    <td></td><td></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    require(['jquery']);
+</script>
+{% endblock %}

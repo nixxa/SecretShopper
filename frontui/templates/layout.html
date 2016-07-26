@@ -29,14 +29,12 @@
             <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false">
                 {% if request.authorization %}
                     <ul class="nav navbar-nav">
+                        {% if session['user_role'] == 'internal' %}
                         <li><a href="/reports">Отчеты</a></li>
-                        <!--<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                            </ul>
-                        </li>-->
+                        {% endif %}
+                        {% if session['user_role'] == 'external' %}
+                        <li><a href="/annual/all">Отчеты</a></li>
+                        {% endif %}
                     </ul>
                 {% endif %}
             </nav><!-- /.navbar-collapse -->

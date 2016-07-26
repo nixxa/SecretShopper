@@ -7,16 +7,13 @@
     <li>Объект: {{ model.object_name }}</li>
     <li>Дата: {{ model.save_date.strftime('%d-%m-%Y') }}</li>
 </ul>
-<div class="row">
-    <div class="col-xs-12">
-        <h3>Добавление файлов к листу посещения</h3>
-        <form action="/file/upload" id="myDropzone" class="dropzone mb20" data-uid="{{ model.num }}">
-            <div class="dz-message">
-                Перетащите сюда файлы для добавления их на сервер или кликните мышкой.
-            </div>
-        </form>
+
+<h3>Добавление файлов к листу посещения</h3>
+<form action="/file/upload" id="myDropzone" class="dropzone mb20" data-uid="{{ model.num }}">
+    <div class="dz-message">
+        Перетащите сюда файлы для добавления их на сервер или кликните мышкой.
     </div>
-</div><!-- /row -->
+</form>
 {% endblock %}
 
 {% block styles %}

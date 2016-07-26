@@ -94,3 +94,7 @@ label {
 .dropzone .dz-message {
     font-weight: 400;
 }
+
+.nowrap {
+    white-space: nowrap;
+}

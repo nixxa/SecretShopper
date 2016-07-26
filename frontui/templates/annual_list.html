@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Отчеты по месяцам</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Месяц</th>
+            <th>Проверок</th>
+            <th>Подтверждено</th>
+            <th>Всего</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in model|sort(True, attribute='date') %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><a href="/annual/{{row.date.strftime('%Y%m%d')}}">{{ row.date.strftime('%B %Y') }}</a></td>
+            <td>{{ row.all }}</td>
+            <td>{{ row.verified }}</td>
+            <td>{{ row.total }}</td>
+        </tr>
+        {% endfor %}
+        {% if model|length == 0 %}
+        <tr>
+            <td colspan="2">Нет данных</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

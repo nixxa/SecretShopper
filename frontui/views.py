@@ -6,7 +6,7 @@ Routes and views for the flask application.
 import uuid
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, request, Blueprint, current_app, redirect, session, send_file
 from flask.ext.mobility.decorators import mobile_template
 from werkzeug import secure_filename
@@ -15,7 +15,7 @@ from PIL import Image
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
-from frontui.linq import first_or_default
+from frontui.linq import first_or_default, where, count
 
 
 ui = Blueprint('ui', __name__, template_folder='templates')
@@ -185,9 +185,8 @@ def view_file(uid, filename):
 
 
 @ui.route('/reports')
-@mobile_template('{mobile/}reports.html')
 @authorize
-def reports(template):
+def reports():
     """ Отчеты по объектам """
     database = DataProvider()
     objects = database.objects
@@ -206,7 +205,7 @@ def reports(template):
             new_checklists[num] = list()
         new_checklists[num].append(item)
     return render_template(
-        template,
+        'reports.html',
         objects=objects,
         checklists=checklists,
         new_checklists=new_checklists,
@@ -215,9 +214,8 @@ def reports(template):
 
 
 @ui.route('/reports/<obj_num>')
-@mobile_template('{mobile/}reports_by_object.html')
 @authorize
-def reports_by_object(template, obj_num):
+def reports_by_object(obj_num):
     """ Render reports for object """
     database = DataProvider()
     objects = database.objects
@@ -235,7 +233,7 @@ def reports_by_object(template, obj_num):
         if num == obj_num:
             new_checklists.append(item)
     return render_template(
-        template,
+        'reports_by_object.html',
         selected=selected_obj,
         checklists=checklists,
         new_checklists=new_checklists,
@@ -244,15 +242,14 @@ def reports_by_object(template, obj_num):
 
 
 @ui.route('/report/<uid>')
-@mobile_template('{mobile/}report.html')
 @authorize
-def report(template, uid):
+def report(uid):
     """ Render object report for verify """
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
     questions = database.checklist
     return render_template(
-        template,
+        'report.html',
         values=item,
         checklist=questions,
         selected=item.object_info,
@@ -276,3 +273,74 @@ def verify():
     obj.verify_date = datetime.utcnow()
     database.update_checklist(obj)
     return redirect('/reports')
+
+
+@ui.route('/annual/all')
+@authorize
+def annual_reports():
+    """ Return list of all existing annual reports """
+    database = DataProvider()
+    total = count(database.objects, lambda x: x.with_cafe == True) * 2 + \
+            count(database.objects, lambda x: x.with_cafe == False)
+    reports = list()
+    # calculate count of annual reports
+    items = sorted(database.checklists, key=lambda x: x.date)
+    start_date = items[0].date.replace(day=1)
+    now_date = datetime.now()
+    while start_date < now_date:
+        next_date = add_one_month(start_date)
+        all = where(items, lambda x: x.date >= start_date and x.date < next_date)
+        verified = where(all, lambda x: x.state == 'verified')
+        report = dict()
+        report['date'] = start_date
+        report['all'] = len(all)
+        report['verified'] = len(verified)
+        report['total'] = total
+        reports.append(report)
+        # roll to next month
+        start_date = next_date
+    return render_template('annual_list.html', model=reports)
+
+
+def add_one_month(dt0):
+    dt1 = dt0.replace(day=1)
+    dt2 = dt1 + timedelta(days=32)
+    dt3 = dt2.replace(day=1)
+    return dt3
+
+
+@ui.route('/annual/<date>')
+def annual_month(date):
+    """ Render annual month report """
+    report = dict()
+    database = DataProvider()
+    start_date = datetime.strptime(date, '%Y%m%d')
+    end_date = add_one_month(start_date)
+    report['checklist'] = database.checklist
+    report['date'] = start_date
+    report['kiosks'] = sorted(
+        where(database.objects, lambda x: x.with_shop == False and x.with_cafe == False),
+        key=lambda x: x.sort_num)
+    report['kiosks_count'] = len(report['kiosks'])
+    report['shops'] = sorted(
+        where(database.objects, lambda x: x.with_shop == True and x.with_cafe == False),
+        key=lambda x: x.sort_num)
+    report['shops_count'] = 2 * len(report['shops'])
+    report['cafes'] = sorted(
+        where(database.objects, lambda x: x.with_shop == True and x.with_cafe == True),
+        key=lambda x: x.sort_num)
+    report['cafes_count'] = 2 * len(report['cafes'])
+    # initialize object's reports
+    checklists = where(database.checklists, 
+        lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
+    for item in report['kiosks']:
+        report[item.num] = where(checklists, lambda x: x.object_name == item.num)
+    for item in report['shops']:
+        report[item.num] = sorted(
+            where(checklists, lambda x: x.object_name == item.num), 
+            key=lambda x: x.date)
+    for item in report['cafes']:
+        report[item.num] = sorted(
+            where(checklists, lambda x: x.object_name == item.num),
+            key=lambda x: x.date)
+    return render_template('annual_month.html', model=report)
