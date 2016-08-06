@@ -261,13 +261,14 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[4].questions|length }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[4].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[4].questions %}
+                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
                     <div class="question js-question">
                         <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
                         <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
@@ -276,10 +277,12 @@
                         </div>
                         <label>{{ item.label }}</label>
                     </div>
+                    {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
+        {% if checklist.pages[5].max_questions(selected) > 0 %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingSix">
                 <h4 class="panel-title js-section-title">
@@ -291,23 +294,14 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[5].questions|length+2 }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[5].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body js-section-body">
-                    <div class="mb10">
-                        <label>
-                            <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" value="{{ values.accounter_fullname }}" />
-                        </label>
-                        <label>
-                            <div class="mb5">Оператор-кассир в кафе</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" value="{{ values.accounter_cafe_fullname }}" />
-                        </label>
-                    </div>
                     {% for item in checklist.pages[5].questions %}
+                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
                     <div class="question js-question">
                         <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
                         <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
@@ -316,10 +310,13 @@
                         </div>
                         <label>{{ item.label }}</label>
                     </div>
+                    {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
+        {% endif %}
+        {% if selected.with_cafe or selected.with_shop %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title js-section-title">
@@ -331,13 +328,26 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[6].questions|length }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[6].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                 <div class="panel-body js-section-body">
+                    <div class="mb10">
+                        <label>
+                            <div class="mb5">Оператор-кассир</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" value="{{ values['accounter_fullname'] }}" />
+                        </label>
+                        {% if selected.with_cafe %}
+                        <label>
+                            <div class="mb5">Оператор-кассир в кафе</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" values="{{ values['accounter_cafe_fullname'] }}" />
+                        </label>
+                        {% endif %}
+                    </div>
                     {% for item in checklist.pages[6].questions %}
+                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
                     <div class="question js-question">
                         <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
                         <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
@@ -346,6 +356,40 @@
                         </div>
                         <label>{{ item.label }}</label>
                     </div>
+                    {% endif %}
+                    {% endfor %}
+                </div><!-- /.panel-body -->
+            </div><!-- /.panel-collapse -->
+        </div><!-- /.panel -->
+        {% endif %}
+        <div class="panel panel-default js-section">
+            <div class="panel-heading" role="tab" id="headingTen">
+                <h4 class="panel-title js-section-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
+                        {{ checklist.pages[7].title }}
+                    </a>
+                    <div class="pull-right">
+                        <small class="text-danger js-section-badge">
+                            <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
+                            <span class="js-section-badge-value">0</span>
+                            <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
+                            <span class="js-section-badge-total">{{ checklist.pages[7].max_questions(selected) }}</span></small>
+                    </div>
+                </h4>
+            </div>
+            <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
+                <div class="panel-body js-section-body">
+                    {% for item in checklist.pages[7].questions %}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                        <div class="question js-question">
+                            <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
+                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
+                                <button type="button" class="btn btn-default" value="yes">ДА</button>
+                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
+                            </div>
+                            <label>{{ item.label }}</label>
+                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -355,7 +399,7 @@
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                        {{ checklist.pages[7].title }}
+                        {{ checklist.pages[8].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -398,7 +442,7 @@
             <div class="panel-heading" role="tab" id="headingNine">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-                        {{ checklist.pages[8].title }}
+                        {{ checklist.pages[9].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">

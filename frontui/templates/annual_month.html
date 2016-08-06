@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Отчет за {{model['date'].strftime('%B %Y')}}</h2>
-<table class="table table-hover">
+<table class="table table-hover table-bordered" width="100%">
     <thead>
         <tr>
             <th style="min-width: 360px" colspan="2">Тайный покупатель</th>
@@ -13,7 +13,7 @@
         <tr>
             <th colspan="2">АЗС №</th>
             {% for item in model['kiosks'] %}
-            <th>{{item.num}}</th>
+            <th style="min-width: 90px">{{item.num}}</th>
             {% endfor %}
             {% for item in model['shops'] %}
             <th colspan="2">{{item.num}}</th>
@@ -34,6 +34,21 @@
             <th colspan="2">{{item.title}}</th>
             {% endfor %}
         </tr>
+        <!--<tr class="hidden">
+            <th></th>
+            <th></th>
+            {% for item in model['kiosks'] %}
+            <th></th>
+            {% endfor %}
+            {% for item in model['shops'] %}
+            <th></th>
+            <th></th>
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            <th></th>
+            <th></th>
+            {% endfor %}
+        </tr>-->
     </thead>
     <tbody>
         <tr>
@@ -179,12 +194,12 @@
             {% for item in model['cafes'] %}
                 {% if model[item.num] %}
                     {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
+                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}} / {{model[item.num][0]['accounter_cafe_fullname']}}</td>
                     {% else %}
                     <td></td><td></td>
                     {% endif %}
                     {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1]['accounter_fullname']}}</td>
+                    <td class="nowrap">{{model[item.num][1]['accounter_fullname']}} / {{model[item.num][0]['accounter_cafe_fullname']}}</td>
                     {% else %}
                     <td></td>
                     {% endif %}
@@ -194,493 +209,273 @@
                 {% endif %}
             {% endfor %}
         </tr>
-        <!-- page 2 -->
+        <!-- pages -->
+        {% for index in [1,2,3,4,5,6,7] %}
         <tr class="bg-success">
-            <th>1</th>
-            <th>{{ model['checklist'].pages[1].title }}</th>
+            <th>{{ index }}</th>
+            <th>{{ model['checklist'].pages[index].title }}</th>
             {% for item in model['kiosks'] %}
-                <th>20</th>
+                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
             {% endfor %}
             {% for item in model['shops'] %}
-                <th>20</th><th>20</th>
+                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
+                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
             {% endfor %}
             {% for item in model['cafes'] %}
-                <th>20</th><th>20</th>
+                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
+                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
             {% endfor %}
         </tr>
-        {% for question in model['checklist'].pages[1].questions %}
+        {% for question in model['checklist'].pages[index].questions %}
         <tr>
-            <td>1.{{loop.index}}</td>
+            {% set indx = loop.index %}
+            <td>{{index}}.{{loop.index}}</td>
             <td>{{ question.label }}</td>
             {% for item in model['kiosks'] %}
                 {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0][question.field_name]|points(question)}}
+                    </td>
                 {% else %}
-                    <td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                 {% endif %}
             {% endfor %}
             {% for item in model['shops'] %}
                 {% if model[item.num] %}
                     {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0][question.field_name]|points(question)}}
+                    </td>
                     {% else %}
-                    <td></td><td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                     {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1][question.field_name]|points(question)}}
+                    </td>
                     {% else %}
-                    <td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                 {% else %}
-                    <td></td>
-                    <td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                 {% endif %}
             {% endfor %}
             {% for item in model['cafes'] %}
                 {% if model[item.num] %}
                     {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
+                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0][question.field_name]|points(question)}}
+                    </td>
                     {% else %}
-                    <td></td><td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                     {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
+                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1][question.field_name]|points(question)}}
+                    </td>
                     {% else %}
-                    <td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                 {% else %}
-                    <td></td>
-                    <td></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                 {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
-
-        <!-- page 3 -->
-        <tr class="bg-success">
-            <th>2</th>
-            <th>{{ model['checklist'].pages[2].title }}</th>
-            {% for item in model['kiosks'] %}
-                <th>15</th>
-            {% endfor %}
-            {% for item in model['shops'] %}
-                <th>15</th><th>15</th>
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                <th>15</th><th>15</th>
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[2].questions %}
-        <tr>
-            <td>2.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
-        <!-- page 4 -->
-        <tr class="bg-success">
-            <th>3</th>
-            <th>{{ model['checklist'].pages[3].title }}</th>
-            {% for item in model['kiosks'] %}
-                <th>49</th>
-            {% endfor %}
-            {% for item in model['shops'] %}
-                <th>49</th><th>49</th>
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                <th>49</th><th>49</th>
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[3].questions %}
-        <tr>
-            <td>3.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
-        <!-- page 5 -->
-        <tr class="bg-success">
-            <th>4</th>
-            <th>{{ model['checklist'].pages[4].title }}</th>
-            {% for item in model['kiosks'] %}
-                <th>15</th>
-            {% endfor %}
-            {% for item in model['shops'] %}
-                <th>35</th><th>35</th>
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if item.num == '33' %}
-                <th>50</th><th>50</th>
-                {% else %}
-                <th>55</th><th>55</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[4].questions %}
-        <tr>
-            <td>4.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
-        <!-- page 6 -->
-        <tr class="bg-success">
-            <th>5</th>
-            <th>{{ model['checklist'].pages[5].title }}</th>
-            {% for item in model['kiosks'] %}
-                {% if item.num == '83' or item.num == '140' %}
-                <th>0</th>
-                {% else %}
-                <th>21</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if item.num == '1' %}
-                <th>0</th><th>0</th>
-                {% elif item.num == '22' %}
-                <th>28</th><th>28</th>
-                {% else %}
-                <th>21</th><th>21</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if item.num == '33' %}
-                <th>0</th><th>0</th>
-                {% else %}
-                <th>28</th><th>28</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[5].questions %}
-        <tr>
-            <td>5.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
-        <!-- page 7 -->
-        <tr class="bg-success">
-            <th>6</th>
-            <th>{{ model['checklist'].pages[6].title }}</th>
-            {% for item in model['kiosks'] %}
-                {% if item.num == '83' or item.num == '140' %}
-                <th>0</th>
-                {% else %}
-                <th>0</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if item.num == '1' %}
-                <th>25</th><th>25</th>
-                {% elif item.num == '22' %}
-                <th>25</th><th>25</th>
-                {% else %}
-                <th>25</th><th>25</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if item.num == '33' %}
-                <th>30</th><th>30</th>
-                {% else %}
-                <th>30</th><th>30</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[6].questions %}
-        <tr>
-            <td>6.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
-        <!-- page 8 -->
-        <tr class="bg-success">
-            <th>7</th>
-            <th>{{ model['checklist'].pages[7].title }}</th>
-            {% for item in model['kiosks'] %}
-                {% if item.num == '83'%}
-                <th>130</th>
-                {% elif item.num == '140' %}
-                <th>90</th>
-                {% else %}
-                <th>100</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if item.num == '1' %}
-                <th>100</th><th>100</th>
-                {% elif item.num == '22' %}
-                <th>130</th><th>130</th>
-                {% else %}
-                <th>100</th><th>100</th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if item.num == '33' %}
-                <th>130</th><th>130</th>
-                {% else %}
-                <th>130</th><th>130</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[7].questions %}
-        <tr>
-            <td>7.{{loop.index}}</td>
-            <td>{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="2" class="text-right">Максимальный балл</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['max_points']}}
+                    </td>
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                       {{model[item.num][0]['max_points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['max_points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['max_points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['max_points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2" class="text-right">Балл по проверке</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['points']}}
+                    </td>
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                       {{model[item.num][0]['points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['points']}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2" class="text-right">%</th>
+            {% for item in model['kiosks'] %}
+                {% if model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{ '{:.0f}%'.format(model[item.num][0]['points_percent']) }}
+                    </td>
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['shops'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                       {{'{:.0f}%'.format(model[item.num][0]['points_percent'])}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{'{:.0f}%'.format(model[item.num][1]['points_percent'])}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{'{:.0f}%'.format(model[item.num][0]['points_percent'])}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{'{:.0f}%'.format(model[item.num][1]['points_percent'])}}
+                    </td>
+                    {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </tfoot>
 </table>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
-    require(['jquery']);
+    require(['jquery', 'datatables'], function ($, dt) {
+        // $(document).ready(function() {
+        //     $('table').DataTable({
+        //         scrollY:        '400px',
+        //         scrollX:        true,
+        //         scrollCollapse: true,
+        //         fixedColumns:   { leftColumns: 2 },
+        //         paging:         false,
+        //         ordering:       false,
+        //         info:           false,
+        //         searching:      false
+        //     });
+        // });
+    });
 </script>
 {% endblock %}

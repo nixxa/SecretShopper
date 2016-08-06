@@ -20,7 +20,10 @@ def create_app(app_mode='DEBUG'):
     # register mobility
     Mobility(app)
     # register jinja exts
-    app.jinja_env.tests['equalto'] = lambda x, y: x == y
+    app.jinja_env.tests['equalto'] = \
+        lambda x, y: x == y
+    app.jinja_env.filters['points'] = \
+        lambda answer, question: str(question.cost) if answer == 'yes' else '0' if answer == 'no' else ''
     # configure uploads
     app.config['UPLOAD_FOLDER'] = './frontui/uploads'
     return app

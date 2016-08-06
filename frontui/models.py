@@ -1,5 +1,6 @@
 """ Data models """
 from datetime import datetime
+from frontui.linq import where
 
 
 class ObjectInfo:
@@ -41,6 +42,7 @@ class PageInfo:
     def __init__(self):
         self.title = ''
         self.num = 0
+        self.cost = 0
         self.questions = list()
 
     @staticmethod
@@ -51,17 +53,45 @@ class PageInfo:
         page = PageInfo()
         page.title = json_data['title']
         page.num = int(json_data['num'])
+        if 'cost' in json_data:
+            page.cost = int(json_data['cost']) 
         for item in json_data['questions']:
             question = QuestionInfo.from_json(item)
+            question.cost = page.cost
             if question is not None:
                 page.questions.append(question)
         return page
+
+    def max_cost(self, obj_info):
+        applied_for_cafe = len(where(self.questions, lambda s: 'cafe' in s.applies))
+        applied_for_shop = len(where(self.questions, lambda s: 'shop' in s.applies))
+        applied_for_other = len(where(self.questions, lambda s: len(s.applies) == 0))
+        excepts = len(where(self.questions, lambda s: obj_info.num in s.excepts))
+        if obj_info.with_cafe and obj_info.with_shop:
+            return self.cost * (applied_for_other + applied_for_cafe - excepts)
+        if obj_info.with_shop and not obj_info.with_cafe:
+            return self.cost * (applied_for_other + applied_for_shop - excepts)
+        return self.cost * (applied_for_other - excepts)
+        
+    def max_questions(self, obj_info):
+        applied_for_cafe = len(where(self.questions, lambda s: 'cafe' in s.applies))
+        applied_for_shop = len(where(self.questions, lambda s: 'shop' in s.applies))
+        applied_for_other = len(where(self.questions, lambda s: len(s.applies) == 0))
+        excepts = len(where(self.questions, lambda s: obj_info.num in s.excepts))
+        if obj_info.with_cafe and obj_info.with_shop:
+            return applied_for_other + applied_for_cafe - excepts
+        if obj_info.with_shop and not obj_info.with_cafe:
+            return applied_for_other + applied_for_shop - excepts
+        return applied_for_other - excepts
 
 class QuestionInfo:
     """ Question """
     def __init__(self):
         self.label = ''
         self.field_name = ''
+        self.cost = 0
+        self.applies = []
+        self.excepts = []
 
     @staticmethod
     def from_json(json_data):
@@ -71,6 +101,10 @@ class QuestionInfo:
         question = QuestionInfo()
         question.label = json_data['label']
         question.field_name = json_data['field_name']
+        if 'applies' in json_data:
+            question.applies = json_data['applies'].split(',')
+        if 'excepts' in json_data:
+            question.excepts = json_data['excepts'].split(',')
         return question
 
 class ChecklistInfo:
@@ -102,7 +136,7 @@ class Checklist:
         self.create_date = datetime.utcnow()
         self.verify_date = None
         self.date = None
-        self.files = list()
+        self.files = list()        
         if json_data is not None:
             self.__dict__ = json_data
             if 'create_date' in json_data:
@@ -113,6 +147,9 @@ class Checklist:
                 self.date = datetime.strptime(
                     json_data['p1_r1'],
                     '%Y-%m-%d')
+        self.max_points = 0
+        self.points = 0
+        self.points_percent = 0
         return
 
     def update(self, form_data):
@@ -123,3 +160,7 @@ class Checklist:
             return
         self.__dict__.update(form_data)
         return
+
+    def get(self, field_name):
+        """ Return field value """
+        return self.__dict__[field_name] if field_name in self.__dict__ else None

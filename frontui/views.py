@@ -76,6 +76,7 @@ def checklist_save(template):
     model = QListViewModel()
     model.num = data['uid']
     model.object_name = selected_obj.num + '-' + selected_obj.title
+    session['checklist-uid'] = model.num
     return render_template(
         template,
         model=model,
@@ -84,8 +85,7 @@ def checklist_save(template):
 
 
 @ui.route('/checklist/view/<uid>')
-@mobile_template('{mobile/}checklist_saved.html')
-def checklist_view(template, uid):
+def checklist_view(uid):
     """ View saved checklist by ID """
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
@@ -94,7 +94,7 @@ def checklist_view(template, uid):
     model.num = uid
     model.object_name = item.object_info.num + '-' + item.object_info.title
     return render_template(
-        template,
+        'checklist_saved.html',
         model=model,
         title='Контрольный лист посещения|Тайный покупатель'
     )
@@ -335,12 +335,33 @@ def annual_month(date):
         lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
     for item in report['kiosks']:
         report[item.num] = where(checklists, lambda x: x.object_name == item.num)
+        for x in report[item.num]:
+            calc_points(x, item)
     for item in report['shops']:
         report[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num), 
             key=lambda x: x.date)
+        for x in report[item.num]:
+            calc_points(x, item)
     for item in report['cafes']:
         report[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
+        for x in report[item.num]:
+            calc_points(x, item)
     return render_template('annual_month.html', model=report)
+
+def calc_points(report, item):
+    """ Calculate points for report """
+    database = DataProvider()
+    p = 0
+    m = 0
+    for i in range(1,8):
+        m = m + database.checklist.pages[i].max_cost(item)
+        for q in database.checklist.pages[i].questions:
+            answer = report.get(q.field_name) == 'yes'
+            p = p + (database.checklist.pages[i].cost if answer else 0)
+    report.max_points = m
+    report.points = p
+    report.points_percent = p/m*100
+    return report

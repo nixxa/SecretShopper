@@ -98,3 +98,24 @@ label {
 .nowrap {
     white-space: nowrap;
 }
+
+.bl {
+    border-left: 1px solid #ddd !important;
+}
+
+.bl-2x {
+    border-left: 2px solid #ddd !important;
+}
+
+.fixed {
+    top:0;
+    position:fixed;
+    width:auto;
+    display:none;
+    border:none;
+}
+
+.fixed-table-container {
+    width:90%;
+    margin:auto;
+}

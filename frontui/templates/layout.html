@@ -30,10 +30,11 @@
                 {% if request.authorization %}
                     <ul class="nav navbar-nav">
                         {% if session['user_role'] == 'internal' %}
-                        <li><a href="/reports">Отчеты</a></li>
+                        <li><a href="/reports">Контрольные листы</a></li>
+                        <li><a href="/annual/all">Месячный отчет</a></li>
                         {% endif %}
                         {% if session['user_role'] == 'external' %}
-                        <li><a href="/annual/all">Отчеты</a></li>
+                        <li><a href="/annual/all">Месячный отчет</a></li>
                         {% endif %}
                     </ul>
                 {% endif %}
