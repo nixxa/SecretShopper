@@ -19,6 +19,7 @@ require.config({
 		'date-input': '/static/content/datetime-input/js/date-input',
 		'dropzone': '/static/content/dropzonejs/dropzone',
 		'audiojs': '/static/content/audiojs/audio.min',
-		'datatables': '/static/content/datatables/datatables'
+		'datatables': '/static/content/datatables/datatables',
+		'pica': '/static/content/pica/pica.min'
 	}
 });

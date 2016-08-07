@@ -23,7 +23,6 @@ logger = LocalProxy(lambda: current_app.logger)
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'm4a', 'wav', 'mp3', 'ogg'])
 IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg'])
-MAX_PIXELS = 1200
 
 @ui.route('/')
 def home():
@@ -129,15 +128,6 @@ def upload():
             os.makedirs(filedir)
         filepath = os.path.join(filedir, filename)
         file.save(filepath)
-        # open as image and resize if needed
-        #try:
-        #    image = Image.open(filepath)
-        #    ratio = min(MAX_PIXELS / image.width, MAX_PIXELS / image.height)
-        #    if ratio < 1:
-        #        image.thumbnail((image.width * ratio, image.height * ratio))
-        #        image.save(filepath)
-        #except Exception as e:
-        #    logger.error(e.__repr__())
         # save file info in checklist
         if item.files is None:
             item.files = list()
