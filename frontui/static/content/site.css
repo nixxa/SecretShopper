@@ -76,6 +76,14 @@ label {
     width: 54px;
 }
 
+.question-optional .btn-group {
+    width: 165px;
+}
+
+.question-optional label {
+    margin-left: 165px;
+}
+
 .badge.badge-success {
     background-color: #5cb85c;
 }

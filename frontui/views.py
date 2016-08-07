@@ -351,15 +351,17 @@ def annual_month(date):
             calc_points(x, item)
     return render_template('annual_month.html', model=report)
 
-def calc_points(report, item):
+def calc_points(report, object_info):
     """ Calculate points for report """
     database = DataProvider()
     p = 0
     m = 0
     for i in range(1,8):
-        m = m + database.checklist.pages[i].max_cost(item)
+        m = m + database.checklist.pages[i].max_cost(object_info)
         for q in database.checklist.pages[i].questions:
             answer = report.get(q.field_name) == 'yes'
+            if q.optional and (report.get(q.field_name) == 'n/a' or report.get(q.field_name) is None):
+                m = m -  database.checklist.pages[i].cost
             p = p + (database.checklist.pages[i].cost if answer else 0)
     report.max_points = m
     report.points = p

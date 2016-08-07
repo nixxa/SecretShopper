@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Отчеты по объекту {{ selected.type }}-{{ selected.title }}
+<h2>Отчеты по объекту #{{ selected.num }} - {{ selected.title }}
     <br>
     <small>{{ selected.address }}</small>
 </h2>
@@ -17,15 +17,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for obj in new_checklists %}
+        {% for obj in new_checklists|sort(attribute='date', reverse=True) %}
             <tr>
                 <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
                 <td>
-                    {% if obj.create_date %}
-                        <span class="js-datetime-from" data-datetime="{{ obj.create_date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
-                    {% else %}
-                        <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
-                    {% endif %}
+                	<span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
                 </td>
                 <td>новый</td>
                 <td>
@@ -33,15 +29,11 @@
                 </td>
             </tr>
         {% endfor %}
-        {% for obj in checklists %}
+        {% for obj in checklists|sort(attribute='date', reverse=True) %}
             <tr>
                 <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
                 <td>
-                    {% if obj.create_date %}
-                        <span class="js-datetime-from" data-datetime="{{ obj.create_date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
-                    {% else %}
-                        <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
-                    {% endif %}
+                    <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
                 </td>
                 <td>
                     {% if obj.state == 'new' %}
@@ -68,7 +60,7 @@
                 moment.locale('ru');
                 $.each($('.js-datetime-from'), function () {
                     var $this = $(this);
-                    $this.text(moment.utc($this.data('datetime')).fromNow());
+                    $this.text(moment.utc($this.data('datetime')).format('D MMMM YYYY'));
                 });
             });
         });

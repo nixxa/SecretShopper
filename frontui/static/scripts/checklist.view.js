@@ -76,7 +76,7 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
         $.each($('input[type=hidden]'), function () {
             var $this = $(this);
             if ($this.val() !== '' && $this.attr('role') === 'checkbox') {
-                var $target = $this.parent().find('button[value=' + $this.val() + ']');
+                var $target = $this.parent().find('button[value="' + $this.val() + '"]');
                 $target.addClass('active');
                 $target.html('<i class="glyphicon glyphicon-ok mr5"></i>' + $target.html());
                 $target.blur();

@@ -457,6 +457,106 @@
                 {% endif %}
             {% endfor %}
         </tr>
+        <tr>
+            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right">Кофе/Чай</td>
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['p8_r1']}}
+                    </td>
+                    {% else %}
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['p8_r1']}}
+                    </td>
+                    {% else %}
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right">Пенка</td>
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['p8_r5']}}
+                    </td>
+                    {% else %}
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['p8_r5']}}
+                    </td>
+                    {% else %}
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right">Объем</td>
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['p8_r6']}}
+                    </td>
+                    {% else %}
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['p8_r6']}}
+                    </td>
+                    {% else %}
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right">Чашка</td>
+            {% for item in model['cafes'] %}
+            {% if model[item.num] %}
+                {% if model[item.num]|length > 0 %}
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][0]['p8_r7']}}
+                    </td>
+                    {% else %}
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}">
+                        {{model[item.num][1]['p8_r7']}}
+                    </td>
+                    {% else %}
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    {% endif %}
+                {% else %}
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
+                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
     </tfoot>
 </table>
 {% endblock %}

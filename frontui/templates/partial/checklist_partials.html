@@ -1,0 +1,16 @@
+
+{% macro question(item, value = '') -%}
+<div class="question {% if item.optional %}question-optional{% endif %} js-question">
+    <input type="hidden" name="{{ item.field_name }}" value="{{ value }}" role="checkbox" />
+    <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
+        <button type="button" class="btn btn-default" value="yes">ДА</button>
+        <button type="button" class="btn btn-default" value="no">НЕТ</button>
+        {% if item.optional %}
+        <button type="button" class="btn btn-default" value="n/a">Н/Д</button>
+        {% endif %}
+    </div>
+    <label>
+    {{ item.label }}
+    </label>
+</div>
+{%- endmacro %}

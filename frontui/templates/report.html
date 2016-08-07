@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "partial/checklist_partials.html" import question %}
 
 {% block content %}
 <h2>Режим проверки.</h2>
@@ -172,16 +173,7 @@
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[1].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>
-                        {{ item.label }}
-                        </label>
-                    </div>
+                    {{ question(item, values[item.field_name]) }}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -208,14 +200,7 @@
                         <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" value="{{ values.operator_fullname }}" />
                     </label>
                     {% for item in checklist.pages[2].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
+                    {{ question(item, values[item.field_name]) }}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -238,14 +223,7 @@
             <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[3].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
+                    {{ question(item, values[item.field_name]) }}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -268,16 +246,9 @@
             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[4].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -301,16 +272,9 @@
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[5].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -347,16 +311,9 @@
                         {% endif %}
                     </div>
                     {% for item in checklist.pages[6].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -381,14 +338,7 @@
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[7].questions %}
                         {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                        <div class="question js-question">
-                            <input type="hidden" name="{{ item.field_name }}" value="{{ values[item.field_name] }}" role="checkbox" />
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                                <button type="button" class="btn btn-default" value="yes">ДА</button>
-                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                            </div>
-                            <label>{{ item.label }}</label>
-                        </div>
+                            {{ question(item, values[item.field_name]) }}
                         {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
@@ -406,7 +356,7 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">4</span></small>
+                            <span class="js-section-badge-total">7</span></small>
                     </div>
                 </h4>
             </div>
@@ -418,6 +368,28 @@
                         <div class="radio"><label><input type="radio" name="p8_r1" value="не вкусный"> не вкусный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="нормальный"> нормальный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="очень вкусный"> очень вкусный</label></div>  
+                    </div>
+                    <div class="js-question">
+                        <input type="hidden" value="{{ values['p8_r5'] }}" role="radio" />
+                        Пенка:
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="н/д">нет пенки (чай, американо и т.п.)</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="слабая">слабая</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="нормальная"> нормальная</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="густая"> густая</label></div>  
+                    </div>
+                    <div class="js-question">
+                        <input type="hidden" value="{{ values['p8_r6'] }}" role="radio" />
+                        Объем:
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="не полный"> не полный</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="нормальный"> нормальный</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="полный"> полный</label></div>  
+                    </div>
+                    <div class="js-question">
+                        <input type="hidden" value="{{ values['p8_r7'] }}" role="radio" />
+                        Чашка:
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="бумага"> бумажный стаканчик</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="пластик"> пластиковый стаканчик</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="керамика"> керамическая чашка</label></div>  
                     </div>
                     <div>       
                         Комментарии к кофе:
@@ -464,7 +436,7 @@
                     </div>
                     <div>         
                         Комментарии:
-                        <textarea rows="2" class="form-control" name="p9_r2">{{ values.p9_r2 }}</textarea>
+                        <textarea rows="10" class="form-control" name="p9_r2">{{ values.p9_r2 }}</textarea>
                     </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->

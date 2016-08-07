@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "partial/checklist_partials.html" import question %}
 
 {% block content %}
 <form action="/save_list" method="POST">
@@ -28,9 +29,9 @@
                             <div class="form-xs">
                             <select class="form-control js-question" name="object_name" {% if selected %}data-filled="1"{% endif %}>
                                 <option value="">[ ... выберите из списка ... ]</option>
-                                {% for obj in objects %}
+                                {% for obj in objects -%}
                                 <option value="{{ obj.num }}" {% if obj.num == selected.num %}selected{% endif %}>{{ obj.num }} - {{ obj.title }}</option>
-                                {% endfor %}
+                                {%- endfor %}
                             </select>
                             </div>
                         </div>
@@ -42,9 +43,9 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="day">
                                     <option value="">[...]</option>
-                                    {% for i in range(1, 32) %}
+                                    {% for i in range(1, 32) -%}
                                     <option value="{{'%02d' % i}}">{{i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                                 <select class="form-control js-question" id="month">
                                     <option value="">[...]</option>
@@ -63,9 +64,9 @@
                                 </select>
                                 <select class="form-control js-question" id="year">
                                     <option value="">[...]</option>
-                                    {% for i in range(2016, 2014, -1) %}
+                                    {% for i in range(2016, 2014, -1) -%}
                                     <option value="{{i}}">{{i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                             </div>
                         </div>
@@ -77,16 +78,16 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) %}
+                                    {% for i in range(00, 23) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) %}
+                                    {% for i in range(00, 59) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                             </div>
                         </div>
@@ -98,16 +99,16 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour2" data-rel-field="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) %}
+                                    {% for i in range(00, 23) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute2" data-rel-field="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) %}
+                                    {% for i in range(00, 59) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                             </div>
                         </div>
@@ -119,16 +120,16 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour3" data-rel-field="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) %}
+                                    {% for i in range(00, 23) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute3" data-rel-field="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) %}
+                                    {% for i in range(00, 59) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                             </div>
                         </div>
@@ -140,9 +141,9 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="min-diff">
                                     <option value="">[...]</option>
-                                    {% for i in range(0, 59) %}
+                                    {% for i in range(0, 59) -%}
                                     <option value="{{'%d' % i}}">{{ '%d' % i}}</option>
-                                    {% endfor %}
+                                    {%- endfor %}
                                 </select>
                                 минут
                             </div>
@@ -168,18 +169,9 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body js-section-body">
-                    {% for item in checklist.pages[1].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>
-                        {{ item.label }}
-                        </label>
-                    </div>
-                    {% endfor %}
+                    {% for item in checklist.pages[1].questions -%}
+                    {{ question(item) }}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -204,16 +196,9 @@
                         <div class="mb5">Оператор АЗС</div>
                         <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
                     </label>
-                    {% for item in checklist.pages[2].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endfor %}
+                    {% for item in checklist.pages[2].questions -%}
+                    {{ question(item) }}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -234,16 +219,9 @@
             </div>
             <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                 <div class="panel-body js-section-body">
-                    {% for item in checklist.pages[3].questions %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endfor %}
+                    {% for item in checklist.pages[3].questions -%}
+                    {{ question(item) }}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -264,18 +242,11 @@
             </div>
             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                 <div class="panel-body js-section-body">
-                    {% for item in checklist.pages[4].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+                    {% for item in checklist.pages[4].questions -%}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item) }}
+                        {% endif %}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -297,18 +268,11 @@
             </div>
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body js-section-body">
-                    {% for item in checklist.pages[5].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+                    {% for item in checklist.pages[5].questions -%}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item) }}
+                        {% endif %}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -343,18 +307,11 @@
                         </label>
                         {% endif %}
                     </div>
-                    {% for item in checklist.pages[6].questions %}
-                    {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                    <div class="question js-question">
-                        <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                        <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                            <button type="button" class="btn btn-default" value="yes">ДА</button>
-                            <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                        </div>
-                        <label>{{ item.label }}</label>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+                    {% for item in checklist.pages[6].questions -%}
+                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                            {{ question(item) }}
+                        {% endif %}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -376,18 +333,11 @@
             </div>
             <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
                 <div class="panel-body js-section-body">
-                    {% for item in checklist.pages[7].questions %}
+                    {% for item in checklist.pages[7].questions -%}
                         {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
-                        <div class="question js-question">
-                            <input type="hidden" name="{{ item.field_name }}" value="" role="checkbox" />
-                            <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
-                                <button type="button" class="btn btn-default" value="yes">ДА</button>
-                                <button type="button" class="btn btn-default" value="no">НЕТ</button>
-                            </div>
-                            <label>{{ item.label }}</label>
-                        </div>
+                            {{ question(item) }}
                         {% endif %}
-                    {% endfor %}
+                    {%- endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
@@ -403,20 +353,39 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">4</span></small>
+                            <span class="js-section-badge-total">7</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
                 <div class="panel-body js-section-body">
                     <div class="js-question">
-                        Кофе, приобретенный на станции:
+                        Чай/Кофе, приобретенный на станции:
                         <div class="radio"><label><input type="radio" name="p8_r1" value="не вкусный"> не вкусный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="нормальный"> нормальный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="очень вкусный"> очень вкусный</label></div>  
                     </div>
+                    <div class="js-question">
+                        Пенка:
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="н/д">нет пенки (чай, американо и т.п.)</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="слабая">слабая</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="нормальная"> нормальная</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r5" value="густая"> густая</label></div>  
+                    </div>
+                    <div class="js-question">
+                        Объем:
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="не полный"> не полный</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="нормальный"> нормальный</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r6" value="полный"> полный</label></div>  
+                    </div>
+                    <div class="js-question">
+                        Чашка:
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="бумага"> бумажный стаканчик</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="пластик"> пластиковый стаканчик</label></div>
+                        <div class="radio"><label><input type="radio" name="p8_r7" value="керамика"> керамическая чашка</label></div>  
+                    </div>
                     <div>       
-                        Комментарии к кофе:
+                        Комментарии к чаю/кофе:
                         <textarea rows="2" class="form-control js-question" name="p8_r2"></textarea>
                     </div>
                     <div class="js-question">
@@ -458,7 +427,7 @@
                     </div>
                     <div>         
                         Комментарии:
-                        <textarea rows="2" class="form-control" name="p9_r2"></textarea>
+                        <textarea rows="10" class="form-control" name="p9_r2"></textarea>
                     </div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->

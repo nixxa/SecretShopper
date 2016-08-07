@@ -92,6 +92,7 @@ class QuestionInfo:
         self.cost = 0
         self.applies = []
         self.excepts = []
+        self.optional = False
 
     @staticmethod
     def from_json(json_data):
@@ -105,6 +106,8 @@ class QuestionInfo:
             question.applies = json_data['applies'].split(',')
         if 'excepts' in json_data:
             question.excepts = json_data['excepts'].split(',')
+        if 'optional' in json_data:
+            question.optional = True
         return question
 
 class ChecklistInfo:
