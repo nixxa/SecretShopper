@@ -11,7 +11,7 @@ from flask import render_template, request, Blueprint, current_app, redirect, se
 from flask.ext.mobility.decorators import mobile_template
 from werkzeug import secure_filename
 from werkzeug.local import LocalProxy
-from PIL import Image
+#from PIL import Image
 from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
@@ -130,14 +130,14 @@ def upload():
         filepath = os.path.join(filedir, filename)
         file.save(filepath)
         # open as image and resize if needed
-        try:
-            image = Image.open(filepath)
-            ratio = min(MAX_PIXELS / image.width, MAX_PIXELS / image.height)
-            if ratio < 1:
-                image.thumbnail((image.width * ratio, image.height * ratio))
-                image.save(filepath)
-        except Exception as e:
-            logger.error(e.__repr__())
+        #try:
+        #    image = Image.open(filepath)
+        #    ratio = min(MAX_PIXELS / image.width, MAX_PIXELS / image.height)
+        #    if ratio < 1:
+        #        image.thumbnail((image.width * ratio, image.height * ratio))
+        #        image.save(filepath)
+        #except Exception as e:
+        #    logger.error(e.__repr__())
         # save file info in checklist
         if item.files is None:
             item.files = list()
