@@ -192,10 +192,6 @@
             </div>
             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="panel-body js-section-body">
-                    <label>
-                        <div class="mb5">Оператор АЗС</div>
-                        <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
-                    </label>
                     {% for item in checklist.pages[2].questions -%}
                     {{ question(item) }}
                     {%- endfor %}
@@ -295,18 +291,6 @@
             </div>
             <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                 <div class="panel-body js-section-body">
-                    <div class="mb10">
-                        <label>
-                            <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
-                        </label>
-                        {% if selected.with_cafe %}
-                        <label>
-                            <div class="mb5">Оператор-кассир в кафе</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" />
-                        </label>
-                        {% endif %}
-                    </div>
                     {% for item in checklist.pages[6].questions -%}
                         {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
                             {{ question(item) }}
@@ -419,6 +403,22 @@
             </div>
             <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
                 <div class="panel-body js-section-body">
+                    <div class="mb10">
+                        <label>
+                            <div class="mb5">Оператор АЗС</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
+                        </label>
+                        <label>
+                            <div class="mb5">Оператор-кассир</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
+                        </label>
+                        {% if selected.with_cafe %}
+                        <label>
+                            <div class="mb5">Оператор-кассир в кафе</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" />
+                        </label>
+                        {% endif %}
+                    </div>
                     <div class="js-question">
                         Атмосфера на станции:
                         <div class="radio"><label><input type="radio" name="p9_r1" value="не доброжелательная"> не доброжелательная</label></div>

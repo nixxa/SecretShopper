@@ -20,8 +20,8 @@ from frontui.linq import first_or_default, where, count
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'm4a', 'wav', 'mp3', 'ogg'])
-IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF', 'm4a', 'wav', 'mp3', 'ogg'])
+IMAGE_EXTENSIONS = set(['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF'])
 AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg'])
 
 @ui.route('/')
@@ -31,7 +31,7 @@ def home():
     objects = database.objects
     return render_template(
         'index.html',
-        title='Список объектов|Тайный покупатель',
+        title='Список объектов | Тайный покупатель',
         objects=objects,
         year=datetime.now().year,
     )
@@ -50,7 +50,7 @@ def checklist(template, num):
         objects=objects,
         selected=selected_obj,
         checklist=questions,
-        title='Контрольный лист посещения|Тайный покупатель'
+        title='Контрольный лист посещения | Тайный покупатель'
     )
 
 
@@ -79,7 +79,7 @@ def checklist_save(template):
     return render_template(
         template,
         model=model,
-        title='Контрольны лист посещения|Тайный покупатель'
+        title='Контрольны лист посещения | Тайный покупатель'
     )
 
 
@@ -95,7 +95,7 @@ def checklist_view(uid):
     return render_template(
         'checklist_saved.html',
         model=model,
-        title='Контрольный лист посещения|Тайный покупатель'
+        title='Контрольный лист посещения | Тайный покупатель'
     )
 
 

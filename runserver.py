@@ -2,12 +2,18 @@
 This script runs the frontui application using a development server.
 """
 import locale
+import warnings
 from os import environ
-from flask.ext.debugtoolbar import DebugToolbarExtension
+from flask.exthook import ExtDeprecationWarning
 from frontui.app import create_app
 
+warnings.simplefilter('ignore', ExtDeprecationWarning)
+
 if __name__ == '__main__':
-    locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+    try:
+        locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+    except locale.Error:
+        locale.setlocale(locale.LC_TIME, 'ru')
     app = create_app()
     HOST = environ.get('SERVER_HOST', 'localhost')
     MODE = environ.get('APP_MODE', 'DEBUG')

@@ -24,7 +24,7 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
         }
 
         var newFile = new File(
-            [new Uint8Array(content)], origFile.name, { type: mimestring }
+            [new Uint8Array(content)], origFile.name, { 'type': mimestring }
         );
 
         // Copy props set by the dropzone in the original file
@@ -57,14 +57,14 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
             var reader = new FileReader();
             var allowedExts = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'];
 
-            var fileExt = origFile.name.split('.').pop();
-            if (!$.inArray(fileExt, allowedExts)) {
-                dropzone.enqueueFile(origFile);
-                return;
-            }
-
             // Convert file to img
             reader.addEventListener("load", function (event) {
+                var fileExt = origFile.name.split('.').pop();
+                if ($.inArray(fileExt, allowedExts) < 0) {
+                    dropzone.enqueueFile(origFile);
+                    return;
+                }
+
                 var origImg = new Image();
                 origImg.src = event.target.result;
 
@@ -118,12 +118,6 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
     }
 
     $(document).ready(function () {
-        try {
-            //Dropzone.discover();
-        }
-        catch (e) {
-            // nothing to do
-        }
         initFileUpload();
     });
 });
