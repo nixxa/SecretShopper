@@ -43,7 +43,7 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
         var dropzone = new Dropzone('.dropzone', { 
             url: "/file/upload",
             method: "post",
-            maxFilesize: 10,
+            maxFilesize: 20,
             addRemoveLinks: true,
             autoQueue: false
         });
