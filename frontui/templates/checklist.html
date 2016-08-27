@@ -78,14 +78,14 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) -%}
+                                    {% for i in range(00, 24) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) -%}
+                                    {% for i in range(00, 60) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
@@ -99,14 +99,14 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour2" data-rel-field="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) -%}
+                                    {% for i in range(00, 24) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute2" data-rel-field="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) -%}
+                                    {% for i in range(00, 60) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
@@ -120,14 +120,14 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="hour3" data-rel-field="hour1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 23) -%}
+                                    {% for i in range(00, 24) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
                                 :
                                 <select class="form-control js-question" id="minute3" data-rel-field="minute1">
                                     <option value="">[...]</option>
-                                    {% for i in range(00, 59) -%}
+                                    {% for i in range(00, 60) -%}
                                     <option value="{{'%02d' % i}}">{{ '%02d' % i}}</option>
                                     {%- endfor %}
                                 </select>
@@ -141,7 +141,7 @@
                             <div class="form-xs">
                                 <select class="form-control js-question" id="min-diff">
                                     <option value="">[...]</option>
-                                    {% for i in range(0, 59) -%}
+                                    {% for i in range(0, 60) -%}
                                     <option value="{{'%d' % i}}">{{ '%d' % i}}</option>
                                     {%- endfor %}
                                 </select>

@@ -20,9 +20,9 @@ from frontui.linq import first_or_default, where, count
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF', 'm4a', 'wav', 'mp3', 'ogg'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF', 'm4a', 'wav', 'mp3', 'ogg', '3gpp'])
 IMAGE_EXTENSIONS = set(['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF'])
-AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg'])
+AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg', '3gpp'])
 
 @ui.route('/')
 def home():
