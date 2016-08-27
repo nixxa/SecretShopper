@@ -92,6 +92,7 @@ def checklist_view(uid):
     model = QListViewModel()
     model.num = uid
     model.object_name = item.object_info.num + '-' + item.object_info.title
+    model.save_date = item.date
     return render_template(
         'checklist_saved.html',
         model=model,
