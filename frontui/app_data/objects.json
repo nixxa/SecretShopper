@@ -374,5 +374,13 @@
         "object_address": "МО, Подольский мун. район, с/п Лаговское, вблизи д.Коледино, а/д Крым-42км справа",
         "with_cafe": true,
         "with_shop": true
+    },
+    {
+        "object_num": "45",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Раменское",
+        "object_address": "МО, г. Раменское, Северное шоссе, д.1",
+        "with_cafe": true,
+        "with_shop": true
     }
 ]
