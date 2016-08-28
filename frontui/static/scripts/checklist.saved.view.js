@@ -45,7 +45,8 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
             method: "post",
             maxFilesize: 20,
             addRemoveLinks: true,
-            autoQueue: false
+            autoQueue: false,
+            parallelUploads: 1
         });
         //var mockFile = { name: "banner2.jpg", size: 12345 };
         //myDropzone.options.addedfile.call(myDropzone, mockFile);
