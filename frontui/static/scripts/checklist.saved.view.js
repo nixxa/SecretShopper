@@ -7,6 +7,26 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
     var Dropzone = window.Dropzone;
     Dropzone.autoDiscover = false;
 
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type:mimeString});
+    }
+
     function base64ToFile(dataURI, origFile) {
         var byteString, mimestring;
 
@@ -23,9 +43,18 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
             content[i] = byteString.charCodeAt(i);
         }
 
-        var newFile = new File(
-            [new Uint8Array(content)], origFile.name, { 'type': mimestring }
-        );
+        var newFile = {};
+        try {
+            newFile = new File(
+                [new Uint8Array(content)], origFile.name, { 'type': mimestring }
+            );
+        } catch (error) {
+            // create Blob instead File because in IE constructor for File object doesn't exsist'
+            newFile = new Blob(
+                [new Uint8Array(content)], { 'type': mimestring }
+            );
+            newFile.name = origFile.name;
+        }
 
         // Copy props set by the dropzone in the original file
         var origProps = [
@@ -101,7 +130,7 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
                     //var ctx = canvas.getContext("2d");
                     //ctx.drawImage(origImg, 0, 0, width, height);
                     pica.resizeCanvas(origImg, canvas, 3, function () {
-                        var resizedFile = base64ToFile(canvas.toDataURL("image/jpeg"), origFile);
+                        var resizedFile = base64ToFile(canvas.toDataURL(), origFile);
 
                         // Replace original with resized
                         var origFileIndex = dropzone.files.indexOf(origFile);
