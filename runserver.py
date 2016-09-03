@@ -13,7 +13,7 @@ if __name__ == '__main__':
     try:
         locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
     except locale.Error:
-        locale.setlocale(locale.LC_TIME, 'ru')
+        locale.setlocale(locale.LC_TIME, 'rus')
     app = create_app()
     HOST = environ.get('SERVER_HOST', 'localhost')
     MODE = environ.get('APP_MODE', 'DEBUG')

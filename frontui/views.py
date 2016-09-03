@@ -303,58 +303,59 @@ def add_one_month(dt0):
 @ui.route('/annual/<date>')
 def annual_month(date):
     """ Render annual month report """
-    report = dict()
+    rprt = dict()
     database = DataProvider()
     start_date = datetime.strptime(date, '%Y%m%d')
     end_date = add_one_month(start_date)
-    report['checklist'] = database.checklist
-    report['date'] = start_date
-    report['kiosks'] = sorted(
+    rprt['checklist'] = database.checklist
+    rprt['date'] = start_date
+    rprt['kiosks'] = sorted(
         where(database.objects, lambda x: x.with_shop == False and x.with_cafe == False),
         key=lambda x: x.sort_num)
-    report['kiosks_count'] = len(report['kiosks'])
-    report['shops'] = sorted(
+    rprt['kiosks_count'] = len(rprt['kiosks'])
+    rprt['shops'] = sorted(
         where(database.objects, lambda x: x.with_shop == True and x.with_cafe == False),
         key=lambda x: x.sort_num)
-    report['shops_count'] = 2 * len(report['shops'])
-    report['cafes'] = sorted(
+    rprt['shops_count'] = len(rprt['shops'])
+    rprt['cafes'] = sorted(
         where(database.objects, lambda x: x.with_shop == True and x.with_cafe == True),
         key=lambda x: x.sort_num)
-    report['cafes_count'] = 2 * len(report['cafes'])
+    rprt['cafes_count'] = 2 * len(rprt['cafes'])
     # initialize object's reports
     checklists = where(database.checklists, 
         lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
-    for item in report['kiosks']:
-        report[item.num] = where(checklists, lambda x: x.object_name == item.num)
-        for x in report[item.num]:
+    for item in rprt['kiosks']:
+        rprt[item.num] = where(checklists, lambda x: x.object_name == item.num)
+        for x in rprt[item.num]:
             calc_points(x, item)
-    for item in report['shops']:
-        report[item.num] = sorted(
-            where(checklists, lambda x: x.object_name == item.num), 
-            key=lambda x: x.date)
-        for x in report[item.num]:
-            calc_points(x, item)
-    for item in report['cafes']:
-        report[item.num] = sorted(
+    for item in rprt['shops']:
+        rprt[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
-        for x in report[item.num]:
+        for x in rprt[item.num]:
             calc_points(x, item)
-    return render_template('annual_month.html', model=report)
+    for item in rprt['cafes']:
+        rprt[item.num] = sorted(
+            where(checklists, lambda x: x.object_name == item.num),
+            key=lambda x: x.date)
+        for x in rprt[item.num]:
+            calc_points(x, item)
+    return render_template('annual_month.html', model=rprt)
 
-def calc_points(report, object_info):
+def calc_points(rprt, object_info):
     """ Calculate points for report """
     database = DataProvider()
     p = 0
     m = 0
     for i in range(1,8):
-        m = m + database.checklist.pages[i].max_cost(object_info)
-        for q in database.checklist.pages[i].questions:
-            answer = report.get(q.field_name) == 'yes'
-            if q.optional and (report.get(q.field_name) == 'n/a' or report.get(q.field_name) is None):
-                m = m -  database.checklist.pages[i].cost
-            p = p + (database.checklist.pages[i].cost if answer else 0)
-    report.max_points = m
-    report.points = p
-    report.points_percent = p/m*100
-    return report
+        pg = database.checklist.pages[i]
+        m = m + pg.max_cost(object_info)
+        for q in pg.questions:
+            answer = rprt.get(q.field_name) == 'yes'
+            if q.optional and rprt.get(q.field_name) == 'n/a' and not object_info.num in q.excepts: 
+                m = m -  pg.cost
+            p = p + (pg.cost if answer else 0)
+    rprt.max_points = m
+    rprt.points = p
+    rprt.points_percent = p/m*100
+    return rprt

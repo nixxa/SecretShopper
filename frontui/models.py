@@ -15,6 +15,7 @@ class ObjectInfo:
         self.with_shop = False
         if json_data is not None:
             self.parse(json_data)
+        return
 
     def parse(self, json_data):
         """ Parse JSON """
@@ -28,7 +29,11 @@ class ObjectInfo:
         self.address = json_data['object_address']
         self.with_cafe = json_data['with_cafe']
         self.with_shop = json_data['with_shop']
+        return
 
+    def __repr__(self):
+        return '{{ num: {0}, type: {1} }}'.format(self.num, self.type)
+    
     @staticmethod
     def from_json(json_data):
         """ Parse JSON """

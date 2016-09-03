@@ -127,3 +127,29 @@ label {
     width:90%;
     margin:auto;
 }
+
+/*.report-wrapper {
+    width: 100%;
+    overflow-x: scroll;
+    margin-left: 360px;
+}
+
+.table .fixed-column {
+    position:absolute;
+    left: 0;
+    top: auto;
+    height: auto;
+}
+
+.table .fixed-column.wide {
+    width: 360px;
+}
+
+.table .fixed-column.one {
+    width: 60px;
+}
+
+.table .fixed-column.two {
+    left: 60px;
+    width: 300px;
+}*/
