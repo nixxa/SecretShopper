@@ -342,6 +342,7 @@ def annual_month(date):
             calc_points(x, item)
     return render_template('annual_month.html', model=rprt)
 
+
 def calc_points(rprt, object_info):
     """ Calculate points for report """
     database = DataProvider()

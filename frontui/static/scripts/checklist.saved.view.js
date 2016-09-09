@@ -149,5 +149,9 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
 
     $(document).ready(function () {
         initFileUpload();
+
+        $('#js-completed-btn').click(function (evt) {
+            $('#js-content').hide();
+        });
     });
 });
