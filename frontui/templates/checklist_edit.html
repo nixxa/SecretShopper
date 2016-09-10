@@ -166,7 +166,7 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[1].questions|length }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[1].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
@@ -189,7 +189,7 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span> 
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[2].questions|length+1 }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[2].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
@@ -212,7 +212,7 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">{{ checklist.pages[3].questions|length }}</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[3].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
