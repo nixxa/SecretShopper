@@ -20,6 +20,12 @@ def create_app(app_mode='DEBUG'):
                 level=logging.DEBUG,
                 format='%(asctime)s %(levelname)s %(message)s'
         )
+    if app_mode == 'PROD':
+        #create_rotating_log(app, 'app.log')
+        logging.basicConfig(
+            filename='app.log',
+            format='%(asctime)s %(levelname)s %(message)s',
+            level=logging.DEBUG)
     # register blueprints
     app.register_blueprint(ui)
     # register jinja exts
