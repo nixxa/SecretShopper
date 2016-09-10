@@ -189,13 +189,13 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
         var uid = $('#js-content').data('uid');
         var noticeSent = $('#js-content').data('notice-sent');
         $('#js-completed-btn').click(function (evt) {
-            if (!noticeSent)
+            if (noticeSent == 'False')
                 $('#myModal').modal('show');
             else
                 $('#js-content').hide();
         });
         $('#js-modal-complete').click(function (evt) {
-            if (!noticeSent) {
+            if (noticeSent == 'False') {
                 $.post('/checklist/complete/' + uid, { 'author_email': $('#js-author-email').val() }, function (data) {
                     $('#myModal').modal('hide');
                     $('#js-content').hide();
