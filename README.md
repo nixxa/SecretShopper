@@ -1,2 +1,2 @@
 # SecretShopper
-Secret shopper questionnaire and report builder
+Secret shopper quiz and report builder

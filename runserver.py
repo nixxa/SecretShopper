@@ -2,12 +2,10 @@
 This script runs the frontui application using a development server.
 """
 import locale
-import warnings
 from os import environ
 from flask.exthook import ExtDeprecationWarning
 from frontui.app import create_app
 
-warnings.simplefilter('ignore', ExtDeprecationWarning)
 
 if __name__ == '__main__':
     try:

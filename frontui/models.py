@@ -138,9 +138,11 @@ class ChecklistInfo:
 class Checklist:
     """ Filled checklist with data """
     def __init__(self, json_data=None):
+        self.uid = None
         self.object_info = None
         self.checklist_info = None
         self.state = 'new'
+        self.notice_sent = False
         self.create_date = datetime.utcnow()
         self.verify_date = None
         self.date = None

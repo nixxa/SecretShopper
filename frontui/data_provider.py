@@ -55,6 +55,8 @@ class DataProvider(Singleton):
                 obj_info = linq.first_or_default(self.objects, lambda x: x.num == json_data['object_name'])
                 item.object_info = obj_info
                 item.checklist_info = self.checklist
+                if not hasattr(item, 'notice_sent'):
+                    item.notice_sent = False        
                 self.checklists.append(item)
         return
 

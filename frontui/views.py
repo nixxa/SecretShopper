@@ -1,28 +1,28 @@
 """
 Routes and views for the flask application.
 """
-# pylint: disable=line-too-long
+#pylint: disable=line-too-long
 
 import uuid
 import os
-import sys
+#import sys
 from datetime import datetime, timedelta
 from flask import render_template, request, Blueprint, current_app, redirect, session, send_file
-from flask.ext.mobility.decorators import mobile_template
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from werkzeug.local import LocalProxy
 #from PIL import Image
-from frontui.view_models import QListViewModel
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count
+from frontui.sendmail import MailProvider
 
 
 ui = Blueprint('ui', __name__, template_folder='templates')
 logger = LocalProxy(lambda: current_app.logger)
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF', 'm4a', 'wav', 'mp3', 'ogg', '3gpp', 'mp4'])
 IMAGE_EXTENSIONS = set(['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG', 'gif', 'GIF'])
 AUDIO_EXTENSIONS = set(['m4a', 'wav', 'mp3', 'ogg', '3gpp', 'mp4'])
+ALLOWED_EXTENSIONS = IMAGE_EXTENSIONS | AUDIO_EXTENSIONS
+
 
 @ui.route('/')
 def home():
@@ -38,15 +38,14 @@ def home():
 
 
 @ui.route('/checklist/<num>')
-@mobile_template('{mobile/}checklist.html')
-def checklist(template, num):
+def checklist(num):
     """Renders questionnaire page"""
     database = DataProvider()
     objects = database.objects
     selected_obj = next((x for x in objects if x.num == num), None)
     questions = database.checklist
     return render_template(
-        template,
+        'checklist.html',
         objects=objects,
         selected=selected_obj,
         checklist=questions,
@@ -54,14 +53,12 @@ def checklist(template, num):
     )
 
 
-@ui.route('/save_list', methods=['POST'])
-@mobile_template('{mobile/}checklist_saved.html')
-def checklist_save(template):
+@ui.route('/checklist/new', methods=['POST'])
+def checklist_new():
     """ Save questionnaire and render success page """
     database = DataProvider()
     objects = database.objects
     object_num = request.form['object_name']
-    logger.debug('ObjectNum %s' % object_num)
     selected_obj = next((x for x in objects if x.num == object_num), None)
     selected_date = request.form['p1_r1']
     data = dict()
@@ -72,32 +69,89 @@ def checklist_save(template):
     for key in request.form:
         data[key] = request.form[key]
     database.save_checklist(object_num, selected_date, data)
-    model = QListViewModel()
-    model.num = data['uid']
-    model.object_name = selected_obj.num + '-' + selected_obj.title
-    session['checklist-uid'] = model.num
+    session['checklist-uid'] = data['uid']
     return render_template(
-        template,
-        model=model,
-        title='Контрольны лист посещения | Тайный покупатель'
+        'checklist_addfiles.html',
+        uid=data['uid'],
+        object_name=selected_obj.num + '-' + selected_obj.title,
+        save_date=data['create_date'],
+        title='Контрольный лист посещения | Тайный покупатель'
     )
 
 
 @ui.route('/checklist/view/<uid>')
-def checklist_view(uid):
+@ui.route('/checklist/addfiles/<uid>')
+def checklist_addfiles(uid):
     """ View saved checklist by ID """
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
     session['checklist-uid'] = uid
-    model = QListViewModel()
-    model.num = uid
-    model.object_name = item.object_info.num + '-' + item.object_info.title
-    model.save_date = item.date
     return render_template(
-        'checklist_saved.html',
-        model=model,
+        'checklist_addfiles.html',
+        uid=uid,
+        object_name=item.object_info.num + '-' + item.object_info.title,
+        save_date=item.date,
+        files=item.files,
+        notice_sent=item.notice_sent,
         title='Контрольный лист посещения | Тайный покупатель'
     )
+
+
+@ui.route('/checklist/edit/<uid>')
+def checklist_edit(uid):
+    """ Render object report for verify """
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    questions = database.checklist
+    return render_template(
+        'checklist_edit.html',
+        values=item,
+        checklist=questions,
+        selected=item.object_info,
+        objects=database.objects,
+        edit_mode='edit',
+        title='Контрольный лист посещения | Тайный покупатель'
+    )
+
+
+@ui.route('/checklist/save', methods=['POST'])
+@authorize
+def checklist_save():
+    """ Save verified checklist """
+    database = DataProvider()
+    data = dict()
+    for key in request.form:
+        data[key] = request.form[key]
+    uid = data['uid']
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    if item.state == 'new':
+        item.update(data)
+        item.verify_date = datetime.utcnow()
+        database.update_checklist(item)
+    return render_template(
+        'checklist_addfiles.html',
+        uid=uid,
+        object_name=item.object_info.num + '-' + item.object_info.title,
+        save_date=item.date,
+        files=item.files,
+        notice_sent=item.notice_sent,
+        title='Контрольный лист посещения | Тайный покупатель'
+    )
+
+
+@ui.route('/checklist/complete/<uid>', methods=['POST'])
+def checklist_complete(uid):
+    """ Complete checklist and send email configrmation """
+    email = request.form['author_email']
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    if not item.notice_sent:
+        mail = MailProvider()
+        mail.send_checklist_notice(email, item)
+        item.notice_sent = True
+        # update checklist in DB
+        database.update_checklist(item)
+    return '', 200
 
 
 @ui.route('/file/upload', methods=['POST'])
@@ -138,6 +192,7 @@ def upload():
             item.files.append(file_info)
         file_info['filename'] = filename
         file_info['local_path'] = filepath
+        file_info['size'] = os.path.getsize(filepath)
         file_info['remote_path'] = ''
         if image_file(filename):
             file_info['filetype'] = 'image'
@@ -174,6 +229,21 @@ def view_file(uid, filename):
     local_path = file_info['local_path'].replace('./frontui/', '')
     return send_file(local_path)
 
+
+@ui.route('/uploads/remove/<uid>/<filename>', methods=['POST'])
+def remove_file(uid, filename):
+    """ Remove file from checklist """
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    if item is None:
+        return 'File not exists', 404
+    file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
+    if file_info is None:
+        return 'File not exists', 404
+    item.files.remove(file_info)
+    os.remove(file_info['local_path'])
+    database.update_checklist(item)
+    return '', 200
 
 @ui.route('/reports')
 @authorize
@@ -240,11 +310,12 @@ def report(uid):
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
     questions = database.checklist
     return render_template(
-        'report.html',
+        'checklist_edit.html',
         values=item,
         checklist=questions,
         selected=item.object_info,
         objects=database.objects,
+        edit_mode='verify',
         title='Отчет'
     )
 

@@ -4,7 +4,7 @@
 {% block content %}
 <h2>Режим проверки.</h2>
 <span class="help-block">В режиме проверки можно исправить заполненную анкету</span>
-<form action="/report/verify" method="POST">
+<form action="{% if edit_mode == 'edit' %}/checklist/save{% else %}/report/verify{% endif %}" method="POST">
     <input type="hidden" name="uid" value="{{ values['uid'] }}" />
     <div class="panel-group js-form" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default js-section">
@@ -472,7 +472,11 @@
         <div class="col-xs-12">
             {% if values.state == 'new' %}
                 <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
-                <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
+                {% if edit_mode == 'verify' %}
+                    <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
+                {% else %}
+                    <a href="/" class="btn btn-default pull-right">Отмена</a>
+                {% endif %}
             {% else %}
                 <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Вернуться</a>
             {% endif %}

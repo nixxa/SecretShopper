@@ -1,7 +1,7 @@
 /**
  * 
  */
-define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
+define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, bootstrap) {
     'use strict';
 
     var Dropzone = window.Dropzone;
@@ -68,6 +68,33 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
         return newFile;
     }
 
+    function getOrientation(file, callback) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var view = new DataView(e.target.result);
+            if (view.getUint16(0, false) != 0xFFD8) return callback(-2);
+            var length = view.byteLength, offset = 2;
+            while (offset < length) {
+                var marker = view.getUint16(offset, false);
+                offset += 2;
+                if (marker == 0xFFE1) {
+                    if (view.getUint32(offset += 2, false) != 0x45786966) return callback(-1);
+                    var little = view.getUint16(offset += 6, false) == 0x4949;
+                    offset += view.getUint32(offset + 4, little);
+                    var tags = view.getUint16(offset, little);
+                    offset += 2;
+                    for (var i = 0; i < tags; i++)
+                        if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                            return callback(view.getUint16(offset + (i * 12) + 8, little));
+                }
+                else if ((marker & 0xFF00) != 0xFF00) break;
+                else offset += view.getUint16(offset, false);
+            }
+            return callback(-1);
+        };
+        reader.readAsArrayBuffer(file.slice(0, 64 * 1024));
+    }
+
     function initFileUpload() {
         var dropzone = new Dropzone('.dropzone', { 
             url: "/file/upload",
@@ -77,13 +104,25 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
             autoQueue: false,
             parallelUploads: 1
         });
-        //var mockFile = { name: "banner2.jpg", size: 12345 };
-        //myDropzone.options.addedfile.call(myDropzone, mockFile);
-        //myDropzone.options.thumbnail.call(myDropzone, mockFile, "http://localhost/test/drop/uploads/banner2.jpg");
+        var uid = $('#js-content').data('uid');
+        $.each(window.checklist_files, function (index, value) {
+            var file = { name: value.filename, size: value.size };
+            var thumbnail = 'http://' + window.location.host + '/uploads/' + uid + '/' + value.filename;
+            dropzone.emit('addedfile', file);
+            if (value.filetype == 'image') {
+                dropzone.createThumbnailFromUrl(file, thumbnail);
+            }
+            dropzone.emit('complete', file);
+            //dropzone.options.maxFiles = dropzone.options.maxFiles - 1;
+        });
+
+        dropzone.on('removedfile', function (origFile) {
+            $.post('/uploads/remove/' + uid + '/' + origFile.name);
+        });
 
         dropzone.on("addedfile", function(origFile) {
-            var MAX_WIDTH = 1200;
-            var MAX_HEIGHT = 1200;
+            var MAX_WIDTH = 800;
+            var MAX_HEIGHT = 800;
             var reader = new FileReader();
             var allowedExts = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'];
 
@@ -122,13 +161,10 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
                     }
 
                     // Resize
-                    
                     var canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
 
-                    //var ctx = canvas.getContext("2d");
-                    //ctx.drawImage(origImg, 0, 0, width, height);
                     pica.resizeCanvas(origImg, canvas, 3, function () {
                         var resizedFile = base64ToFile(canvas.toDataURL(), origFile);
 
@@ -150,8 +186,21 @@ define(['jquery', 'dropzone', 'pica'], function($, dropzone, pica) {
     $(document).ready(function () {
         initFileUpload();
 
+        var uid = $('#js-content').data('uid');
+        var noticeSent = $('#js-content').data('notice-sent');
         $('#js-completed-btn').click(function (evt) {
-            $('#js-content').hide();
+            if (!noticeSent)
+                $('#myModal').modal('show');
+            else
+                $('#js-content').hide();
+        });
+        $('#js-modal-complete').click(function (evt) {
+            if (!noticeSent) {
+                $.post('/checklist/complete/' + uid, { 'author_email': $('#js-author-email').val() }, function (data) {
+                    $('#myModal').modal('hide');
+                    $('#js-content').hide();
+                });
+            }
         });
     });
 });

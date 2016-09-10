@@ -23,6 +23,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+startup.sh
+startup.cmd
 
 # Application debug data files
 frontui/app_data/checklists/**/*.json
