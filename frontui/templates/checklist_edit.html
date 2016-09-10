@@ -159,7 +159,7 @@
             <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title js-section-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        {{ checklist.pages[1].title }}
+                        1. {{ checklist.pages[1].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -182,7 +182,7 @@
             <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title js-section-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        {{ checklist.pages[2].title }}
+                        2. {{ checklist.pages[2].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -195,10 +195,6 @@
             </div>
             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="panel-body js-section-body">
-                    <label>
-                        <div class="mb5">Оператор АЗС</div>
-                        <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" value="{{ values.operator_fullname }}" />
-                    </label>
                     {% for item in checklist.pages[2].questions %}
                     {{ question(item, values[item.field_name]) }}
                     {% endfor %}
@@ -209,7 +205,7 @@
             <div class="panel-heading" role="tab" id="headingFour">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                        {{ checklist.pages[3].title }}
+                        3. {{ checklist.pages[3].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -232,7 +228,7 @@
             <div class="panel-heading" role="tab" id="headingFive">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                        {{ checklist.pages[4].title }}
+                        4. {{ checklist.pages[4].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -258,7 +254,7 @@
             <div class="panel-heading" role="tab" id="headingSix">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-                        {{ checklist.pages[5].title }}
+                        5. {{ checklist.pages[5].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -285,7 +281,7 @@
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                        {{ checklist.pages[6].title }}
+                        6. {{ checklist.pages[6].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -298,18 +294,6 @@
             </div>
             <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                 <div class="panel-body js-section-body">
-                    <div class="mb10">
-                        <label>
-                            <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" value="{{ values['accounter_fullname'] }}" />
-                        </label>
-                        {% if selected.with_cafe %}
-                        <label>
-                            <div class="mb5">Оператор-кассир в кафе</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" values="{{ values['accounter_cafe_fullname'] }}" />
-                        </label>
-                        {% endif %}
-                    </div>
                     {% for item in checklist.pages[6].questions %}
                         {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
                             {{ question(item, values[item.field_name]) }}
@@ -323,7 +307,7 @@
             <div class="panel-heading" role="tab" id="headingTen">
                 <h4 class="panel-title js-section-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
-                        {{ checklist.pages[7].title }}
+                        7. {{ checklist.pages[7].title }}
                     </a>
                     <div class="pull-right">
                         <small class="text-danger js-section-badge">
@@ -427,6 +411,22 @@
             </div>
             <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
                 <div class="panel-body js-section-body">
+                    <div class="mb10">
+                        <label>
+                            <div class="mb5">Оператор АЗС</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
+                        </label>
+                        <label>
+                            <div class="mb5">Оператор-кассир</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
+                        </label>
+                        {% if selected.with_cafe %}
+                        <label>
+                            <div class="mb5">Оператор-кассир в кафе</div>
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" />
+                        </label>
+                        {% endif %}
+                    </div>
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p9_r1'] }}" role="radio" />
                         Атмосфера на станции:
