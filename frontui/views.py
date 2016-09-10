@@ -75,6 +75,8 @@ def checklist_new():
         uid=data['uid'],
         object_name=selected_obj.num + '-' + selected_obj.title,
         save_date=data['create_date'],
+        files=list(),
+        notice_sent=False,
         title='Контрольный лист посещения | Тайный покупатель'
     )
 
