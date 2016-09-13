@@ -117,7 +117,6 @@ def checklist_edit(uid):
 
 
 @ui.route('/checklist/save', methods=['POST'])
-@authorize
 def checklist_save():
     """ Save verified checklist """
     database = DataProvider()
@@ -218,7 +217,6 @@ def audio_file(filename):
 
 
 @ui.route('/uploads/<uid>/<filename>')
-@authorize
 def view_file(uid, filename):
     """ Return saved filename """
     database = DataProvider()
