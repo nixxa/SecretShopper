@@ -2,7 +2,8 @@
 import logging
 import os
 from flask import Flask
-from frontui.views import ui
+from frontui.views.public import public_ui
+from frontui.views.owner import owner_ui
 
 
 def create_app(app_mode='DEBUG'):
@@ -16,6 +17,9 @@ def create_app(app_mode='DEBUG'):
     app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
     app.logger.setLevel(logging.DEBUG)
     if app_mode == 'DEBUG':
+        app.debug = True
+        app.config['DEBUG'] = True
+        app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
         logging.basicConfig(
                 level=logging.DEBUG,
                 format='%(asctime)s %(levelname)s %(message)s'
@@ -27,7 +31,8 @@ def create_app(app_mode='DEBUG'):
             format='%(asctime)s %(levelname)s %(message)s',
             level=logging.DEBUG)
     # register blueprints
-    app.register_blueprint(ui)
+    app.register_blueprint(public_ui)
+    app.register_blueprint(owner_ui)
     # register jinja exts
     app.jinja_env.tests['equalto'] = \
         lambda x, y: x == y
@@ -39,4 +44,5 @@ def create_app(app_mode='DEBUG'):
     app.config['SENDGRID_APIKEY'] = os.environ.get('SENDGRID_APIKEY', '')
     app.config['SENDGRID_USERNAME'] = os.environ.get('SENDGRID_USERNAME', '')
     app.config['SENDGRID_PASSWORD'] = os.environ.get('SENDGRID_PASSWORD', '')
+    logging.info('Application started in %s mode', app_mode)
     return app

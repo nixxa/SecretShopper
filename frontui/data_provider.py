@@ -56,7 +56,9 @@ class DataProvider(Singleton):
                 item.object_info = obj_info
                 item.checklist_info = self.checklist
                 if not hasattr(item, 'notice_sent'):
-                    item.notice_sent = False        
+                    item.notice_sent = False
+                if not hasattr(item, 'state'):
+                    item.state = 'new'        
                 self.checklists.append(item)
         return
 
