@@ -3,7 +3,7 @@ import logging
 import os
 from flask import Flask
 from frontui.views.public import public_ui
-from frontui.views.owner import owner_ui
+from frontui.views.restricted import restricted_ui
 
 
 def create_app(app_mode='DEBUG'):
@@ -25,24 +25,21 @@ def create_app(app_mode='DEBUG'):
                 format='%(asctime)s %(levelname)s %(message)s'
         )
     if app_mode == 'PROD':
-        #create_rotating_log(app, 'app.log')
         logging.basicConfig(
             filename='app.log',
             format='%(asctime)s %(levelname)s %(message)s',
             level=logging.DEBUG)
     # register blueprints
     app.register_blueprint(public_ui)
-    app.register_blueprint(owner_ui)
+    app.register_blueprint(restricted_ui)
     # register jinja exts
-    app.jinja_env.tests['equalto'] = \
-        lambda x, y: x == y
-    app.jinja_env.filters['points'] = \
-        lambda answer, question: str(question.cost) if answer == 'yes' else '0' if answer == 'no' else ''
+    app.add_template_filter(f=points, name='points')
     # configure uploads
     app.config['UPLOAD_FOLDER'] = './frontui/uploads'
-    # configure sendgrid options
-    app.config['SENDGRID_APIKEY'] = os.environ.get('SENDGRID_APIKEY', '')
-    app.config['SENDGRID_USERNAME'] = os.environ.get('SENDGRID_USERNAME', '')
-    app.config['SENDGRID_PASSWORD'] = os.environ.get('SENDGRID_PASSWORD', '')
+    # app started
     logging.info('Application started in %s mode', app_mode)
     return app
+
+
+def points(answer, question):
+    return str(question.cost) if answer == 'yes' else '0' if answer == 'no' else ''

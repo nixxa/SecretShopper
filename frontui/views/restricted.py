@@ -10,9 +10,9 @@ from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count
 
-owner_ui = Blueprint('owner', __name__)
+restricted_ui = Blueprint('owner', __name__)
 
-@owner_ui.route('/reports')
+@restricted_ui.route('/reports')
 @authorize
 def reports():
     """ Отчеты по объектам """
@@ -41,7 +41,7 @@ def reports():
     )
 
 
-@owner_ui.route('/reports/<obj_num>')
+@restricted_ui.route('/reports/<obj_num>')
 @authorize
 def reports_by_object(obj_num):
     """ Render reports for object """
@@ -69,7 +69,7 @@ def reports_by_object(obj_num):
     )
 
 
-@owner_ui.route('/report/<uid>')
+@restricted_ui.route('/report/<uid>')
 @authorize
 def report(uid):
     """ Render object report for verify """
@@ -87,7 +87,7 @@ def report(uid):
     )
 
 
-@owner_ui.route('/report/verify', methods=['POST'])
+@restricted_ui.route('/report/verify', methods=['POST'])
 @authorize
 def verify():
     """ Save verified checklist """
@@ -104,7 +104,7 @@ def verify():
     return redirect('/reports')
 
 
-@owner_ui.route('/annual/all')
+@restricted_ui.route('/annual/all')
 @authorize
 def annual_reports():
     """ Return list of all existing annual reports """
@@ -131,7 +131,7 @@ def annual_reports():
     return render_template('annual_list.html', model=reports)
 
 
-@owner_ui.route('/annual/<date>')
+@restricted_ui.route('/annual/<date>')
 def annual_month(date):
     """ Render annual month report """
     rprt = dict()

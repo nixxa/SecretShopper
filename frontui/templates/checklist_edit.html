@@ -414,16 +414,16 @@
                     <div class="mb10">
                         <label>
                             <div class="mb5">Оператор АЗС</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="operator_fullname" value="{{ values['operator_fullname']}}" />
                         </label>
                         <label>
                             <div class="mb5">Оператор-кассир</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_fullname" value="{{ values['accounter_fullname']}}" />
                         </label>
                         {% if selected.with_cafe %}
                         <label>
                             <div class="mb5">Оператор-кассир в кафе</div>
-                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" />
+                            <input type="text" class="form-control js-question" placeholder="Фамилия Имя" name="accounter_cafe_fullname" value="{{ values['accounter_cafe_fullname']}}" />
                         </label>
                         {% endif %}
                     </div>
