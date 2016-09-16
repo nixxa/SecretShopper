@@ -25,6 +25,7 @@ var/
 *.egg
 startup.sh
 startup.cmd
+venv/
 
 # Application debug data files
 frontui/app_data/checklists/**/*.json
