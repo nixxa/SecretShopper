@@ -2,6 +2,7 @@
 import logging
 import os
 from flask import Flask
+from frontui import BASE_DIR
 from frontui.views.public import public_ui
 from frontui.views.restricted import restricted_ui
 
@@ -35,7 +36,7 @@ def create_app(app_mode='DEBUG'):
     # register jinja exts
     app.add_template_filter(f=points, name='points')
     # configure uploads
-    app.config['UPLOAD_FOLDER'] = './frontui/uploads'
+    app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'uploads')
     # app started
     logging.info('Application started in %s mode', app_mode)
     return app

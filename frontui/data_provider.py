@@ -4,6 +4,7 @@ import json
 import os
 import frontui.linq as linq
 import datetime
+from frontui import BASE_DIR
 from frontui.models import ObjectInfo, ChecklistInfo, Checklist
 from flask import current_app
 
@@ -31,15 +32,15 @@ class DataProvider(Singleton):
         self.objects = list()
         self.checklist = ChecklistInfo()
         self.checklists = list()
-        self.data_dir = './frontui/app_data'
-        self.checklists_dir = self.data_dir + '/checklists'
+        self.data_dir = os.path.join(BASE_DIR, 'app_data')
+        self.checklists_dir = os.path.join(self.data_dir, 'checklists')
         # fill data from files
         # load objects
-        with open('./frontui/app_data/objects.json', 'r', encoding='utf8') as objects_file:
+        with open(os.path.join(BASE_DIR, 'app_data/objects.json'), 'r', encoding='utf8') as objects_file:
             for item in json.load(objects_file):
                 self.add_object(ObjectInfo(item))
         # load checklist info
-        with open('./frontui/app_data/checklist.json', 'r', encoding='utf8') as checklist_file:
+        with open(os.path.join(BASE_DIR, 'app_data/checklist.json'), 'r', encoding='utf8') as checklist_file:
             self.checklist = ChecklistInfo.from_json(json.load(checklist_file))
         # load filled checklists
         json_data = dict()
