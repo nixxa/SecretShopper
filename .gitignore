@@ -26,6 +26,7 @@ var/
 startup.sh
 startup.cmd
 venv/
+*.wsgi
 
 # Application debug data files
 frontui/app_data/checklists/**/*.json
