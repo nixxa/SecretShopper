@@ -4,7 +4,7 @@ import os
 from flask import Flask
 from frontui import BASE_DIR
 from frontui.views.public import public_ui
-from frontui.views.restricted import restricted_ui
+from frontui.views.member import member_ui
 
 
 def create_app(app_mode='DEBUG'):
@@ -32,7 +32,7 @@ def create_app(app_mode='DEBUG'):
             level=logging.DEBUG)
     # register blueprints
     app.register_blueprint(public_ui)
-    app.register_blueprint(restricted_ui)
+    app.register_blueprint(member_ui)
     # register jinja exts
     app.add_template_filter(f=points, name='points')
     # configure uploads
