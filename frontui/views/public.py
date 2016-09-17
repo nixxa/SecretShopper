@@ -216,11 +216,7 @@ def view_file(uid, filename):
     file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
     if file_info is None:
         return 'File not exists', 404
-    local_path = file_info['local_path'].replace('./frontui/', '')
-    if not os.path.exists(local_path):
-        local_path = local_path.replace('\\', '/')
-        if not os.path.exists(local_path):
-            return '', 404
+    local_path = file_info['local_path'].replace('./frontui/', '').replace('\\', '/')
     return send_file(local_path)
 
 
