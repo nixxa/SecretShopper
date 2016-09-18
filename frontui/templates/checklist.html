@@ -239,7 +239,7 @@
             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[4].questions -%}
-                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                        {% if selected.applies(item) %}
                             {{ question(item) }}
                         {% endif %}
                     {%- endfor %}
@@ -265,7 +265,7 @@
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[5].questions -%}
-                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                        {% if selected.applies(item) %}
                             {{ question(item) }}
                         {% endif %}
                     {%- endfor %}
@@ -273,7 +273,7 @@
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
         {% endif %}
-        {% if selected.with_cafe or selected.with_shop %}
+        {% if checklist.pages[5].max_questions(selected) > 0 %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title js-section-title">
@@ -292,7 +292,7 @@
             <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[6].questions -%}
-                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                        {% if selected.applies(item) %}
                             {{ question(item) }}
                         {% endif %}
                     {%- endfor %}
@@ -318,7 +318,7 @@
             <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[7].questions -%}
-                        {% if (selected.with_cafe and 'cafe' in item.applies) or (selected.with_shop and 'shop' in item.applies) or (item.applies|length == 0) and not (selected.num in item.excepts) %}
+                        {% if selected.applies(item) %}
                             {{ question(item) }}
                         {% endif %}
                     {%- endfor %}

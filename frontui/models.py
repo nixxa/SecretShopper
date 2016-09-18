@@ -41,6 +41,20 @@ class ObjectInfo:
         obj.parse(json_data)
         return obj
 
+    def applies(self, question):
+        """ Check that question applies to object """
+        s = ''
+        if self.with_shop:
+            s = 'shop'
+        if self.with_cafe:
+            s = 'cafe'
+        if s == '' and len(question.applies) == 0 and not self.num in question.excepts:
+            return True
+        if s == '' and len(question.applies) > 0 and self.num in question.applies:
+            return True
+        if s != '' and len(question.applies) == 0 and not self.num in question.excepts:
+            return True
+        return (s in question.applies or self.num in question.applies) and not self.num in question.excepts
 
 class PageInfo:
     """ Page with questions """
@@ -49,6 +63,9 @@ class PageInfo:
         self.num = 0
         self.cost = 0
         self.questions = list()
+
+    def __repr__(self):
+        return '{{ num: {0}, title: {1} }}'.format(self.num, self.title)
 
     @staticmethod
     def from_json(json_data):
@@ -68,26 +85,15 @@ class PageInfo:
         return page
 
     def max_cost(self, obj_info):
-        applied_for_cafe = len(where(self.questions, lambda s: 'cafe' in s.applies))
-        applied_for_shop = len(where(self.questions, lambda s: 'shop' in s.applies))
-        applied_for_other = len(where(self.questions, lambda s: len(s.applies) == 0))
-        excepts = len(where(self.questions, lambda s: obj_info.num in s.excepts))
-        if obj_info.with_cafe and obj_info.with_shop:
-            return self.cost * (applied_for_other + applied_for_cafe - excepts)
-        if obj_info.with_shop and not obj_info.with_cafe:
-            return self.cost * (applied_for_other + applied_for_shop - excepts)
-        return self.cost * (applied_for_other - excepts)
+        applied = len(where(self.questions, lambda s: obj_info.applies(s)))
+        excepts = 0 #len(where(self.questions, lambda s: obj_info.num in s.excepts))
+        return self.cost * (applied - excepts)
         
     def max_questions(self, obj_info):
-        applied_for_cafe = len(where(self.questions, lambda s: 'cafe' in s.applies))
-        applied_for_shop = len(where(self.questions, lambda s: 'shop' in s.applies))
-        applied_for_other = len(where(self.questions, lambda s: len(s.applies) == 0))
-        excepts = len(where(self.questions, lambda s: obj_info.num in s.excepts))
-        if obj_info.with_cafe and obj_info.with_shop:
-            return applied_for_other + applied_for_cafe - excepts
-        if obj_info.with_shop and not obj_info.with_cafe:
-            return applied_for_other + applied_for_shop - excepts
-        return applied_for_other - excepts
+        applied = len(where(self.questions, lambda s: obj_info.applies(s)))
+        excepts = 0 #len(where(self.questions, lambda s: obj_info.num in s.excepts))
+        return applied - excepts
+
 
 class QuestionInfo:
     """ Question """
@@ -98,6 +104,9 @@ class QuestionInfo:
         self.applies = []
         self.excepts = []
         self.optional = False
+
+    def __repr__(self):
+        return '{{ field: {0}, title: {1} }}'.format(self.field_name, self.label)
 
     @staticmethod
     def from_json(json_data):
@@ -174,3 +183,13 @@ class Checklist:
     def get(self, field_name):
         """ Return field value """
         return self.__dict__[field_name] if field_name in self.__dict__ else None
+
+    def sum_points(self, page):
+        """ Calculate sum of answered questions """
+        p = 0
+        for q in page.questions:
+            answer = self.get(q.field_name) == 'yes'
+            if not self.object_info.applies(q):
+                continue
+            p = p + (page.cost if answer else 0)
+        return p

@@ -197,14 +197,35 @@
             <th class="fixed-column one">{{ index }}</th>
             <th class="fixed-column two">{{ model['checklist'].pages[index].title }}</th>
             {% for item in model['kiosks'] %}
-                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
+                {% if model[item.num] %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
+                    </th>
+                {% else %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}"></th>
+                {% endif %}
             {% endfor %}
             {% for item in model['shops'] %}
-                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
+                {% if model[item.num] %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
+                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
+                    </th>
+                {% else %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}"></th>
+                {% endif %}
             {% endfor %}
             {% for item in model['cafes'] %}
-                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
-                <th>{{ model['checklist'].pages[index].max_cost(item) }}</th>
+                {% if model[item.num] %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1">
+                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
+                    </th>
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2">
+                        {{ model[item.num][1].sum_points(model['checklist'].pages[index]) }}
+                    </th>
+                {% else %}
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1"></th>
+                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></th>
+                {% endif %}
             {% endfor %}
         </tr>
         {% for question in model['checklist'].pages[index].questions %}
@@ -215,7 +236,9 @@
             {% for item in model['kiosks'] %}
                 {% if model[item.num] %}
                     <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0][question.field_name]|points(question)}}
+                        {% if model[item.num][0].object_info.applies(question) %}
+                            {{ model[item.num][0][question.field_name]|points(question) }}
+                        {% endif %}
                     </td>
                 {% else %}
                     <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
@@ -225,7 +248,9 @@
                 {% if model[item.num] %}
                     {% if model[item.num]|length > 0 %}
                     <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0][question.field_name]|points(question)}}
+                        {% if model[item.num][0].object_info.applies(question) %}
+                            {{ model[item.num][0][question.field_name]|points(question) }}
+                        {% endif %}
                     </td>
                     {% else %}
                     <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
@@ -237,19 +262,23 @@
             {% for item in model['cafes'] %}
                 {% if model[item.num] %}
                     {% if model[item.num]|length > 0 %}
-                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0][question.field_name]|points(question)}}
-                    </td>
+                        <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                            {% if model[item.num][0].object_info.applies(question) %}
+                                {{ model[item.num][0][question.field_name]|points(question) }}
+                            {% endif %}
+                        </td>
                     {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                     {% if model[item.num]|length > 1 %}
-                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1][question.field_name]|points(question)}}
-                    </td>
+                        <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                            {% if model[item.num][1].object_info.applies(question) %}
+                                {{ model[item.num][1][question.field_name]|points(question) }}
+                            {% endif %}
+                        </td>
                     {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
+                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
                     {% endif %}
                 {% else %}
                     <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
@@ -509,19 +538,8 @@
 
 {% block scripts %}
 <script type="text/javascript">
-    require(['jquery', 'datatables'], function ($, dt) {
-        // $(document).ready(function() {
-        //     $('table').DataTable({
-        //         scrollY:        '400px',
-        //         scrollX:        true,
-        //         scrollCollapse: true,
-        //         fixedColumns:   { leftColumns: 2 },
-        //         paging:         false,
-        //         ordering:       false,
-        //         info:           false,
-        //         searching:      false
-        //     });
-        // });
+    require(['jquery'], function ($) {
+
     });
 </script>
 {% endblock %}

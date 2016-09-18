@@ -1,114 +1,10 @@
 [
     {
-        "object_num": "83",
-        "object_type": "АЗС киоск",
-        "object_title": "Лужники",
-        "object_address": "г. Москва, ул. Хамовнический вал, д. 40 , стр.1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "116",
-        "object_type": "АЗС киоск",
-        "object_title": "Филевская",
-        "object_address": "г. Москва, Б. Филевская ул., д. 5А",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "6",
-        "object_type": "АЗС киоск",
-        "object_title": "Уткина",
-        "object_address": "г. Москва, ул. Уткина, вл. 45-Б",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "8",
-        "object_type": "АЗС киоск",
-        "object_title": "Богородская",
-        "object_address": "г. Москва, ул. Богородский вал, д. 3-А, стр. 1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "9",
-        "object_type": "АЗС киоск",
-        "object_title": "Открытое шоссе",
-        "object_address": "г. Москва, Открытое шоссе, д. 14-Г, стр. 1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "4",
-        "object_type": "АЗС киоск",
-        "object_title": "Монтажная",
-        "object_address": "г. Москва, ул. Монтажная, д. 3-А, стр. 1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "7",
-        "object_type": "АЗС киоск",
-        "object_title": "Нахимовский",
-        "object_address": "г. Москва, Нахимовский пр-т, д. 10, стр. 1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "140",
-        "object_type": "АЗС киоск",
-        "object_title": "Ивантеевка",
-        "object_address": "МО, г. Ивантеевка, ул. Заводская, АЗС №5",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "14",
-        "object_type": "АЗС киоск",
-        "object_title": "Наро-Фоминск",
-        "object_address": "МО, г. Наро-Фоминск, ул. Кольцевая, д. 1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "15",
-        "object_type": "АЗС киоск",
-        "object_title": "Красково",
-        "object_address": "МО, Люберецкий р-н, п. Красково, Егорьевское шоссе, д. 6",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "32",
-        "object_type": "АЗС киоск",
-        "object_title": "Широкая",
-        "object_address": "г. Москва, Полярный проезд, влад. 6Б",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "38",
-        "object_type": "АЗС киоск",
-        "object_title": "Котельники",
-        "object_address": "МО, Люберецкий район, пос. Котельники, Дзержинское шоссе, строение 7/1",
-        "with_cafe": false,
-        "with_shop": false
-    },
-    {
-        "object_num": "10",
-        "object_type": "АЗК с магазином",
-        "object_title": "Щелковская",
-        "object_address": "г. Москва, Щелковское шоссе, МКАД 104км, д. 3 (внешняя сторона)",
-        "with_cafe": false,
-        "with_shop": true
-    },
-    {
-        "object_num": "12",
-        "object_type": "АЗК с магазином",
-        "object_title": "МКАД-39",
-        "object_address": "г. Москва, МКАД 39км (внешняя сторона) вл. 1, стр. 1",
-        "with_cafe": false,
+        "object_num": "RT-01",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Хрустальная",
+        "object_address": "ТО, г. Тверь, ул. Хрустальная, 6",
+        "with_cafe": true,
         "with_shop": true
     },
     {
@@ -116,22 +12,6 @@
         "object_type": "АЗК с магазином",
         "object_title": "Мытищи",
         "object_address": "г. Мытищи, ул. Мира, вл. 40",
-        "with_cafe": false,
-        "with_shop": true
-    },
-    {
-        "object_num": "5",
-        "object_type": "АЗК с магазином",
-        "object_title": "Северное Бутово",
-        "object_address": "г. Москва, Северное Бутово, ул. Куликовская, вл. 2, стр. 1",
-        "with_cafe": false,
-        "with_shop": true
-    },
-    {
-        "object_num": "22",
-        "object_type": "АЗК с магазином",
-        "object_title": "Гостилово",
-        "object_address": "МО, Воскресенский р-н, д. Гостилово, ул. Земляничная, д. 1 'а'",
         "with_cafe": false,
         "with_shop": true
     },
@@ -152,6 +32,62 @@
         "with_shop": true
     },
     {
+        "object_num": "4",
+        "object_type": "АЗС киоск",
+        "object_title": "Монтажная",
+        "object_address": "г. Москва, ул. Монтажная, д. 3-А, стр. 1",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "5",
+        "object_type": "АЗК с магазином",
+        "object_title": "Северное Бутово",
+        "object_address": "г. Москва, Северное Бутово, ул. Куликовская, вл. 2, стр. 1",
+        "with_cafe": false,
+        "with_shop": true
+    },
+    {
+        "object_num": "6",
+        "object_type": "АЗС киоск",
+        "object_title": "Уткина",
+        "object_address": "г. Москва, ул. Уткина, вл. 45-Б",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "7",
+        "object_type": "АЗС киоск",
+        "object_title": "Нахимовский",
+        "object_address": "г. Москва, Нахимовский пр-т, д. 10, стр. 1",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "8",
+        "object_type": "АЗС киоск",
+        "object_title": "Богородская",
+        "object_address": "г. Москва, ул. Богородский вал, д. 3-А, стр. 1",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "9",
+        "object_type": "АЗС киоск",
+        "object_title": "Открытое шоссе",
+        "object_address": "г. Москва, Открытое шоссе, д. 14-Г, стр. 1",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "10",
+        "object_type": "АЗК с магазином",
+        "object_title": "Щелковская",
+        "object_address": "г. Москва, Щелковское шоссе, МКАД 104км, д. 3 (внешняя сторона)",
+        "with_cafe": false,
+        "with_shop": true
+    },
+    {
         "object_num": "11",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "МКАД-26",
@@ -160,26 +96,42 @@
         "with_shop": true
     },
     {
-        "object_num": "17",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Малеевка",
-        "object_address": "МО, Клинский район, д. Малеевка, д. 90",
-        "with_cafe": true,
+        "object_num": "12",
+        "object_type": "АЗК с магазином",
+        "object_title": "МКАД-39",
+        "object_address": "г. Москва, МКАД 39км (внешняя сторона) вл. 1, стр. 1",
+        "with_cafe": false,
         "with_shop": true
     },
     {
-        "object_num": "24",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Хворостинино",
-        "object_address": "МО, Волоколамский р-н, городское поселение Волоколамск, д. Хворостинино, 121-й км а/д 'Москва-Балтия'",
-        "with_cafe": true,
-        "with_shop": true
+        "object_num": "14",
+        "object_type": "АЗС киоск",
+        "object_title": "Наро-Фоминск",
+        "object_address": "МО, г. Наро-Фоминск, ул. Кольцевая, д. 1",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "15",
+        "object_type": "АЗС киоск",
+        "object_title": "Красково",
+        "object_address": "МО, Люберецкий р-н, п. Красково, Егорьевское шоссе, д. 6",
+        "with_cafe": false,
+        "with_shop": false
     },
     {
         "object_num": "16",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "Ватутинки",
         "object_address": "МО, Ленинский район, пос. Ватутинки, 36 км Калужского ш.",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
+        "object_num": "17",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Малеевка",
+        "object_address": "МО, Клинский район, д. Малеевка, д. 90",
         "with_cafe": true,
         "with_shop": true
     },
@@ -200,14 +152,6 @@
         "with_shop": true
     },
     {
-        "object_num": "26",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Климовск",
-        "object_address": "МО, г. Климовск, ул. Индустриальная, д. 2А",
-        "with_cafe": true,
-        "with_shop": true
-    },
-    {
         "object_num": "20",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "Псарьки",
@@ -224,6 +168,14 @@
         "with_shop": true
     },
     {
+        "object_num": "22",
+        "object_type": "АЗК с магазином",
+        "object_title": "Гостилово",
+        "object_address": "МО, Воскресенский р-н, д. Гостилово, ул. Земляничная, д. 1 'а'",
+        "with_cafe": false,
+        "with_shop": true
+    },
+    {
         "object_num": "23",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "Маньково",
@@ -232,10 +184,26 @@
         "with_shop": true
     },
     {
+        "object_num": "24",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Хворостинино",
+        "object_address": "МО, Волоколамский р-н, городское поселение Волоколамск, д. Хворостинино, 121-й км а/д 'Москва-Балтия'",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
         "object_num": "25",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "Варварино",
         "object_address": "МО, Дмитровский р-н, г/п Деденево, д. Варварино, д. 41",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
+        "object_num": "26",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Климовск",
+        "object_address": "МО, г. Климовск, ул. Индустриальная, д. 2А",
         "with_cafe": true,
         "with_shop": true
     },
@@ -272,6 +240,38 @@
         "with_shop": true
     },
     {
+        "object_num": "31",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Солнечногорск",
+        "object_address": "МО, г. Солнечногорск, шоссе Ленинградское, 67 км а/д Москва-Санкт-Петербург",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
+        "object_num": "32",
+        "object_type": "АЗС киоск",
+        "object_title": "Широкая",
+        "object_address": "г. Москва, Полярный проезд, влад. 6Б",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "33",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Енисейская",
+        "object_address": "г. Москва. Бабушкинский р-н, ул. Енисейская, влад. 46",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
+        "object_num": "34",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Бакунино",
+        "object_address": "МО, Коломенский р-н, с/п Радужное, д. Бакунино",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
         "object_num": "35",
         "object_type": "АЗК с магазином и кафе",
         "object_title": "Ногинск",
@@ -296,12 +296,12 @@
         "with_shop": true
     },
     {
-        "object_num": "31",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Солнечногорск",
-        "object_address": "МО, г. Солнечногорск, шоссе Ленинградское, 67 км а/д Москва-Санкт-Петербург",
-        "with_cafe": true,
-        "with_shop": true
+        "object_num": "38",
+        "object_type": "АЗС киоск",
+        "object_title": "Котельники",
+        "object_address": "МО, Люберецкий район, пос. Котельники, Дзержинское шоссе, строение 7/1",
+        "with_cafe": false,
+        "with_shop": false
     },
     {
         "object_num": "39",
@@ -310,31 +310,7 @@
         "object_address": "МО, г. Домодедово, Каширское ш., 54 км, стр. 2",
         "with_cafe": true,
         "with_shop": true
-    },
-    {
-        "object_num": "RT-01",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Хрустальная",
-        "object_address": "ТО, г. Тверь, ул. Хрустальная, 6",
-        "with_cafe": true,
-        "with_shop": true
-    },
-    {
-        "object_num": "33",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Енисейская",
-        "object_address": "г. Москва. Бабушкинский р-н, ул. Енисейская, влад. 46",
-        "with_cafe": true,
-        "with_shop": true
-    },
-    {
-        "object_num": "34",
-        "object_type": "АЗК с магазином и кафе",
-        "object_title": "Бакунино",
-        "object_address": "МО, Коломенский р-н, с/п Радужное, д. Бакунино",
-        "with_cafe": true,
-        "with_shop": true
-    },
+    },    
     {
         "object_num": "40",
         "object_type": "АЗК с магазином и кафе",
@@ -382,5 +358,29 @@
         "object_address": "МО, г. Раменское, Северное шоссе, д.1",
         "with_cafe": true,
         "with_shop": true
+    },
+    {
+        "object_num": "83",
+        "object_type": "АЗС киоск",
+        "object_title": "Лужники",
+        "object_address": "г. Москва, ул. Хамовнический вал, д. 40 , стр.1",
+        "with_cafe": false,
+        "with_shop": true
+    },
+    {
+        "object_num": "116",
+        "object_type": "АЗС киоск",
+        "object_title": "Филевская",
+        "object_address": "г. Москва, Б. Филевская ул., д. 5А",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
+        "object_num": "140",
+        "object_type": "АЗС киоск",
+        "object_title": "Ивантеевка",
+        "object_address": "МО, г. Ивантеевка, ул. Заводская, АЗС №5",
+        "with_cafe": false,
+        "with_shop": false
     }
 ]

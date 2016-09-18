@@ -129,7 +129,11 @@ def annual_reports():
         reports_list.append(report_item)
         # roll to next month
         start_date = next_date
-    return render_template('annual_list.html', model=reports_list)
+    return render_template(
+        'annual_list.html',
+        model=reports_list,
+        title='Отчеты'
+    )
 
 
 @member_ui.route('/annual/<date>')
@@ -173,10 +177,15 @@ def annual_month(date):
             key=lambda x: x.date)
         for x in rprt[item.num]:
             calc_points(x, item)
-    return render_template('annual_month.html', model=rprt)
+    return render_template(
+        'annual_month.html',
+        model=rprt,
+        title='Отчет за {0}'.format(start_date.strftime('%B %Y'))
+    )
 
 
 def add_one_month(dt0):
+    """ Return date more then specified on one month """
     dt1 = dt0.replace(day=1)
     dt2 = dt1 + timedelta(days=32)
     dt3 = dt2.replace(day=1)
@@ -192,10 +201,15 @@ def calc_points(rprt, object_info):
         pg = database.checklist.pages[i]
         m = m + pg.max_cost(object_info)
         for q in pg.questions:
-            answer = rprt.get(q.field_name) == 'yes'
-            if q.optional and rprt.get(q.field_name) == 'n/a' and not object_info.num in q.excepts: 
-                m = m -  pg.cost
-            p = p + (pg.cost if answer else 0)
+            answer = rprt.get(q.field_name)
+            if answer is None:
+                answer = 'n/a'
+            answer_yes = answer == 'yes'
+            if not object_info.applies(q):
+                continue
+            if q.optional and answer == 'n/a' and not object_info.num in q.excepts: 
+                m = m - pg.cost
+            p = p + (pg.cost if answer_yes else 0)
     rprt.max_points = m
     rprt.points = p
     rprt.points_percent = p/m*100
