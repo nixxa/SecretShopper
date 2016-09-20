@@ -154,7 +154,10 @@ def annual_reports():
 @member_ui.route('/annual/<date>')
 @authorize
 def annual_month(date):
-    """ Render annual month report """
+    """
+    Render annual month report
+    :type date: str
+    """
     rprt = dict()
     database = DataProvider()
     month = datetime.strptime(date, '%Y%m%d')
