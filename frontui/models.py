@@ -1,6 +1,7 @@
 """ Data models """
+import logging
 from datetime import datetime
-from frontui.linq import where
+from frontui.linq import where, has_any
 
 
 class ObjectInfo:
@@ -146,17 +147,16 @@ class Checklist:
         self.create_date = datetime.utcnow()
         self.verify_date = None
         self.date = None
-        self.files = list()        
+        self.files = list()
+        self.visited_by = dict()
         if json_data is not None:
-            self.__dict__ = json_data
+            self.__dict__.update(json_data)
             if 'create_date' in json_data:
-                self.create_date = datetime.strptime(
-                    json_data['create_date'],
-                    '%Y-%m-%dT%H:%M:%S')
+                self.create_date = \
+                    datetime.strptime(json_data['create_date'], '%Y-%m-%dT%H:%M:%S')
             if 'p1_r1' in json_data:
-                self.date = datetime.strptime(
-                    json_data['p1_r1'],
-                    '%Y-%m-%d')
+                self.date = \
+                    datetime.strptime(json_data['p1_r1'],'%Y-%m-%d')
         self.max_points = 0
         self.points = 0
         self.points_percent = 0
@@ -174,3 +174,35 @@ class Checklist:
     def get(self, field_name):
         """ Return field value """
         return self.__dict__[field_name] if field_name in self.__dict__ else None
+
+    def visit_by(self, username):
+        """ Set checklist visited by user """
+        self.visited_by[username] = datetime.utcnow()
+        return
+
+
+class UserActionInfo:
+    """ Defines user's information (actions time, last login time) """
+
+    def __init__(self, json_data=None):
+        self.username = None
+        self.last_login_time = datetime(2000, 1, 1)
+        self.last_edit_time = datetime(2000, 1, 1)
+        if (json_data is not None):
+            if 'username' in json_data:
+                self.username = json_data['username']
+            if 'last_login_time' in json_data and json_data['last_login_time'] is not None:
+                self.last_login_time = datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
+            if 'last_login_time' in json_data and json_data['last_login_time'] is not None:
+                self.last_login_time = datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
+        return
+
+    def update_login_time(self):
+        """ Update last login time, shift last to prev """
+        self.last_login_time = datetime.utcnow()
+        return
+
+    def update_edit_time(self):
+        """ Update last edit time, shift last to prev """
+        self.last_edit_time = datetime.utcnow()
+        return

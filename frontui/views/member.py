@@ -1,8 +1,9 @@
 """ Reports, administration """
 #pylint: disable=line-too-long
 
+import logging
 from datetime import datetime, timedelta
-from flask import render_template, request, Blueprint, redirect
+from flask import render_template, request, Blueprint, redirect, session
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count
@@ -16,7 +17,6 @@ def reports():
     database = DataProvider()
     objects = database.objects
     checklists = dict()
-    new_checklists = dict()
     # fill all checklists
     for item in database.checklists:
         num = item.object_info.num
@@ -24,16 +24,28 @@ def reports():
             checklists[num] = list()
         checklists[num].append(item)
     # fill only new checklists
+    new_checklists = dict()
     for item in [x for x in database.checklists if x.state == 'new']:
         num = item.object_info.num
         if num not in new_checklists:
             new_checklists[num] = list()
         new_checklists[num].append(item)
+    # fill 'new from last visit' collection
+    current_user = session['user_name']
+    new_from_last_visit = dict()
+    for item in [x for x in database.checklists if x.state == 'new']:
+        num = item.object_info.num
+        if current_user not in item.visited_by:
+            new_from_last_visit[num] = 1
+        else:
+            new_from_last_visit[num] = 0
+    # render template
     return render_template(
         'reports.html',
         objects=objects,
         checklists=checklists,
         new_checklists=new_checklists,
+        new_from_last_visit=new_from_last_visit,
         title='Отчеты'
     )
 
@@ -71,7 +83,10 @@ def reports_by_object(obj_num):
 def report(uid):
     """ Render object report for verify """
     database = DataProvider()
+    # get checklist and show it in edit mode
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    item.visit_by(session['user_name'])
+    database.update_checklist(item)
     questions = database.checklist
     return render_template(
         'checklist_edit.html',
