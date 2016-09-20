@@ -11,16 +11,18 @@
             <th>Имя объекта</th>
             <th>Всего отчетов</th>
             <th>Новых отчетов</th>
+            <th>В работе</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         {% for obj in objects|sort(attribute='sort_num') %}
-            <tr {% if new_from_last_visit[obj.num] == 1 %}class="bg-danger"{% endif %}>
+            <tr {% if new_from_last_visit[obj.num] == True %}class="bg-danger"{% endif %}>
                 <td>{{obj.num}}</td>
                 <td>{{obj.type}}-{{obj.title}}<br/><small>{{obj.address}}</small></td>
                 <td>{{ checklists[obj.num]|length }}</td>
                 <td>{{ new_checklists[obj.num]|length }}</td>
+                <td>{{ staged_checklists[obj.num]|length }}</td>
                 <td>
                     <a href="/reports/{{obj.num}}">подробнее</a>
                 </td>

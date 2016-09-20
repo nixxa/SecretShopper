@@ -23,28 +23,34 @@ def reports():
         if num not in checklists:
             checklists[num] = list()
         checklists[num].append(item)
-    # fill only new checklists
-    new_checklists = dict()
-    for item in [x for x in database.checklists if x.state == 'new']:
-        num = item.object_info.num
-        if num not in new_checklists:
-            new_checklists[num] = list()
-        new_checklists[num].append(item)
-    # fill 'new from last visit' collection
     current_user = session['user_name']
     new_from_last_visit = dict()
+    # fill only new checklists (not seen by someone)
+    new_checklists = dict()
+    visited_checklists = dict()
     for item in [x for x in database.checklists if x.state == 'new']:
         num = item.object_info.num
         if current_user not in item.visited_by:
-            new_from_last_visit[num] = 1
+            new_from_last_visit[num] = True
         else:
-            new_from_last_visit[num] = 0
+            if num in new_from_last_visit:
+                new_from_last_visit[num] = False or new_from_last_visit[num]
+            else:
+                new_from_last_visit[num] = False
+        if num not in new_checklists:
+            new_checklists[num] = list()
+            visited_checklists[num] = list()
+        if len(item.visited_by) == 0:
+            new_checklists[num].append(item)
+        else:
+            visited_checklists[num].append(item)
     # render template
     return render_template(
         'reports.html',
         objects=objects,
         checklists=checklists,
         new_checklists=new_checklists,
+        staged_checklists=visited_checklists,
         new_from_last_visit=new_from_last_visit,
         title='Отчеты'
     )
