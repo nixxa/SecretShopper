@@ -1,8 +1,9 @@
 """ Reports, administration """
 #pylint: disable=line-too-long
 
+import logging
 from datetime import datetime, timedelta
-from flask import render_template, request, Blueprint, redirect
+from flask import render_template, request, Blueprint, redirect, session
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count
@@ -16,7 +17,6 @@ def reports():
     database = DataProvider()
     objects = database.objects
     checklists = dict()
-    new_checklists = dict()
     # fill all checklists
     for item in database.checklists:
         num = item.object_info.num
@@ -24,16 +24,28 @@ def reports():
             checklists[num] = list()
         checklists[num].append(item)
     # fill only new checklists
+    new_checklists = dict()
     for item in [x for x in database.checklists if x.state == 'new']:
         num = item.object_info.num
         if num not in new_checklists:
             new_checklists[num] = list()
         new_checklists[num].append(item)
+    # fill 'new from last visit' collection
+    current_user = session['user_name']
+    new_from_last_visit = dict()
+    for item in [x for x in database.checklists if x.state == 'new']:
+        num = item.object_info.num
+        if current_user not in item.visited_by:
+            new_from_last_visit[num] = 1
+        else:
+            new_from_last_visit[num] = 0
+    # render template
     return render_template(
         'reports.html',
         objects=objects,
         checklists=checklists,
         new_checklists=new_checklists,
+        new_from_last_visit=new_from_last_visit,
         title='Отчеты'
     )
 
@@ -71,7 +83,10 @@ def reports_by_object(obj_num):
 def report(uid):
     """ Render object report for verify """
     database = DataProvider()
+    # get checklist and show it in edit mode
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    item.visit_by(session['user_name'])
+    database.update_checklist(item)
     questions = database.checklist
     return render_template(
         'checklist_edit.html',
@@ -142,10 +157,15 @@ def annual_month(date):
     """ Render annual month report """
     rprt = dict()
     database = DataProvider()
-    start_date = datetime.strptime(date, '%Y%m%d')
-    end_date = add_one_month(start_date)
+    month = datetime.strptime(date, '%Y%m%d')
+    # calculate start date as week before 1 day of current month, if 1 day not Monday
+    start_date = shift_start_date(month)
+    logging.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
+    # calculate end date as week before 1day of next month, if 1 day not Monday
+    end_date = shift_end_date(add_one_month(month))
+    logging.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     rprt['checklist'] = database.checklist
-    rprt['date'] = start_date
+    rprt['date'] = month
     rprt['kiosks'] = sorted(
         where(database.objects, lambda x: x.with_shop == False and x.with_cafe == False),
         key=lambda x: x.sort_num)
@@ -185,15 +205,49 @@ def annual_month(date):
 
 
 def add_one_month(dt0):
-    """ Return date more then specified on one month """
+    """
+    Return date more then specified on one month
+    :type dt0: datetime
+    :rtype: datetime
+    """
     dt1 = dt0.replace(day=1)
     dt2 = dt1 + timedelta(days=32)
     dt3 = dt2.replace(day=1)
     return dt3
 
+def shift_start_date(dt):
+    """
+    Shift date for 1 week, if it is first day of month and not Monday
+    :type dt: datetime
+    :rtype: datetime
+    """
+    if dt.day != 1:
+        return dt
+    if dt.isoweekday() != 1:
+        dt = dt - timedelta(days=7)
+    return dt
+
+def shift_end_date(dt):
+    """
+    Shift date for 1 week, if it is first day of month and not Monday
+    :type dt: datetime
+    :rtype: datetime
+    """
+    if dt.day != 1:
+        return dt
+    if dt.isoweekday() != 1:
+        shift = 8 - dt.isoweekday()
+        dt = dt + timedelta(days=shift)
+        dt = dt - timedelta(days=8)
+    return dt
 
 def calc_points(rprt, object_info):
-    """ Calculate points for report """
+    """
+    Calculate points for report
+    :type rprt: models.Checklist
+    :type object_info: models.ObjectInfo
+    :rtype: models.Checklist
+    """
     database = DataProvider()
     p = 0
     m = 0

@@ -216,12 +216,21 @@
             {% endfor %}
             {% for item in model['cafes'] %}
                 {% if model[item.num] %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1">
-                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
-                    </th>
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2">
-                        {{ model[item.num][1].sum_points(model['checklist'].pages[index]) }}
-                    </th>
+                    {% if model[item.num]|length > 0 %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1">
+                            {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
+                        </th>
+                    {% else %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1"></th>
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></th>
+                    {% endif %}
+                    {% if model[item.num]|length > 1 %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2">
+                            {{ model[item.num][1].sum_points(model['checklist'].pages[index]) }}
+                        </th>
+                    {% else %}
+                        <td title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></td>
+                    {% endif %}
                 {% else %}
                     <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1"></th>
                     <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></th>

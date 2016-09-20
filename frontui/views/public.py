@@ -189,6 +189,8 @@ def upload():
             file_info['filetype'] = 'image'
         elif audio_file(filename):
             file_info['filetype'] = 'audio'
+        else:
+            file_info['filetype'] = 'document'
         # update checklist in DB
         database.update_checklist(item)
     return '', 200

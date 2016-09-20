@@ -1,9 +1,11 @@
 """ Auth decorator """
 import functools
 from flask import request, Response, session
+from frontui.data_provider import DataProvider
 
 USERS = [ 
     ('admin', 'secret', 'internal'),
+    ('anna', 'aprelevka', 'internal'),
     ('valar', 'valar', 'external')
 ]
 
