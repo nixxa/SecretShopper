@@ -471,10 +471,11 @@
     <div class="row">
         <div class="col-xs-12">
             {% if values.state == 'new' %}
-                <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
                 {% if edit_mode == 'verify' %}
+                    <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Сохранить</button>
                     <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
                 {% else %}
+                    <button type="button" class="btn btn-primary pull-right ml5" id="form-save">Проверено</button>
                     <a href="/" class="btn btn-default pull-right">Отмена</a>
                 {% endif %}
             {% else %}
