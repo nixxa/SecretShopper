@@ -276,7 +276,7 @@
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
         {% endif %}
-        {% if selected.with_cafe or selected.with_shop %}
+        {% if checklist.pages[6].max_questions(selected) > 0 %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title js-section-title">
