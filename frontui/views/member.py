@@ -4,6 +4,7 @@
 import logging
 from datetime import datetime, timedelta
 from flask import render_template, request, Blueprint, redirect, session, send_file
+from frontui import BASE_DIR
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count, select
@@ -240,7 +241,7 @@ def annual_excel_month(date):
             calc_points(rprt)
             cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-','_'), indx))
             fill_cells(rprt, cells)
-    workbook.save(filename='./frontui/files/report_%s.xlsx' % date)
+    workbook.save(filename=os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
 
 def add_one_month(dt0):
