@@ -230,7 +230,7 @@ def annual_excel_month(date):
     end_date = shift_end_date(add_one_month(month))
     logging.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     # generate report
-    workbook = load_workbook(filename='./frontui/app_data/valar_report_tmpl.xlsx')
+    workbook = load_workbook(os.path.join(BASE_DIR,'app_data/valar_report_tmpl.xlsx'))
     worksheet = workbook.active
     checklists = where(database.checklists, 
         lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
@@ -241,7 +241,7 @@ def annual_excel_month(date):
             calc_points(rprt)
             cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-','_'), indx))
             fill_cells(rprt, cells)
-    workbook.save(filename=os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
+    workbook.save(os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
 
 def add_one_month(dt0):
