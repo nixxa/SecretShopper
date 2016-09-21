@@ -31,6 +31,7 @@ venv/
 # Application debug data files
 frontui/app_data/checklists/**/*.json
 frontui/uploads/
+frontui/files/
 
 # VisualStudio files
 web.config

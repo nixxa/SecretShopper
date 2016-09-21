@@ -3,10 +3,11 @@
 
 import logging
 from datetime import datetime, timedelta
-from flask import render_template, request, Blueprint, redirect, session
+from flask import render_template, request, Blueprint, redirect, session, send_file
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
-from frontui.linq import first_or_default, where, count
+from frontui.linq import first_or_default, where, count, select
+from openpyxl import load_workbook
 
 member_ui = Blueprint('member', __name__)
 
@@ -193,25 +194,54 @@ def annual_month(date):
     for item in rprt['kiosks']:
         rprt[item.num] = where(checklists, lambda x: x.object_name == item.num)
         for x in rprt[item.num]:
-            calc_points(x, item)
+            calc_points(x)
     for item in rprt['shops']:
         rprt[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
         for x in rprt[item.num]:
-            calc_points(x, item)
+            calc_points(x)
     for item in rprt['cafes']:
         rprt[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
         for x in rprt[item.num]:
-            calc_points(x, item)
+            calc_points(x)
     return render_template(
         'annual_month.html',
         model=rprt,
         title='Отчет за {0}'.format(start_date.strftime('%B %Y'))
     )
 
+@member_ui.route('/annual/excel/<date>')
+@authorize
+def annual_excel_month(date):
+    """
+    Save report as excel file and return it
+    :type date: str
+    """
+    database = DataProvider()
+    month = datetime.strptime(date, '%Y%m%d')
+    # calculate start date as week before 1 day of current month, if 1 day not Monday
+    start_date = shift_start_date(month)
+    logging.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
+    # calculate end date as week before 1day of next month, if 1 day not Monday
+    end_date = shift_end_date(add_one_month(month))
+    logging.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
+    # generate report
+    workbook = load_workbook(filename='./frontui/app_data/valar_report_tmpl.xlsx')
+    worksheet = workbook.active
+    checklists = where(database.checklists, 
+        lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
+    objects = select(checklists, lambda x: x.object_info.num)
+    for obj in objects:
+        reports = where(checklists, lambda x: x.object_info.num == obj)
+        for indx, rprt in enumerate(reports, start=1):
+            calc_points(rprt)
+            cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-','_'), indx))
+            fill_cells(rprt, cells)
+    workbook.save(filename='./frontui/files/report_%s.xlsx' % date)
+    return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
 
 def add_one_month(dt0):
     """
@@ -250,14 +280,14 @@ def shift_end_date(dt):
         dt = dt - timedelta(days=8)
     return dt
 
-def calc_points(rprt, object_info):
+def calc_points(rprt):
     """
     Calculate points for report
     :type rprt: models.Checklist
-    :type object_info: models.ObjectInfo
     :rtype: models.Checklist
     """
     database = DataProvider()
+    object_info = rprt.object_info
     p = 0
     m = 0
     for i in range(1,8):
@@ -277,3 +307,33 @@ def calc_points(rprt, object_info):
     rprt.points = p
     rprt.points_percent = p/m*100
     return rprt
+
+def fill_cells(rprt, cells):
+    database = DataProvider()
+    checklist = database.checklist
+    cells[0].value = rprt.date.strftime('%d.%m.%Y')
+    cells[1].value = rprt.get('p1_r2')
+    cells[2].value = rprt.get('p1_r3')
+    cells[3].value = rprt.get('p1_r4')
+    cells[4].value = rprt.get('p1_r5')
+    cells[5].value = 'ТП'
+    cells[6].value = rprt.get('operator_fullname')
+    if rprt.object_info.with_cafe:
+        cells[7].value = rprt.get('accounter_fullname') + ' / ' + rprt.get('accounter_cafe_fullname')
+    else:
+        cells[7].value = rprt.get('accounter_fullname')
+    index = 8
+    for page_index, page in enumerate(checklist.pages):
+        if page_index >= 8 or page_index == 0:
+            continue
+        cells[index].value = rprt.sum_points(page)
+        index += 1
+        for q in page.questions:
+            cells[index].value = rprt.get_points(q.field_name, q)
+            index += 1
+    cells[index].value = rprt.max_points
+    index += 1
+    cells[index].value = rprt.points
+    index += 1
+    cells[index].value = rprt.points_percent
+    return cells

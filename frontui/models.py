@@ -64,6 +64,7 @@ class ObjectInfo:
             return True
         return (s in question.applies or self.num in question.applies) and not self.num in question.excepts
 
+
 class PageInfo:
     """ Page with questions """
     def __init__(self):
@@ -149,6 +150,7 @@ class QuestionInfo:
         if 'optional' in json_data:
             question.optional = True
         return question
+
 
 class ChecklistInfo:
     """ Questionnaire data """
@@ -241,6 +243,16 @@ class Checklist:
         """
         self.visited_by[username] = datetime.utcnow()
         return
+
+    def get_points(self, field_name, question):
+        """
+        Return point for answer
+        :type field_name: str
+        :type question: QuestionInfo
+        :rtype: int
+        """
+        answer = self.get(field_name)
+        return question.cost if answer == 'yes' else 0 if answer == 'no' else None
 
 
 class UserActionInfo:

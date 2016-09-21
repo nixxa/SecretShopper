@@ -11,6 +11,7 @@
             <th>Проверок</th>
             <th>Подтверждено</th>
             <th>Всего</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
             <td>{{ row.all }}</td>
             <td>{{ row.verified }}</td>
             <td>{{ row.total }}</td>
+            <td><a href="/annual/excel/{{row.date.strftime('%Y%m%d')}}">excel</a></td>
         </tr>
         {% endfor %}
         {% if model|length == 0 %}

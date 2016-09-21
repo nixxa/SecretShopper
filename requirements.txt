@@ -3,3 +3,4 @@ Flask-DebugToolbar==0.10.0
 easywebdav==1.2.0
 sendgrid==3.4.0
 python-http-client==2.2.1
+openpyxl==2.4.0
