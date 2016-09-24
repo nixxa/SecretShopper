@@ -26,7 +26,8 @@
                 <td>новый</td>
                 <td>
                     <a href="/checklist/view/{{obj.uid}}">добавить файлы</a><span class="ml5 mr5">/</span>
-                    <a href="/report/{{obj.uid}}">проверить</a>
+                    <a href="/report/{{obj.uid}}">проверить</a><span class="ml5 mr5">/</span>
+                    <a href="/report/remove/{{obj.uid}}" class="js-remove-report-btn">удалить</a>
                 </td>
             </tr>
         {% endfor %}
@@ -57,11 +58,17 @@
 {% block scripts %}
     <script type="text/javascript">
         require(['moment', 'jquery'], function (moment, $) {
+            // documenr.ready function
             $(function () {
                 moment.locale('ru');
                 $.each($('.js-datetime-from'), function () {
                     var $this = $(this);
                     $this.text(moment.utc($this.data('datetime')).format('D MMMM YYYY'));
+                });
+                $('.js-remove-report-btn').click(function (e) {
+                    if (!confirm('Вы действительно желаете удалить анкету?')) {
+                        e.preventDefault();
+                    }
                 });
             });
         });
