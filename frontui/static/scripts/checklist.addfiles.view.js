@@ -111,6 +111,8 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
             dropzone.emit('addedfile', file);
             if (value.filetype == 'image') {
                 dropzone.createThumbnailFromUrl(file, thumbnail);
+            } else if (value.filetype == 'document') {
+                dropzone.createThumbnailFromUrl(file, '/static/img/excelfile.png');
             }
             dropzone.emit('complete', file);
             //dropzone.options.maxFiles = dropzone.options.maxFiles - 1;

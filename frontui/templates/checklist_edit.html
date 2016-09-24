@@ -448,11 +448,20 @@
             {% for f in values.files %}
                 {% if f['filetype'] == 'image' %}
                     <a href="/uploads/{{values.uid}}/{{f['filename']}}" target="_blank">
-                    <img src="/uploads/{{values.uid}}/{{f['filename']}}" 
-                        alt="{{ f['filename'] }}" 
-                        class="img-thumbnail"
-                        width="150"
-                        height="150"></a>
+                        <img src="/uploads/{{values.uid}}/{{f['filename']}}" 
+                            alt="{{ f['filename'] }}" 
+                            class="img-thumbnail"
+                            width="150"
+                            height="150">
+                    </a>
+                {% elif f['filetype'] == 'document' %}
+                    <a href="/uploads/{{values.uid}}/{{f['filename']}}" target="_blank">
+                        <img src="/static/img/excelfile.png" 
+                            alt="{{ f['filename'] }}" 
+                            class="img-thumbnail"
+                            width="150"
+                            height="150">
+                    </a>
                 {% endif %}
             {% endfor %}
             <h4>Аудио</h4>
