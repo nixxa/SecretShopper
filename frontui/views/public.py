@@ -3,13 +3,14 @@
 
 import uuid
 import os
-from datetime import datetime, timedelta
-from flask import render_template, request, Blueprint, current_app, redirect, session, send_file
+from datetime import datetime
+from flask import render_template, request, Blueprint, current_app, session, send_file
 from werkzeug.utils import secure_filename
 from frontui.data_provider import DataProvider
 from frontui.linq import first_or_default
 from frontui.sendmail import MailProvider
-from frontui.views import public, member
+from frontui.views import ALLOWED_EXTENSIONS, IMAGE_EXTENSIONS, AUDIO_EXTENSIONS, EXCEL_EXTENSIONS
+
 
 public_ui = Blueprint('ui', __name__)
 
@@ -226,12 +227,12 @@ def remove_file(uid, filename):
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 def image_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in IMAGE_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS
 
 
 def audio_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in AUDIO_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in AUDIO_EXTENSIONS
