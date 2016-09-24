@@ -126,11 +126,11 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
             var MAX_WIDTH = 800;
             var MAX_HEIGHT = 800;
             var reader = new FileReader();
-            var imageExts = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'];
+            var imageExts = ['jpg', 'jpeg', 'png', 'gif'];
 
             // Convert file to img
             reader.addEventListener("load", function (event) {
-                var fileExt = origFile.name.split('.').pop();
+                var fileExt = origFile.name.split('.').pop().toLowerCase();
                 if ($.inArray(fileExt, imageExts) < 0) {
                     dropzone.enqueueFile(origFile);
                     return;

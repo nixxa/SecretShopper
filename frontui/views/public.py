@@ -7,10 +7,9 @@ from datetime import datetime, timedelta
 from flask import render_template, request, Blueprint, current_app, redirect, session, send_file
 from werkzeug.utils import secure_filename
 from frontui.data_provider import DataProvider
-from frontui.auth import authorize
-from frontui.linq import first_or_default, where, count
+from frontui.linq import first_or_default
 from frontui.sendmail import MailProvider
-from frontui.views import *
+from frontui.views import public, member
 
 public_ui = Blueprint('ui', __name__)
 
@@ -196,18 +195,6 @@ def upload():
     return '', 200
 
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
-def image_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS
-
-
-def audio_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in AUDIO_EXTENSIONS
-
-
 @public_ui.route('/uploads/<uid>/<filename>')
 def view_file(uid, filename):
     """ Return saved filename """
@@ -236,3 +223,15 @@ def remove_file(uid, filename):
     os.remove(file_info['local_path'])
     database.update_checklist(item)
     return '', 200
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def image_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in IMAGE_EXTENSIONS
+
+
+def audio_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in AUDIO_EXTENSIONS

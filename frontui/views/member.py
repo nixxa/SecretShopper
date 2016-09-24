@@ -311,6 +311,9 @@ def calc_points(rprt):
     return rprt
 
 def fill_cells(rprt, cells):
+    """
+    Fill report cells with data
+    """
     database = DataProvider()
     checklist = database.checklist
     cells[0].value = rprt.date.strftime('%d.%m.%Y')
@@ -338,4 +341,16 @@ def fill_cells(rprt, cells):
     cells[index].value = rprt.points
     index += 1
     cells[index].value = rprt.points_percent
+    index += 1
+    cells[index].value = rprt.get('p8_r1')
+    index += 1
+    cells[index].value = rprt.get('p8_r5')
+    index += 1
+    cells[index].value = rprt.get('p8_r6')
+    index += 1
+    cells[index].value = rprt.get('p8_r7')
+    index += 1
+    cells[index].value = rprt.get('p8_r3')
+    index += 1
+    cells[index].value = rprt.get('p9_r1')
     return cells
