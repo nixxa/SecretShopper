@@ -3,6 +3,36 @@ from datetime import datetime
 from frontui.linq import where
 
 
+class User:
+    """
+    Application User
+    """
+    def __init__(self, json_data=None):
+        self.username = ''
+        self.password = ''
+        self.rolename = ''
+        self.parse(json_data)
+        return
+
+    def parse(self, json_data):
+        """
+        Parse json and fill current user with data
+        :type json_data: str
+        """
+        if json_data is None:
+            return
+        if 'username' in json_data:
+            self.username = json_data['username']
+        if 'password' in json_data:
+            self.password = json_data['password']
+        if 'rolename' in json_data:
+            self.rolename = json_data['rolename']
+        return
+
+    def __repr__(self):
+        return "{ user: %s }" % self.username
+
+
 class ObjectInfo:
     """ Object info """
     def __init__(self, json_data=None):

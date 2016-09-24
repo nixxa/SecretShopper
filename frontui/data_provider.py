@@ -6,11 +6,12 @@ import frontui.linq as linq
 import datetime
 import logging
 from frontui import BASE_DIR
-from frontui.models import ObjectInfo, ChecklistInfo, Checklist, UserActionInfo
+from frontui.models import ObjectInfo, ChecklistInfo, Checklist, UserActionInfo, User
 
 VISITS_FILENAME = 'app_data/user_visits.json'
 OBJECTS_FILENAME = 'app_data/objects.json'
 CHECKLIST_FILENAME = 'app_data/checklist.json'
+USERS_FILENAME = 'app_data/users.json'
 
 class DateTimeAwareEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -41,6 +42,7 @@ class DataProvider(Singleton):
         self.data_dir = os.path.join(BASE_DIR, 'app_data')
         self.checklists_dir = os.path.join(self.data_dir, 'checklists')
         self.user_visits = dict()
+        self.users = list()
         # fill data from files
         # load objects
         with open(os.path.join(BASE_DIR, OBJECTS_FILENAME), 'r', encoding='utf8') as objects_file:
@@ -74,6 +76,12 @@ class DataProvider(Singleton):
                 json_data = json.load(visits_file)
                 for key in json_data:
                     self.user_visits[key] = UserActionInfo(json_data[key])
+        # load users
+        if os.path.exists(os.path.join(BASE_DIR, USERS_FILENAME)):
+            with open(os.path.join(BASE_DIR, USERS_FILENAME), 'r', encoding='utf8') as users_file:
+                json_data = json.load(users_file)
+                for user_data in json_data:
+                    self.users.append(User(user_data))
         return
 
     def add_object(self, obj):

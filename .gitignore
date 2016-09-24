@@ -32,6 +32,7 @@ venv/
 frontui/app_data/checklists/**/*.json
 frontui/uploads/
 frontui/files/
+frontui/app_data/users.json
 
 # VisualStudio files
 web.config

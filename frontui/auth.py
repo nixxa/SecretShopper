@@ -2,24 +2,20 @@
 import functools
 from flask import request, Response, session
 from frontui.data_provider import DataProvider
+from frontui.linq import first_or_default
 
-USERS = [ 
-    ('admin', 'secret', 'internal'),
-    ('anna', 'aprelevka', 'internal'),
-    ('valar', 'valar', 'external')
-]
 
 def check_auth(username, password):
     """ Checks credentials """
-    completed = False
-    for item in USERS:
-        checked = item[0] == username and item[1] == password
-        if checked:
-            session['user_name'] = item[0]
-            session['user_role'] = item[2]
-        completed = completed or checked
-    return completed
-
+    database = DataProvider()
+    current_user = first_or_default(database.users, lambda x: x.username == username)
+    if current_user is None:
+        return False
+    if current_user.password != password:
+        return False
+    session['user_name'] = current_user.username
+    session['user_role'] = current_user.rolename
+    return True
 
 def authenticate():
     """ Sends 401 response """
@@ -29,7 +25,6 @@ def authenticate():
         401,
         {'WWW-Authenticate': 'Basic realm="SecretShopper"'}
     )
-
 
 def authorize(route):
     """ Auth decorator """
