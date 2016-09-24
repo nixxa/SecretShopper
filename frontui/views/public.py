@@ -159,40 +159,41 @@ def upload():
     file = request.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
-    if file.filename == '':
+    if not file or file.filename == '':
         return 'No selected file', 500
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        # create dir for checklist
-        filedir = os.path.join(
-            current_app.config['UPLOAD_FOLDER'],
-            item.date.strftime('%Y'),
-            item.date.strftime('%m'),
-            item.object_info.num,
-            uid)
-        if not os.path.exists(filedir):
-            os.makedirs(filedir)
-        filepath = os.path.join(filedir, filename)
-        file.save(filepath)
-        # save file info in checklist
-        if item.files is None:
-            item.files = list()
-        file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
-        if file_info is None:
-            file_info = dict()
-            item.files.append(file_info)
-        file_info['filename'] = filename
-        file_info['local_path'] = filepath
-        file_info['size'] = os.path.getsize(filepath)
-        file_info['remote_path'] = ''
-        if image_file(filename):
-            file_info['filetype'] = 'image'
-        elif audio_file(filename):
-            file_info['filetype'] = 'audio'
-        else:
-            file_info['filetype'] = 'document'
-        # update checklist in DB
-        database.update_checklist(item)
+    if not allowed_file(file.filename):
+        return 'File %s is not allowed' % file.filename, 500
+    filename = secure_filename(file.filename)
+    # create dir for checklist
+    filedir = os.path.join(
+        current_app.config['UPLOAD_FOLDER'],
+        item.date.strftime('%Y'),
+        item.date.strftime('%m'),
+        item.object_info.num,
+        uid)
+    if not os.path.exists(filedir):
+        os.makedirs(filedir)
+    filepath = os.path.join(filedir, filename)
+    file.save(filepath)
+    # save file info in checklist
+    if item.files is None:
+        item.files = list()
+    file_info = first_or_default(item.files, lambda x: x['filename'] == filename)
+    if file_info is None:
+        file_info = dict()
+        item.files.append(file_info)
+    file_info['filename'] = filename
+    file_info['local_path'] = filepath
+    file_info['size'] = os.path.getsize(filepath)
+    file_info['remote_path'] = ''
+    if image_file(filename):
+        file_info['filetype'] = 'image'
+    elif audio_file(filename):
+        file_info['filetype'] = 'audio'
+    else:
+        file_info['filetype'] = 'document'
+    # update checklist in DB
+    database.update_checklist(item)
     return '', 200
 
 
@@ -227,12 +228,18 @@ def remove_file(uid, filename):
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+    fext = os.path.splitext(filename)[1].lower()
+    import logging
+    logging.debug(fext)
+    logging.debug(fext in ALLOWED_EXTENSIONS)
+    return fext in ALLOWED_EXTENSIONS
 
 
 def image_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS
+    fext = os.path.splitext(filename)[1].lower()
+    return fext in IMAGE_EXTENSIONS
 
 
 def audio_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in AUDIO_EXTENSIONS
+    fext = os.path.splitext(filename)[1].lower()
+    return fext in AUDIO_EXTENSIONS
