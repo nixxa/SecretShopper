@@ -152,7 +152,10 @@ class DataProvider(Singleton):
         logger.info('Removing checklist uploads: %s', checklist.uid)
         uploads_dir = self.get_uploads_dir(checklist)
         backup_uploads_dir = uploads_dir + '.bak'
-        shutil.move(uploads_dir, backup_uploads_dir)
+        try:
+            shutil.move(uploads_dir, backup_uploads_dir)
+        except Exception as e:
+            logger.exception('Cant remove uploads dir')
         return
 
     def get_user_action(self, username):
