@@ -125,6 +125,21 @@ def verify():
     return redirect('/reports')
 
 
+@member_ui.route('/report/remove/<uid>')
+@authorize
+def remove_report(uid):
+    """
+    Remove checklist and it's files completely
+    """
+    database = DataProvider()
+    # get checklist and show it in edit mode
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    if item is None:
+        return redirect('/reports')
+    obj_num = item.object_info.num
+    return redirect('/reports/%s' % obj_num)
+
+
 @member_ui.route('/annual/all')
 @authorize
 def annual_reports():

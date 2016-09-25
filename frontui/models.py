@@ -207,7 +207,9 @@ class ChecklistInfo:
 
 
 class Checklist:
-    """ Filled checklist with data """
+    """
+    Filled checklist with data
+    """
     def __init__(self, json_data=None):
         self.uid = None
         self.object_info = None
