@@ -30,6 +30,7 @@ venv/
 
 # Application debug data files
 frontui/app_data/checklists/**/*.json
+frontui/app_data/checklists/**/*.bak
 frontui/uploads/
 frontui/files/
 frontui/app_data/users.json

@@ -5,6 +5,7 @@ import re
 import sendgrid
 from sendgrid.helpers.mail import Email, Mail, Content
 
+logger = logging.getLogger(__name__)
 
 class MailProvider:
     """ Provider for sending e-mails """
@@ -17,7 +18,7 @@ class MailProvider:
         # check email 
         match = re.match(r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', author_mail)
         if match == None:
-            logging.error('E-mail adddress %s is wrong', author_mail)
+            logger.error('E-mail adddress %s is wrong', author_mail)
             return
         sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
         from_email = Email('noreply@secret-shopper.net')
@@ -33,5 +34,5 @@ class MailProvider:
         mail = Mail(from_email, subject, to_email, content)
         mail_response = sg.client.mail.send.post(request_body=mail.get())
         if mail_response.status_code != 202:
-            logging.error('Cant send email. Error is "%s"', mail_response.body)
+            logger.error('Cant send email. Error is "%s"', mail_response.body)
         return

@@ -12,6 +12,7 @@ from frontui.linq import first_or_default, where, count, select
 from openpyxl import load_workbook
 
 member_ui = Blueprint('member', __name__)
+logger = logging.getLogger(__name__)
 
 @member_ui.route('/reports')
 @authorize
@@ -137,6 +138,7 @@ def remove_report(uid):
     if item is None:
         return redirect('/reports')
     obj_num = item.object_info.num
+    database.remove_checklist(checklist=item)
     return redirect('/reports/%s' % obj_num)
 
 
@@ -187,10 +189,10 @@ def annual_month(date):
     month = datetime.strptime(date, '%Y%m%d')
     # calculate start date as week before 1 day of current month, if 1 day not Monday
     start_date = shift_start_date(month)
-    logging.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
+    logger.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
     # calculate end date as week before 1day of next month, if 1 day not Monday
     end_date = shift_end_date(add_one_month(month))
-    logging.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
+    logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     rprt['checklist'] = database.checklist
     rprt['date'] = month
     rprt['kiosks'] = sorted(
@@ -241,10 +243,10 @@ def annual_excel_month(date):
     month = datetime.strptime(date, '%Y%m%d')
     # calculate start date as week before 1 day of current month, if 1 day not Monday
     start_date = shift_start_date(month)
-    logging.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
+    logger.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
     # calculate end date as week before 1day of next month, if 1 day not Monday
     end_date = shift_end_date(add_one_month(month))
-    logging.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
+    logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     # generate report
     workbook = load_workbook(os.path.join(BASE_DIR,'app_data/valar_report_tmpl.xlsx'))
     worksheet = workbook.active

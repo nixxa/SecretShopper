@@ -5,6 +5,7 @@ import os
 import frontui.linq as linq
 import datetime
 import logging
+import shutil
 from frontui import BASE_DIR
 from frontui.models import ObjectInfo, ChecklistInfo, Checklist, UserActionInfo, User
 
@@ -12,6 +13,9 @@ VISITS_FILENAME = 'app_data/user_visits.json'
 OBJECTS_FILENAME = 'app_data/objects.json'
 CHECKLIST_FILENAME = 'app_data/checklist.json'
 USERS_FILENAME = 'app_data/users.json'
+UPLOADS_DIR = os.path.join(BASE_DIR, 'uploads')
+
+logger = logging.getLogger(__name__)
 
 class DateTimeAwareEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -27,7 +31,7 @@ class Singleton(object):
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not isinstance(cls._instance, cls):
-            logging.debug('Create new instance of DataProvider')
+            logger.debug('Create new instance of DataProvider')
             cls._instance = object.__new__(cls, *args, **kwargs)
         return cls._instance
 
@@ -84,6 +88,18 @@ class DataProvider(Singleton):
                     self.users.append(User(user_data))
         return
 
+    def get_uploads_dir(self, checklist):
+        """
+        Return folder for uploads
+        """
+        filedir = os.path.join(
+            UPLOADS_DIR,
+            checklist.date.strftime('%Y'),
+            checklist.date.strftime('%m'),
+            checklist.object_info.num,
+            checklist.uid)
+        return filedir
+
     def add_object(self, obj):
         """ Add object to collection """
         self.objects.append(obj)
@@ -119,12 +135,32 @@ class DataProvider(Singleton):
             file.write(obj_json)
         return
 
+    def remove_checklist(self, checklist=None, uid=None):
+        if checklist is None and uid is None:
+            return
+        if uid is not None:
+            checklist = linq.first_or_default(self.checklists, lambda x: x.uid == uid)
+        if checklist is None:
+            return
+        # rename checklist file
+        logger.info('Removing checklist: %s', checklist.uid)
+        filedir = os.path.join(self.checklists_dir, checklist.object_info.num)
+        filename = checklist.date.strftime('%Y-%m-%d') + '.json'
+        backup_filename = checklist.date.strftime('%Y-%m-%d') + '.json.bak'
+        shutil.move(os.path.join(filedir, filename), os.path.join(filedir, backup_filename))
+        # rename uploads
+        logger.info('Removing checklist uploads: %s', checklist.uid)
+        uploads_dir = self.get_uploads_dir(checklist)
+        backup_uploads_dir = uploads_dir + '.bak'
+        shutil.move(uploads_dir, backup_uploads_dir)
+        return
+
     def get_user_action(self, username):
         """ 
         :rtype: UserActionInfo 
         """
         if username not in self.user_visits:
-            logging.debug('Create new UserActionInfo for %s', username)
+            logger.debug('Create new UserActionInfo for %s', username)
             obj = UserActionInfo()
             obj.username = username
             obj.last_edit_time = datetime.datetime(2000, 1, 1)

@@ -165,12 +165,7 @@ def upload():
         return 'File %s is not allowed' % file.filename, 500
     filename = secure_filename(file.filename)
     # create dir for checklist
-    filedir = os.path.join(
-        current_app.config['UPLOAD_FOLDER'],
-        item.date.strftime('%Y'),
-        item.date.strftime('%m'),
-        item.object_info.num,
-        uid)
+    filedir = database.get_uploads_dir(item)
     if not os.path.exists(filedir):
         os.makedirs(filedir)
     filepath = os.path.join(filedir, filename)
@@ -229,9 +224,6 @@ def remove_file(uid, filename):
 
 def allowed_file(filename):
     fext = os.path.splitext(filename)[1].lower()
-    import logging
-    logging.debug(fext)
-    logging.debug(fext in ALLOWED_EXTENSIONS)
     return fext in ALLOWED_EXTENSIONS
 
 

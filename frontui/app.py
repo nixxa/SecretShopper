@@ -1,5 +1,6 @@
 """ Creat and init application """
 import logging
+from logging.handlers import TimedRotatingFileHandler
 import os
 from flask import Flask
 from frontui import BASE_DIR
@@ -15,21 +16,11 @@ def create_app(app_mode='DEBUG'):
     app = Flask(__name__)
     app.config['SECRET_KEY'] = b'\x88~\x17h\xdc;,\x9f\x1do\x98\xcd\xaf|\x1c\x19\xec\xcf\xb1\x12\xd4\x8b\xcdQ'
     # set logging
-    app.debug_log_format = '%(asctime)s %(levelname)s %(message)s'
-    app.logger.setLevel(logging.DEBUG)
+    configure_logging(app_mode, app)
     if app_mode == 'DEBUG':
         app.debug = True
         app.config['DEBUG'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-        logging.basicConfig(
-                level=logging.DEBUG,
-                format='%(asctime)s %(levelname)s %(message)s'
-        )
-    if app_mode == 'PROD':
-        logging.basicConfig(
-            filename='app.log',
-            format='%(asctime)s %(levelname)s %(message)s',
-            level=logging.DEBUG)
     # register blueprints
     app.register_blueprint(public_ui)
     app.register_blueprint(member_ui)
@@ -40,6 +31,34 @@ def create_app(app_mode='DEBUG'):
     # app started
     logging.info('Application started in %s mode', app_mode)
     return app
+
+
+def configure_logging(app_mode, app):
+    logHandler = None
+    if app_mode == 'DEBUG':
+        # create console handler
+        logHandler = logging.StreamHandler()
+    elif app_mode == 'PROD':
+        # create file time rotating handler
+        logHandler = TimedRotatingFileHandler(
+            filename=os.environ.get('APP_LOG_FILENAME', 'app.log'),
+            when='D',
+            backupCount=5,
+            encoding='UTF-8'
+        )
+    if logHandler is None:
+        return
+    logHandler.setLevel(logging.DEBUG)
+    logHandler.setFormatter(logging.Formatter(
+        fmt='%(asctime)s %(name)-10s %(levelname)-7s %(message)s',
+        datefmt='%H:%M:%S'))
+    # get root logger
+    logger = logging.getLogger()
+    logger.addHandler(logHandler)
+    logger.setLevel(logging.DEBUG)
+    app.logger.addHandler(logHandler)
+    app.logger.setLevel(logging.DEBUG)
+    return
 
 
 def points(answer, question):
