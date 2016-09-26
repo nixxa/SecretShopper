@@ -159,11 +159,13 @@ def annual_reports():
         shifted_start = shift_start_date(start_date)
         shifted_end = shift_end_date(next_date)
         all_records = where(items, lambda x: x.date > shifted_start and x.date < shifted_end)
+        logger.info('All records between %s and %s: %s', shifted_start.strftime('%Y-%m-%d'), shifted_end.strftime('%Y-%m-%d'), len(all_records))
         if len(all_records) == 0:
             # roll to next month
             start_date = next_date
             continue
         verified = where(all_records, lambda x: x.state == 'verified')
+        logger.info('Verified records between %s and %s: %s', shifted_start.strftime('%Y-%m-%d'), shifted_end.strftime('%Y-%m-%d'), len(verified))
         report_item = dict()
         report_item['date'] = start_date
         report_item['all'] = len(all_records)
