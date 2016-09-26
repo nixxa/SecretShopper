@@ -156,7 +156,9 @@ def annual_reports():
     now_date = datetime.now()
     while start_date < now_date:
         next_date = add_one_month(start_date)
-        all_records = where(items, lambda x: x.date >= start_date and x.date < next_date)
+        shifted_start = shift_start_date(start_date)
+        shifted_end = shift_end_date(next_date)
+        all_records = where(items, lambda x: x.date > shifted_start and x.date < shifted_end)
         if len(all_records) == 0:
             # roll to next month
             start_date = next_date
@@ -209,7 +211,7 @@ def annual_month(date):
     rprt['cafes_count'] = 2 * len(rprt['cafes'])
     # initialize object's reports
     checklists = where(database.checklists, 
-        lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
+        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
     for item in rprt['kiosks']:
         rprt[item.num] = where(checklists, lambda x: x.object_name == item.num)
         for x in rprt[item.num]:
@@ -251,7 +253,7 @@ def annual_excel_month(date):
     workbook = load_workbook(os.path.join(BASE_DIR,'app_data/valar_report_tmpl.xlsx'))
     worksheet = workbook.active
     checklists = where(database.checklists, 
-        lambda x: x.state == 'verified' and x.date >= start_date and x.date < end_date)
+        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
     objects = select(checklists, lambda x: x.object_info.num)
     for obj in objects:
         reports = where(checklists, lambda x: x.object_info.num == obj)
