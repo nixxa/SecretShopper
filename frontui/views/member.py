@@ -277,6 +277,30 @@ def add_one_month(dt0):
     dt3 = dt2.replace(day=1)
     return dt3
 
+def calculate_date_period(string_date):
+    """
+    Calculate start and end dates of given month
+    :type string_date: str in %Y%m%d format
+    :rtype:tuple of 2 dates
+    """
+    # calculate start date as week before first monday in month
+    month = datetime.strptime(string_date, '%Y%m%d')
+    start_date = datetime(year=month.year, month=month.month, day=1)
+    if start_date.isoweekday() != 1:
+        # shift to first monday
+        start_date = start_date + timedelta(days=(8 - start_date.isoweekday()))
+    # shift to week before
+    start_date = start_date - timedelta(days=7)
+    # calculate end date as week before first monday in next month
+    end_date = datetime(year=month.year, month=month.month, day=1) + timedelta(days=32)
+    end_date = end_date.replace(day=1)
+    if end_date.isoweekday() != 1:
+        # shift to first monday
+        end_date = end_date + timedelta(days=(8 - end_date.isoweekday()))
+        # shift to week before
+        end_date = end_date - timedelta(days=7)
+    return (start_date, end_date)
+
 def shift_start_date(dt):
     """
     Shift date for 1 week, if it is first day of month and not Monday

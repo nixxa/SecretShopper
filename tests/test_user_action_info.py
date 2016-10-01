@@ -1,5 +1,6 @@
 import unittest
-from frontui.data_provider import DataProvider
+from context import DataProvider
+
 
 class TestUserActionInfo(unittest.TestCase):
     """ Test case """

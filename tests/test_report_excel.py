@@ -1,9 +1,9 @@
 import unittest
 from datetime import datetime
-from frontui.linq import first_or_default
-from frontui.models import Checklist
-from frontui.data_provider import DataProvider
-from frontui.views.member import calc_points, add_one_month
+from context import first_or_default
+from context import Checklist
+from context import DataProvider
+from context import calc_points, add_one_month
 from openpyxl import load_workbook
 
 class TestUserActionInfo(unittest.TestCase):

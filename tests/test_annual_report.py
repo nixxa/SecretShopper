@@ -1,8 +1,8 @@
 import unittest
 from datetime import datetime
-from frontui.linq import first_or_default
-from frontui.data_provider import DataProvider
-from frontui.views.member import calc_points, add_one_month
+from context import first_or_default
+from context import DataProvider
+from context import calc_points, add_one_month
 
 class TestAnnualReport(unittest.TestCase):
     """ Test Case for annual report """
