@@ -17,7 +17,9 @@ logger = logging.getLogger(__name__)
 @member_ui.route('/reports')
 @authorize
 def reports():
-    """ Отчеты по объектам """
+    """
+    Отчеты по объектам
+    """
     database = DataProvider()
     objects = database.objects
     checklists = dict()
@@ -156,8 +158,7 @@ def annual_reports():
     now_date = datetime.now()
     while start_date < now_date:
         next_date = add_one_month(start_date)
-        shifted_start = shift_start_date(start_date)
-        shifted_end = shift_end_date(next_date)
+        (shifted_start, shifted_end) = calculate_date_period(start_date)
         all_records = where(items, lambda x: x.date > shifted_start and x.date < shifted_end)
         logger.info('All records between %s and %s: %s', shifted_start.strftime('%Y-%m-%d'), shifted_end.strftime('%Y-%m-%d'), len(all_records))
         if len(all_records) == 0:
@@ -190,15 +191,12 @@ def annual_month(date):
     """
     rprt = dict()
     database = DataProvider()
-    month = datetime.strptime(date, '%Y%m%d')
     # calculate start date as week before 1 day of current month, if 1 day not Monday
-    start_date = shift_start_date(month)
+    (start_date, end_date) = calculate_date_period(date)
     logger.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
-    # calculate end date as week before 1day of next month, if 1 day not Monday
-    end_date = shift_end_date(add_one_month(month))
     logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     rprt['checklist'] = database.checklist
-    rprt['date'] = month
+    rprt['date'] = datetime.strptime(date, '%Y%m%d')
     rprt['kiosks'] = sorted(
         where(database.objects, lambda x: x.with_shop == False and x.with_cafe == False),
         key=lambda x: x.sort_num)
@@ -236,6 +234,7 @@ def annual_month(date):
         title='Отчет за {0}'.format(start_date.strftime('%B %Y'))
     )
 
+
 @member_ui.route('/annual/excel/<date>')
 @authorize
 def annual_excel_month(date):
@@ -244,12 +243,9 @@ def annual_excel_month(date):
     :type date: str
     """
     database = DataProvider()
-    month = datetime.strptime(date, '%Y%m%d')
     # calculate start date as week before 1 day of current month, if 1 day not Monday
-    start_date = shift_start_date(month)
+    (start_date, end_date) = calculate_date_period(date)
     logger.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
-    # calculate end date as week before 1day of next month, if 1 day not Monday
-    end_date = shift_end_date(add_one_month(month))
     logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     # generate report
     workbook = load_workbook(os.path.join(BASE_DIR,'app_data/valar_report_tmpl.xlsx'))
@@ -266,6 +262,7 @@ def annual_excel_month(date):
     workbook.save(os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
 
+
 def add_one_month(dt0):
     """
     Return date more then specified on one month
@@ -277,14 +274,16 @@ def add_one_month(dt0):
     dt3 = dt2.replace(day=1)
     return dt3
 
-def calculate_date_period(string_date):
+
+def calculate_date_period(*args):
     """
     Calculate start and end dates of given month
-    :type string_date: str in %Y%m%d format
     :rtype:tuple of 2 dates
     """
     # calculate start date as week before first monday in month
-    month = datetime.strptime(string_date, '%Y%m%d')
+    month = args[0]
+    if len(args) == 1 and isinstance(args[0], str):
+        month = datetime.strptime(args[0], '%Y%m%d')
     start_date = datetime(year=month.year, month=month.month, day=1)
     if start_date.isoweekday() != 1:
         # shift to first monday
@@ -301,31 +300,6 @@ def calculate_date_period(string_date):
         end_date = end_date - timedelta(days=7)
     return (start_date, end_date)
 
-def shift_start_date(dt):
-    """
-    Shift date for 1 week, if it is first day of month and not Monday
-    :type dt: datetime
-    :rtype: datetime
-    """
-    if dt.day != 1:
-        return dt
-    if dt.isoweekday() != 1:
-        dt = dt - timedelta(days=7)
-    return dt
-
-def shift_end_date(dt):
-    """
-    Shift date for 1 week, if it is first day of month and not Monday
-    :type dt: datetime
-    :rtype: datetime
-    """
-    if dt.day != 1:
-        return dt
-    if dt.isoweekday() != 1:
-        shift = 8 - dt.isoweekday()
-        dt = dt + timedelta(days=shift)
-        dt = dt - timedelta(days=8)
-    return dt
 
 def calc_points(rprt):
     """
@@ -354,6 +328,7 @@ def calc_points(rprt):
     rprt.points = p
     rprt.points_percent = p/m*100
     return rprt
+
 
 def fill_cells(rprt, cells):
     """

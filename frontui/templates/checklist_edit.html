@@ -2,8 +2,13 @@
 {% from "partial/checklist_partials.html" import question %}
 
 {% block content %}
+{% if values.state == 'new' %}
 <h2>Режим проверки.</h2>
-<span class="help-block">В режиме проверки можно исправить заполненную анкету</span>
+<span class="help-block">В режиме проверки можно исправить заполненную анкету.</span>
+{% else %}
+<h2>Режим просмотра.</h2>
+<span class="help-block">В режиме просмотра можно скачать файлы, приложенные к анкете. <br />Для просмотра ответов, кликните на названии секции вопросов.</span>
+{% endif %}
 <form action="{% if edit_mode == 'edit' %}/checklist/save{% else %}/report/verify{% endif %}" method="POST">
     <input type="hidden" name="uid" value="{{ values['uid'] }}" />
     <div class="panel-group js-form" id="accordion" role="tablist" aria-multiselectable="true">
@@ -466,7 +471,7 @@
             {% endfor %}
             <h4>Аудио</h4>
             {% for f in values.files %}
-                {% if f['filetype'] == 'audio' %}
+                {% if f['filetype'] == 'audio' and session['user_role'] == 'internal' %}
                     <div class="audiojs">
                         <audio src="/uploads/{{values.uid}}/{{f['filename']}}" preload="auto" />
                     </div>
@@ -488,7 +493,7 @@
                     <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Отмена</a>
                 {% endif %}
             {% else %}
-                <a href="/reports/{{ selected.num }}" class="btn btn-default pull-right">Вернуться</a>
+                <a href="#" onclick="history.back()" class="btn btn-default pull-right">Вернуться</a>
             {% endif %}
         </div>
     </div><!-- /.row -->

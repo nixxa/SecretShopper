@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>
+    Отчеты по месяцам
+    <div class="header-form">
+        <select name="month" id="month">
+            {% for month in model['months'] %}
+            <option value="{{month.strftime('%Y%m%d')}}" 
+                {% if model['month_data']['date'].strftime('%Y%m%d') == month.strftime('%Y%m%d') %}selected="selected"{% endif %}>
+                {{month.strftime('%B %Y')}}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</h2>
+<table class="table table-hover">
+    <colgroup>
+        <col style="width: 50%" width="50%" />
+        <col style="width: 20%" width="20%" />
+        <col style="width: 15%" width="15%" />
+        <col style="width: 15%" width="15%" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>##</th>
+            <th>Дата отчета</th>
+            <th>Баллов</th>
+            <th>% баллов</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if model['month_data']['checklists']|length == 0 %}
+        <tr>
+            <td colspan="4">Нет проверенных отчетов</td>
+        </tr>
+        {% endif %}
+        {% for obj in model['month_data']['checklists']|sort(attribute='object_info.sort_num', reverse=False) %}
+            <tr>
+                <td><a href="/report/{{obj.uid}}">#{{ obj.object_info.num }} - {{ obj.object_info.title }}</a></td>
+                <td>
+                    <span class="js-datetime" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                </td>
+                <td>{{ obj.points }}</td>
+                <td>{{ '{:.0f}%'.format(obj.points_percent) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        require(['moment', 'jquery'], function (moment, $) {
+            $(function () {
+                moment.locale('ru');
+                $.each($('.js-datetime'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).format('D MMMM YYYY'));
+                });
+                $('#month').change(function (evt) {
+                    window.location.href = '/customer/reports/' + $(evt.target).val();
+                });
+            });
+        });
+    </script>
+{% endblock %}
