@@ -17,8 +17,11 @@ class MailProvider:
     def send_checklist_notice(self, author_mail, checklist):
         """
         Send notice
+        :type author_mail: str
+        :type checklist: model.Checklist
         """
         # check email
+        author_mail = author_mail.lower()
         match = re.match(r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
                          author_mail)
         if match is None:
