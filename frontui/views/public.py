@@ -1,6 +1,7 @@
 """ Checklist preparation and editing """
 #pylint: disable=line-too-long
 
+import logging
 import uuid
 import os
 from datetime import datetime
@@ -13,6 +14,7 @@ from frontui.views import ALLOWED_EXTENSIONS, IMAGE_EXTENSIONS, AUDIO_EXTENSIONS
 
 
 public_ui = Blueprint('ui', __name__)
+logger = logging.getLogger(__name__)
 
 @public_ui.route('/')
 def home():
@@ -30,6 +32,7 @@ def home():
 @public_ui.route('/checklist/<num>')
 def checklist(num):
     """Renders questionnaire page"""
+    logger.info("Start filling checklist for %s", num)
     database = DataProvider()
     objects = database.objects
     selected_obj = next((x for x in objects if x.num == num), None)
@@ -46,9 +49,10 @@ def checklist(num):
 @public_ui.route('/checklist/new', methods=['POST'])
 def checklist_new():
     """ Save questionnaire and render success page """
+    object_num = request.form['object_name']
+    logger.info("Saving checklist for %s", object_num)
     database = DataProvider()
     objects = database.objects
-    object_num = request.form['object_name']
     selected_obj = next((x for x in objects if x.num == object_num), None)
     selected_date = request.form['p1_r1']
     data = dict()
@@ -60,6 +64,7 @@ def checklist_new():
         data[key] = request.form[key]
     database.save_checklist(object_num, selected_date, data)
     session['checklist-uid'] = data['uid']
+    logger.info("Checklist for %s saved with uid: %s", object_num, data['uid'])
     return render_template(
         'checklist_addfiles.html',
         uid=data['uid'],
@@ -78,6 +83,7 @@ def checklist_addfiles(uid):
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
     session['checklist-uid'] = uid
+    logger.info("Adding files for checklist %s", uid)
     return render_template(
         'checklist_addfiles.html',
         uid=uid,
@@ -134,6 +140,7 @@ def checklist_save():
 def checklist_complete(uid):
     """ Complete checklist and send email configrmation """
     email = request.form['author_email']
+    logger.info("Completing checklist with uid: %s", uid)
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
     if not item.notice_sent:
@@ -142,6 +149,7 @@ def checklist_complete(uid):
         item.notice_sent = True
         # update checklist in DB
         database.update_checklist(item)
+    logger.info('Checklist %s completed', uid)
     return '', 200
 
 

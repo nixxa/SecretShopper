@@ -43,4 +43,6 @@ class MailProvider:
         mail_response = sg_client.client.mail.send.post(request_body=mail.get())
         if mail_response.status_code != 202:
             logger.error('Cant send email. Error is "%s"', mail_response.body)
+        else:
+            logger.info('E-mail sent')
         return
