@@ -2,10 +2,10 @@
 # pylint: disable=line-too-long
 import json
 import os
-import frontui.linq as linq
 import datetime
 import logging
 import shutil
+import frontui.linq as linq
 from frontui import BASE_DIR
 from frontui.models import ObjectInfo, ChecklistInfo, Checklist, UserActionInfo, User
 
@@ -18,6 +18,9 @@ UPLOADS_DIR = os.path.join(BASE_DIR, 'uploads')
 logger = logging.getLogger(__name__)
 
 class DateTimeAwareEncoder(json.JSONEncoder):
+    """
+    Datetime encoder
+    """
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%dT%H:%M:%S')
@@ -26,17 +29,7 @@ class DateTimeAwareEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class Singleton(object):
-    """ Singleton superclass """
-    _instance = None
-    def __new__(cls, *args, **kwargs):
-        if not isinstance(cls._instance, cls):
-            logger.debug('Create new instance of DataProvider')
-            cls._instance = object.__new__(cls, *args, **kwargs)
-        return cls._instance
-
-
-class DataProvider(Singleton):
+class DataProvider:
     """ Data provider (objects, questions, etc) """
 
     def __init__(self):
@@ -72,7 +65,7 @@ class DataProvider(Singleton):
                 if not hasattr(item, 'notice_sent'):
                     item.notice_sent = False
                 if not hasattr(item, 'state'):
-                    item.state = 'new'        
+                    item.state = 'new'
                 self.checklists.append(item)
         # load user's visits
         if os.path.exists(os.path.join(BASE_DIR, VISITS_FILENAME)):
@@ -88,6 +81,7 @@ class DataProvider(Singleton):
                     self.users.append(User(user_data))
         return
 
+
     def get_uploads_dir(self, checklist):
         """
         Return folder for uploads
@@ -100,10 +94,12 @@ class DataProvider(Singleton):
             checklist.uid)
         return filedir
 
+
     def add_object(self, obj):
         """ Add object to collection """
         self.objects.append(obj)
         return
+
 
     def save_checklist(self, obj_num, obj_date, obj_dict):
         """ Save checklist data """
@@ -116,10 +112,11 @@ class DataProvider(Singleton):
             file.write(obj_json)
         return
 
+
     def update_checklist(self, obj):
-        """ 
-        Update checklist 
-        :rtype: None 
+        """
+        Update checklist
+        :rtype: None
         """
         obj_num = obj.object_info.num
         obj_date = obj.date.strftime('%Y-%m-%d')
@@ -135,7 +132,11 @@ class DataProvider(Singleton):
             file.write(obj_json)
         return
 
+
     def remove_checklist(self, checklist=None, uid=None):
+        """
+        Remove checklist
+        """
         if checklist is None and uid is None:
             return
         if uid is not None:
@@ -154,13 +155,14 @@ class DataProvider(Singleton):
         backup_uploads_dir = uploads_dir + '.bak'
         try:
             shutil.move(uploads_dir, backup_uploads_dir)
-        except Exception as e:
-            logger.exception('Cant remove uploads dir')
+        except Exception as ex:
+            logger.exception('Cant remove uploads dir: %s', ex)
         return
 
+
     def get_user_action(self, username):
-        """ 
-        :rtype: UserActionInfo 
+        """
+        :rtype: UserActionInfo
         """
         if username not in self.user_visits:
             logger.debug('Create new UserActionInfo for %s', username)
@@ -174,10 +176,11 @@ class DataProvider(Singleton):
             return obj
         return self.user_visits[username]
 
+
     def save_user_actions(self):
-        """ 
-        Update user action and save to disk 
-        :rtype: None 
+        """
+        Update user action and save to disk
+        :rtype: None
         """
         obj_json = json.dumps(self.user_visits, sort_keys=True, indent=4, ensure_ascii=False, cls=DateTimeAwareEncoder)
         with open(os.path.join(BASE_DIR, VISITS_FILENAME), 'w', encoding='utf8') as file:
