@@ -118,13 +118,13 @@
             "title": "Кафе",
             "num": 9,
             "questions": [
-                {"label": "Напиток, приобретенный на станции:", "field_name": "p8_r1"},
-                {"label": "Комментарии к напитку:", "field_name": "p8_r2"},
-                {"label": "Блин, приобретенный на станции:", "field_name": "p8_r3"},
-                {"label": "Комментарии к блинам:", "field_name": "p8_r4"},
-                {"label": "Пенка у напитка:", "field_name": "p8_r5"},
-                {"label": "Объем напитка:", "field_name": "p8_r6"},
-                {"label": "Чашка:", "field_name": "p8_r7"}
+                {"label": "Напиток, приобретенный на станции:", "field_name": "p8_r1", "applies": "cafe,10,12,14,22,83"},
+                {"label": "Комментарии к напитку:", "field_name": "p8_r2", "applies": "cafe,10,12,14,22,83"},
+                {"label": "Блин, приобретенный на станции:", "field_name": "p8_r3", "applies": "cafe,22,83"},
+                {"label": "Комментарии к блинам:", "field_name": "p8_r4", "applies": "cafe,22,83"},
+                {"label": "Пенка у напитка:", "field_name": "p8_r5", "applies": "cafe,10,12,14,22,83"},
+                {"label": "Объем напитка:", "field_name": "p8_r6", "applies": "cafe,10,12,14,22,83"},
+                {"label": "Чашка:", "field_name": "p8_r7", "applies": "cafe,10,12,14,22,83"}
             ]
         },
         {

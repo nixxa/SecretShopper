@@ -333,7 +333,7 @@
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
-        {% if selected.with_cafe %}
+        {% if checklist.pages[8].max_questions(selected) > 0 %}
         <div class="panel panel-default js-section">
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title js-section-title">
@@ -345,12 +345,13 @@
                             <span class="hidden-xs hidden-sm hidden-md">заполнено</span>
                             <span class="js-section-badge-value">0</span>
                             <span class="hidden-xs hidden-sm hidden-md">из</span><span class="hidden-lg">/</span>
-                            <span class="js-section-badge-total">7</span></small>
+                            <span class="js-section-badge-total">{{ checklist.pages[8].max_questions(selected) }}</span></small>
                     </div>
                 </h4>
             </div>
             <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
                 <div class="panel-body js-section-body">
+                    {% if selected.applies(checklist.pages[8].questions[0]) %}
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p8_r1'] }}" role="radio" />
                         Кофе, приобретенный на станции:
@@ -358,6 +359,8 @@
                         <div class="radio"><label><input type="radio" name="p8_r1" value="нормальный"> нормальный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r1" value="очень вкусный"> очень вкусный</label></div>  
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[4]) %}
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p8_r5'] }}" role="radio" />
                         Пенка:
@@ -366,6 +369,8 @@
                         <div class="radio"><label><input type="radio" name="p8_r5" value="нормальная"> нормальная</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r5" value="густая"> густая</label></div>  
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[5]) %}
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p8_r6'] }}" role="radio" />
                         Объем:
@@ -373,6 +378,8 @@
                         <div class="radio"><label><input type="radio" name="p8_r6" value="нормальный"> нормальный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r6" value="полный"> полный</label></div>  
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[6]) %}
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p8_r7'] }}" role="radio" />
                         Чашка:
@@ -380,10 +387,14 @@
                         <div class="radio"><label><input type="radio" name="p8_r7" value="пластик"> пластиковый стаканчик</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r7" value="керамика"> керамическая чашка</label></div>  
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[1]) %}
                     <div>       
                         Комментарии к кофе:
                         <textarea rows="2" class="form-control js-question" name="p8_r2">{{ values.p8_r2 }}</textarea>
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[2]) %}
                     <div class="js-question">
                         <input type="hidden" value="{{ values['p8_r3'] }}" role="radio" />
                         Блин, приобретенный на станции:
@@ -391,10 +402,13 @@
                         <div class="radio"><label><input type="radio" name="p8_r3" value="нормальный"> нормальный</label></div>
                         <div class="radio"><label><input type="radio" name="p8_r3" value="очень вкусный"> очень вкусный</label></div>
                     </div>
+                    {% endif %}
+                    {% if selected.applies(checklist.pages[8].questions[3]) %}
                     <div>      
                         Комментарии к блинам:
                         <textarea rows="2" class="form-control js-question" name="p8_r4">{{ values.p8_r4 }}</textarea>
                     </div>
+                    {% endif %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
         </div><!-- /.panel -->
