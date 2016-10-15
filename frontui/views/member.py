@@ -8,7 +8,7 @@ from flask import render_template, request, Blueprint, redirect, session, send_f
 from frontui import BASE_DIR
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
-from frontui.linq import first_or_default, where, count, select
+from frontui.linq import first_or_default, where, count, select, order_by
 from openpyxl import load_workbook
 
 member_ui = Blueprint('member', __name__)
@@ -149,8 +149,8 @@ def remove_report(uid):
 def annual_reports():
     """ Return list of all existing annual reports """
     database = DataProvider()
-    total = count(database.objects, lambda x: x.with_cafe == True) * 2 + \
-            count(database.objects, lambda x: x.with_cafe == False)
+    total = count(database.objects, lambda x: x.with_cafe) * 2 + \
+            count(database.objects, lambda x: not x.with_cafe)
     reports_list = list()
     # calculate count of annual reports
     items = sorted(database.checklists, key=lambda x: x.date)
@@ -198,20 +198,20 @@ def annual_month(date):
     rprt['checklist'] = database.checklist
     rprt['date'] = datetime.strptime(date, '%Y%m%d')
     rprt['kiosks'] = sorted(
-        where(database.objects, lambda x: x.with_shop == False and x.with_cafe == False),
+        where(database.objects, lambda x: not x.with_shop and not x.with_cafe),
         key=lambda x: x.sort_num)
     rprt['kiosks_count'] = len(rprt['kiosks'])
     rprt['shops'] = sorted(
-        where(database.objects, lambda x: x.with_shop == True and x.with_cafe == False),
+        where(database.objects, lambda x: x.with_shop and not x.with_cafe),
         key=lambda x: x.sort_num)
     rprt['shops_count'] = len(rprt['shops'])
     rprt['cafes'] = sorted(
-        where(database.objects, lambda x: x.with_shop == True and x.with_cafe == True),
+        where(database.objects, lambda x: x.with_shop and x.with_cafe),
         key=lambda x: x.sort_num)
     rprt['cafes_count'] = 2 * len(rprt['cafes'])
     # initialize object's reports
-    checklists = where(database.checklists, 
-        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
+    checklists = where(database.checklists,
+                       lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
     for item in rprt['kiosks']:
         rprt[item.num] = where(checklists, lambda x: x.object_name == item.num)
         for x in rprt[item.num]:
@@ -248,19 +248,32 @@ def annual_excel_month(date):
     logger.debug('StartDate %s', start_date.strftime('%Y-%m-%d'))
     logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     # generate report
-    workbook = load_workbook(os.path.join(BASE_DIR,'app_data/valar_report_tmpl.xlsx'))
+    workbook = load_workbook(os.path.join(BASE_DIR, os.path.join('app_data', get_report_template(start_date))))
     worksheet = workbook.active
-    checklists = where(database.checklists, 
-        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
+    checklists = where(database.checklists,
+                       lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
     objects = select(checklists, lambda x: x.object_info.num)
     for obj in objects:
-        reports = where(checklists, lambda x: x.object_info.num == obj)
-        for indx, rprt in enumerate(reports, start=1):
+        reports_list = sorted(where(checklists, lambda x: x.object_info.num == obj), key=lambda x: x.date)
+        for indx, rprt in enumerate(reports_list, start=1):
             calc_points(rprt)
-            cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-','_'), indx))
+            cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-', '_'), indx))
             fill_cells(rprt, cells)
     workbook.save(os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
+
+
+def get_report_template(report_date):
+    """
+    Return filename for current template
+    :type report_date: datetime
+    :rtype: str
+    """
+    if report_date >= datetime(year=2016, month=9, day=1):
+        logger.info('Using new template: valar_report_tmpl_20161001.xlsx')
+        return 'valar_report_tmpl_20161001.xlsx'
+    logger.info('Using template: valar_report_tmpl.xlsx')
+    return 'valar_report_tmpl.xlsx'
 
 
 def add_one_month(dt0):
@@ -309,24 +322,24 @@ def calc_points(rprt):
     """
     database = DataProvider()
     object_info = rprt.object_info
-    p = 0
-    m = 0
-    for i in range(1,8):
-        pg = database.checklist.pages[i]
-        m = m + pg.max_cost(object_info)
-        for q in pg.questions:
-            answer = rprt.get(q.field_name)
+    points = 0
+    max_points = 0
+    for i in range(1, 8):
+        page = database.checklist.pages[i]
+        max_points = max_points + page.max_cost(object_info)
+        for question in page.questions:
+            answer = rprt.get(question.field_name)
             if answer is None:
                 answer = 'n/a'
             answer_yes = answer == 'yes'
-            if not object_info.applies(q):
+            if not object_info.applies(question):
                 continue
-            if q.optional and answer == 'n/a' and not object_info.num in q.excepts: 
-                m = m - pg.cost
-            p = p + (pg.cost if answer_yes else 0)
-    rprt.max_points = m
-    rprt.points = p
-    rprt.points_percent = p/m*100
+            if question.optional and answer == 'n/a' and not object_info.num in question.excepts:
+                max_points = max_points - page.cost
+            points = points + (page.cost if answer_yes else 0)
+    rprt.max_points = max_points
+    rprt.points = points
+    rprt.points_percent = points/max_points*100
     return rprt
 
 
@@ -351,16 +364,19 @@ def fill_cells(rprt, cells):
     for page_index, page in enumerate(checklist.pages):
         if page_index >= 8 or page_index == 0:
             continue
-        cells[index].value = rprt.sum_points(page)
+        #sum cell included in template
+        #cells[index].value = rprt.sum_points(page)
         index += 1
         for q in page.questions:
             cells[index].value = rprt.get_points(q.field_name, q)
             index += 1
     cells[index].value = rprt.max_points
     index += 1
-    cells[index].value = rprt.points
+    #sum cell included in template
+    #cells[index].value = rprt.points
     index += 1
-    cells[index].value = rprt.points_percent
+    #precent cell included in template
+    #cells[index].value = rprt.points_percent
     index += 1
     cells[index].value = rprt.get('p8_r1')
     index += 1
