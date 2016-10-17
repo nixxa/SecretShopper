@@ -16,6 +16,7 @@ customer_ui = Blueprint('customer', __name__)
 logger = logging.getLogger(__name__)
 
 
+@customer_ui.route('/customer/', defaults={ 'date': None })
 @customer_ui.route('/customer/reports', defaults={ 'date': None })
 @customer_ui.route('/customer/reports/<date>')
 @authorize
