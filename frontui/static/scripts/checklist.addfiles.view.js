@@ -107,7 +107,7 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
         var uid = $('#js-content').data('uid');
         $.each(window.checklist_files, function (index, value) {
             var file = { name: value.filename, size: value.size };
-            var thumbnail = 'http://' + window.location.host + '/uploads/' + uid + '/' + value.filename;
+            var thumbnail = '//' + window.location.host + '/uploads/' + uid + '/' + value.filename;
             dropzone.emit('addedfile', file);
             if (value.filetype == 'image') {
                 dropzone.createThumbnailFromUrl(file, thumbnail);
