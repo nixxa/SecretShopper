@@ -27,6 +27,24 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
         return new Blob([ia], {type:mimeString});
     }
 
+    function base64ToArrayBuffer(dataURI) {
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return ia.buffer;
+    }
+
     function base64ToFile(dataURI, origFile) {
         var byteString, mimestring;
 
@@ -68,31 +86,71 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
         return newFile;
     }
 
-    function getOrientation(file, callback) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var view = new DataView(e.target.result);
-            if (view.getUint16(0, false) != 0xFFD8) return callback(-2);
-            var length = view.byteLength, offset = 2;
-            while (offset < length) {
-                var marker = view.getUint16(offset, false);
+    // http://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side
+    function getOrientation(buffer) {
+        var view = new DataView(buffer);
+        if (view.getUint16(0, false) != 0xFFD8) return -2;
+        var length = view.byteLength, offset = 2;
+        while (offset < length) {
+            var marker = view.getUint16(offset, false);
+            offset += 2;
+            if (marker == 0xFFE1) {
+                if (view.getUint32(offset += 2, false) != 0x45786966) return -1;
+                var little = view.getUint16(offset += 6, false) == 0x4949;
+                offset += view.getUint32(offset + 4, little);
+                var tags = view.getUint16(offset, little);
                 offset += 2;
-                if (marker == 0xFFE1) {
-                    if (view.getUint32(offset += 2, false) != 0x45786966) return callback(-1);
-                    var little = view.getUint16(offset += 6, false) == 0x4949;
-                    offset += view.getUint32(offset + 4, little);
-                    var tags = view.getUint16(offset, little);
-                    offset += 2;
-                    for (var i = 0; i < tags; i++)
-                        if (view.getUint16(offset + (i * 12), little) == 0x0112)
-                            return callback(view.getUint16(offset + (i * 12) + 8, little));
-                }
-                else if ((marker & 0xFF00) != 0xFF00) break;
-                else offset += view.getUint16(offset, false);
+                for (var i = 0; i < tags; i++)
+                    if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                        return view.getUint16(offset + (i * 12) + 8, little);
             }
-            return callback(-1);
-        };
-        reader.readAsArrayBuffer(file.slice(0, 64 * 1024));
+            else if ((marker & 0xFF00) != 0xFF00) break;
+            else offset += view.getUint16(offset, false);
+        }
+        return -1;
+    }
+
+    function rotate(image, w, h, orientation) {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext("2d");
+        var cw = image.width, ch = image.height, cx = 0, cy = 0, degree = 0;
+        switch (orientation) {
+            case -2: // not jpeg
+            case -1: // not defined
+                break;
+            case 1: // normal
+                break;
+            case 2: // flip
+                break;
+            case 3: // 180
+                degree = 180;
+                cx = image.width * (-1);
+                cy = image.height * (-1);
+                break;
+            case 4: // 180 flip
+                break;
+            case 5: // 270 flip
+                break;
+            case 6: // 270
+                degree = 90;
+                cw = image.height;
+                ch = image.width;
+                cy = image.height * (-1);
+                break;
+            case 7: // 90 flip
+                break;
+            case 8: // 90
+                degree = 270;
+                cw = image.height;
+                ch = image.width;
+                cx = image.width * (-1);
+                break;
+        }
+        canvas.setAttribute('width', cw);
+        canvas.setAttribute('height', ch);
+        ctx.rotate(degree * Math.PI / 180);
+        ctx.drawImage(image, cx, cy);
+        return canvas;
     }
 
     function initFileUpload() {
@@ -144,6 +202,9 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
                     return;
                 }
 
+                var orientation = getOrientation(base64ToArrayBuffer(event.target.result));
+                console.log(orientation);
+
                 var origImg = new Image();
                 origImg.src = event.target.result;
 
@@ -176,7 +237,8 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
                     canvas.height = height;
 
                     pica.resizeCanvas(origImg, canvas, 3, function () {
-                        var resizedFile = base64ToFile(canvas.toDataURL(), origFile);
+                        var rotatedCanvas = rotate(canvas, width, height, orientation);
+                        var resizedFile = base64ToFile(rotatedCanvas.toDataURL(), origFile);
 
                         // Replace original with resized
                         var origFileIndex = dropzone.files.indexOf(origFile);
