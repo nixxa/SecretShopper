@@ -96,6 +96,7 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
     }
 
     function initFileUpload() {
+        $('#js-completed-hint').hide();
         var dropzone = new Dropzone('.dropzone', { 
             url: "/file/upload",
             method: "post",
@@ -115,7 +116,11 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
                 dropzone.createThumbnailFromUrl(file, '/static/img/excelfile.png');
             }
             dropzone.emit('complete', file);
-            //dropzone.options.maxFiles = dropzone.options.maxFiles - 1;
+        });
+
+        dropzone.on('queuecomplete', function (data) {
+            $('#js-completed-hint').hide();
+            $('#js-completed-btn').removeAttr('disabled');
         });
 
         dropzone.on('removedfile', function (origFile) {
@@ -127,6 +132,9 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
             var MAX_HEIGHT = 800;
             var reader = new FileReader();
             var imageExts = ['jpg', 'jpeg', 'png', 'gif'];
+
+            $('#js-completed-btn').attr('disabled', 'disabled');
+            $('#js-completed-hint').show();
 
             // Convert file to img
             reader.addEventListener("load", function (event) {
