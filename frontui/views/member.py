@@ -9,6 +9,7 @@ from frontui import BASE_DIR
 from frontui.data_provider import DataProvider
 from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count, select, order_by
+from frontui.sendmail import MailProvider
 from openpyxl import load_workbook
 
 member_ui = Blueprint('member', __name__)
@@ -125,6 +126,8 @@ def verify():
     obj.state = 'verified'
     obj.verify_date = datetime.utcnow()
     database.update_checklist(obj)
+    mail_sender = MailProvider()
+    mail_sender.send_checklist_verified(obj)
     return redirect('/reports')
 
 
