@@ -11,9 +11,13 @@ from frontui.auth import authorize
 from frontui.linq import first_or_default, where, count, select, order_by
 from frontui.sendmail import MailProvider
 from openpyxl import load_workbook
+from openpyxl.comments import Comment
+from openpyxl.utils.exceptions import NamedRangeException
+
 
 member_ui = Blueprint('member', __name__)
 logger = logging.getLogger(__name__)
+
 
 @member_ui.route('/reports')
 @authorize
@@ -200,37 +204,47 @@ def annual_month(date):
     logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     rprt['checklist'] = database.checklist
     rprt['date'] = datetime.strptime(date, '%Y%m%d')
-    rprt['kiosks'] = sorted(
-        where(database.objects, lambda x: not x.with_shop and not x.with_cafe),
-        key=lambda x: x.sort_num)
-    rprt['kiosks_count'] = len(rprt['kiosks'])
-    rprt['shops'] = sorted(
-        where(database.objects, lambda x: x.with_shop and not x.with_cafe),
-        key=lambda x: x.sort_num)
-    rprt['shops_count'] = len(rprt['shops'])
-    rprt['cafes'] = sorted(
-        where(database.objects, lambda x: x.with_shop and x.with_cafe),
-        key=lambda x: x.sort_num)
-    rprt['cafes_count'] = 2 * len(rprt['cafes'])
-    # initialize object's reports
+    # load all checklists within dates range
     checklists = where(database.checklists,
                        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
+    # set object's collections
+    collection = select(
+        where(checklists, lambda x: not x.object_info.with_cafe and not x.object_info.with_shop),
+        lambda xx: xx.object_info)
+    rprt['kiosks'] = sorted(list(set(collection)), key=lambda xxx: xxx.sort_num)
+    rprt['kiosks_count'] = len(rprt['kiosks'])
+    rprt['kiosks_columns'] = len(collection)
+    # set shops
+    collection = select(
+        where(checklists, lambda x: x.object_info.with_shop and not x.object_info.with_cafe),
+        lambda xx: xx.object_info)
+    rprt['shops'] = sorted(list(set(collection)), key=lambda xxx: xxx.sort_num)
+    rprt['shops_count'] = len(rprt['shops'])
+    rprt['shops_columns'] = len(collection)
+    # set cafes
+    collection = select(
+        where(checklists, lambda x: x.object_info.with_cafe),
+        lambda xx: xx.object_info)
+    rprt['cafes'] = sorted(list(set(collection)), key=lambda xxx: xxx.sort_num)
+    rprt['cafes_count'] = len(rprt['cafes'])
+    rprt['cafes_columns'] = len(collection)
+    # calculate points
     for item in rprt['kiosks']:
         rprt[item.num] = where(checklists, lambda x: x.object_name == item.num)
-        for x in rprt[item.num]:
-            calc_points(x)
+        for report_item in rprt[item.num]:
+            calc_points(report_item)
     for item in rprt['shops']:
         rprt[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
-        for x in rprt[item.num]:
-            calc_points(x)
+        for report_item in rprt[item.num]:
+            calc_points(report_item)
     for item in rprt['cafes']:
         rprt[item.num] = sorted(
             where(checklists, lambda x: x.object_name == item.num),
             key=lambda x: x.date)
-        for x in rprt[item.num]:
-            calc_points(x)
+        for report_item in rprt[item.num]:
+            calc_points(report_item)
     return render_template(
         'annual_month.html',
         model=rprt,
@@ -252,16 +266,20 @@ def annual_excel_month(date):
     logger.debug('EndDate %s', end_date.strftime('%Y-%m-%d'))
     # generate report
     workbook = load_workbook(os.path.join(BASE_DIR, os.path.join('app_data', get_report_template(start_date))))
-    worksheet = workbook.active
+    worksheet = workbook.worksheets[0]
     checklists = where(database.checklists,
                        lambda x: x.state == 'verified' and x.date > start_date and x.date < end_date)
-    objects = select(checklists, lambda x: x.object_info.num)
+    objects = list(set(select(checklists, lambda x: x.object_info.num)))
     for obj in objects:
         reports_list = sorted(where(checklists, lambda x: x.object_info.num == obj), key=lambda x: x.date)
         for indx, rprt in enumerate(reports_list, start=1):
             calc_points(rprt)
-            cells = worksheet.get_named_range('azs%s_%s' % (obj.replace('-', '_'), indx))
-            fill_cells(rprt, cells)
+            range_name = 'azs%s_%s' % (obj.replace('-', '_'), indx)
+            try:
+                cells = worksheet.get_named_range(range_name)
+                fill_cells(rprt, cells)
+            except NamedRangeException as nre:
+                logger.debug('Error while trying to get named range \'%s\'', range_name)
     workbook.save(os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
 
@@ -277,6 +295,15 @@ def get_report_template(report_date):
         return 'valar_report_tmpl_20161001.xlsx'
     logger.info('Using template: valar_report_tmpl.xlsx')
     return 'valar_report_tmpl.xlsx'
+
+
+def get_shops_count(report_date, objects):
+    """
+    Return checklists count for azs with shops
+    """
+    if report_date >= datetime(year=2016, month=9, day=1):
+        return 2 * len(objects)
+    return len(objects)
 
 
 def add_one_month(dt0):
@@ -370,8 +397,8 @@ def fill_cells(rprt, cells):
         #sum cell included in template
         #cells[index].value = rprt.sum_points(page)
         index += 1
-        for q in page.questions:
-            cells[index].value = rprt.get_points(q.field_name, q)
+        for question in page.questions:
+            cells[index].value = rprt.get_points(question.field_name, question)
             index += 1
     cells[index].value = rprt.max_points
     index += 1
@@ -392,4 +419,6 @@ def fill_cells(rprt, cells):
     cells[index].value = rprt.get('p8_r3')
     index += 1
     cells[index].value = rprt.get('p9_r1')
+    if rprt.get('p9_r2') != '':
+        cells[index].comment = Comment(rprt.get('p9_r2'), 'Author')
     return cells

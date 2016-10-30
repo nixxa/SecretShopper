@@ -132,7 +132,7 @@
             "num": 10,
             "questions": [
                 {"label": "Атмосфера на станции:", "field_name": "p9_r1"},
-                {"label": "Комментарии:", "field_name": "p8_r2"}
+                {"label": "Комментарии:", "field_name": "p9_r2"}
             ]
         }
     ]

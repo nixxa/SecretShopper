@@ -14,530 +14,305 @@
         <tr>
             <th colspan="2" class="fixed-column wide">АЗС №</th>
             {% for item in model['kiosks'] %}
-            <th style="min-width: 90px">{{item.num}}</th>
+                <th style="min-width: 90px" colspan="{{ model[item.num]|length }}">{{item.num}}</th>
             {% endfor %}
             {% for item in model['shops'] %}
-            <th>{{item.num}}</th>
+                <th colspan="{{ model[item.num]|length }}">{{item.num}}</th>
             {% endfor %}
             {% for item in model['cafes'] %}
-            <th colspan="2">{{item.num}}</th>
+                <th colspan="{{ model[item.num]|length }}">{{item.num}}</th>
             {% endfor %}
         </tr>
         <tr>
             <th colspan="2" class="fixed-column wide">Наименование</th>
             {% for item in model['kiosks'] %}
-            <th>{{item.title}}</th>
+            <th colspan="{{ model[item.num]|length }}">{{item.title}}</th>
             {% endfor %}
             {% for item in model['shops'] %}
-            <th>{{item.title}}</th>
+            <th colspan="{{ model[item.num]|length }}">{{item.title}}</th>
             {% endfor %}
             {% for item in model['cafes'] %}
-            <th colspan="2">{{item.title}}</th>
+            <th colspan="{{ model[item.num]|length }}">{{item.title}}</th>
             {% endfor %}
         </tr>
-        <!--<tr class="hidden">
-            <th></th>
-            <th></th>
-            {% for item in model['kiosks'] %}
-            <th></th>
-            {% endfor %}
-            {% for item in model['shops'] %}
-            <th></th>
-            {% endfor %}
-            {% for item in model['cafes'] %}
-            <th></th>
-            <th></th>
-            {% endfor %}
-        </tr>-->
     </thead>
     <tbody>
         <tr>
             <th colspan="2" class="fixed-column wide">Адрес</th>
             {% for item in model['kiosks'] %}
-            <td><small>{{item.address}}</small></td>
+            <td colspan="{{ model[item.num]|length }}"><small>{{item.address}}</small></td>
             {% endfor %}
             {% for item in model['shops'] %}
-            <td><small>{{item.address}}</small></td>
+            <td colspan="{{ model[item.num]|length }}"><small>{{item.address}}</small></td>
             {% endfor %}
             {% for item in model['cafes'] %}
-            <td colspan="2"><small>{{item.address}}</small></td>
+            <td colspan="{{ model[item.num]|length }}"><small>{{item.address}}</small></td>
             {% endfor %}
         </tr>
         {% for question in model['checklist'].pages[0].questions %}
         <tr>
             <th colspan="2" class="fixed-column wide">{{ question.label }}</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist[question.field_name]}}</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist[question.field_name]}}</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0][question.field_name]}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1][question.field_name]}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist[question.field_name]}}</td>
+                {% endfor %}
             {% endfor %}
         </tr>
         {% endfor %}
         <tr>
             <th colspan="2" class="fixed-column wide">Код проверяющего</th>
             {% for item in model['kiosks'] %}
-            <td>ТП</td>
+                {% for checklist in model[item.num] %}
+                    <td>ТП</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-            <td>ТП</td>
+                {% for checklist in model[item.num] %}
+                    <td>ТП</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-            <td>ТП</td><td>ТП</td>
+                {% for checklist in model[item.num] %}
+                    <td>ТП</td>
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
             <th colspan="2" class="fixed-column wide">Оператор АЗС</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist['operator_fullname']}}</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist['operator_fullname']}}</td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0]['operator_fullname']}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1]['operator_fullname']}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">{{checklist['operator_fullname']}}</td>
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
             <th colspan="2" class="fixed-column wide">Оператор-кассир</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">
+                        {{checklist['accounter_fullname']}}
+                        {% if checklist['accounter_cafe_fullname'] != '' %}
+                            <br/> {{checklist['accounter_cafe_fullname']}}
+                        {% endif %}
+                    </td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                {% endif %}
+                 {% for checklist in model[item.num] %}
+                    <td class="nowrap">
+                        {{checklist['accounter_fullname']}}
+                        {% if checklist['accounter_cafe_fullname'] != '' %}
+                            <br/> {{checklist['accounter_cafe_fullname']}}
+                        {% endif %}
+                    </td>
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap">{{model[item.num][0]['accounter_fullname']}} / {{model[item.num][0]['accounter_cafe_fullname']}}</td>
-                    {% else %}
-                    <td></td><td></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td class="nowrap">{{model[item.num][1]['accounter_fullname']}} / {{model[item.num][0]['accounter_cafe_fullname']}}</td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
+                {% for checklist in model[item.num] %}
+                    <td class="nowrap">
+                        {{checklist['accounter_fullname']}}
+                        {% if checklist['accounter_cafe_fullname'] != '' %}
+                            <br/> {{checklist['accounter_cafe_fullname']}}
+                        {% endif %}
+                    </td>
+                {% endfor %}
             {% endfor %}
         </tr>
         <!-- pages -->
         {% for index in [1,2,3,4,5,6,7] %}
-        <tr class="bg-success">
-            <th class="fixed-column one">{{ index }}</th>
-            <th class="fixed-column two">{{ model['checklist'].pages[index].title }}</th>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
-                    </th>
-                {% else %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}"></th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
-                        {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
-                    </th>
-                {% else %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}"></th>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1">
-                            {{ model[item.num][0].sum_points(model['checklist'].pages[index]) }}
+            <tr class="bg-success">
+                <th class="fixed-column one">{{ index }}</th>
+                <th class="fixed-column two">{{ model['checklist'].pages[index].title }}</th>
+                {% for item in model['kiosks'] %}
+                    {% for checklist in model[item.num] %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
+                            {{ checklist.sum_points(model['checklist'].pages[index]) }}
                         </th>
-                    {% else %}
-                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1"></th>
-                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></th>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2">
-                            {{ model[item.num][1].sum_points(model['checklist'].pages[index]) }}
+                    {% endfor %}
+                {% endfor %}
+                {% for item in model['shops'] %}
+                    {% for checklist in model[item.num] %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
+                            {{ checklist.sum_points(model['checklist'].pages[index]) }}
                         </th>
-                    {% else %}
-                        <td title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></td>
-                    {% endif %}
-                {% else %}
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-1"></th>
-                    <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}-2"></th>
-                {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {% for item in model['cafes'] %}
+                    {% for checklist in model[item.num] %}
+                        <th title="пп: {{index}}, АЗС: {{item.num}}-{{item.title}}">
+                            {{ checklist.sum_points(model['checklist'].pages[index]) }}
+                        </th>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% for question in model['checklist'].pages[index].questions %}
+                <tr>
+                    {% set indx = loop.index %}
+                    <td class="fixed-column one">{{index}}.{{loop.index}}</td>
+                    <td class="fixed-column two">{{ question.label }}</td>
+                    {% for item in model['kiosks'] %}
+                        {% for checklist in model[item.num] %}
+                            <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                                {% if checklist.object_info.applies(question) %}
+                                    {{ checklist[question.field_name]|points(question) }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for item in model['shops'] %}
+                        {% for checklist in model[item.num] %}
+                            <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                                {% if checklist.object_info.applies(question) %}
+                                    {{ checklist[question.field_name]|points(question) }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for item in model['cafes'] %}
+                        {% for checklist in model[item.num] %}
+                            <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
+                                {% if checklist.object_info.applies(question) %}
+                                    {{ checklist[question.field_name]|points(question) }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
             {% endfor %}
-        </tr>
-        {% for question in model['checklist'].pages[index].questions %}
-        <tr>
-            {% set indx = loop.index %}
-            <td class="fixed-column one">{{index}}.{{loop.index}}</td>
-            <td class="fixed-column two">{{ question.label }}</td>
-            {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
-                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {% if model[item.num][0].object_info.applies(question) %}
-                            {{ model[item.num][0][question.field_name]|points(question) }}
-                        {% endif %}
-                    </td>
-                {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['shops'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                    <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                        {% if model[item.num][0].object_info.applies(question) %}
-                            {{ model[item.num][0][question.field_name]|points(question) }}
-                        {% endif %}
-                    </td>
-                    {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
-            {% endfor %}
-            {% for item in model['cafes'] %}
-                {% if model[item.num] %}
-                    {% if model[item.num]|length > 0 %}
-                        <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                            {% if model[item.num][0].object_info.applies(question) %}
-                                {{ model[item.num][0][question.field_name]|points(question) }}
-                            {% endif %}
-                        </td>
-                    {% else %}
-                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                        <td class="nowrap" title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}">
-                            {% if model[item.num][1].object_info.applies(question) %}
-                                {{ model[item.num][1][question.field_name]|points(question) }}
-                            {% endif %}
-                        </td>
-                    {% else %}
-                        <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="пп: {{index}}.{{indx}}, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
         {% endfor %}
     </tbody>
     <tfoot>
         <tr>
             <th colspan="2" class="text-right fixed-column wide">Максимальный балл</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['max_points']}}
+                        {{checklist['max_points']}}
                     </td>
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                       {{model[item.num][0]['max_points']}}
+                        {{checklist['max_points']}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['max_points']}}
+                        {{checklist['max_points']}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['max_points']}}
-                    </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
             <th colspan="2" class="text-right fixed-column wide">Балл по проверке</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['points']}}
+                        {{checklist['points']}}
                     </td>
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                       {{model[item.num][0]['points']}}
+                        {{checklist['points']}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['points']}}
+                        {{checklist['points']}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['points']}}
-                    </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
             <th colspan="2" class="text-right fixed-column wide">%</th>
             {% for item in model['kiosks'] %}
-                {% if model[item.num] %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{ '{:.0f}%'.format(model[item.num][0]['points_percent']) }}
+                        {{'{:.0f}%'.format(checklist['points_percent'])}}
                     </td>
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['shops'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                       {{'{:.0f}%'.format(model[item.num][0]['points_percent'])}}
+                        {{'{:.0f}%'.format(checklist['points_percent'])}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{'{:.0f}%'.format(model[item.num][0]['points_percent'])}}
+                        {{'{:.0f}%'.format(checklist['points_percent'])}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
+                {% endfor %}
+            {% endfor %}
+        </tr>
+        {% set colspan = 2 + model['kiosks_columns'] + model['shops_columns'] %}
+        <tr>
+            <td colspan="{{colspan}}" class="text-right fixed-column wide">Кофе/Чай</td>
+            {% for item in model['cafes'] %}
+                {% for checklist in model[item.num] %}
                     <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
-                        {{'{:.0f}%'.format(model[item.num][1]['points_percent'])}}
+                        {{checklist['p8_r1']}}
                     </td>
-                    {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
-            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right fixed-column wide">Кофе/Чай</td>
+            <td colspan="{{colspan}}" class="text-right fixed-column wide">Пенка</td>
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['p8_r1']}}
+                {% for checklist in model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{checklist['p8_r5']}}
                     </td>
-                    {% else %}
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['p8_r1']}}
-                    </td>
-                    {% else %}
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Кофе, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
-            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right fixed-column wide">Пенка</td>
+            <td colspan="{{colspan}}" class="text-right fixed-column wide">Объем</td>
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['p8_r5']}}
+                {% for checklist in model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{checklist['p8_r6']}}
                     </td>
-                    {% else %}
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['p8_r5']}}
-                    </td>
-                    {% else %}
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Пенка, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
         <tr>
-            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right fixed-column wide">Объем</td>
+            <td colspan="{{colspan}}" class="text-right fixed-column wide">Чашка</td>
             {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['p8_r6']}}
+                {% for checklist in model[item.num] %}
+                    <td title="MAX, АЗС: {{item.num}}-{{item.title}}">
+                        {{checklist['p8_r7']}}
                     </td>
-                    {% else %}
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['p8_r6']}}
-                    </td>
-                    {% else %}
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Объем, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td colspan="{{model['kiosks_count']+model['shops_count']+2}}" class="text-right fixed-column wide">Чашка</td>
-            {% for item in model['cafes'] %}
-            {% if model[item.num] %}
-                {% if model[item.num]|length > 0 %}
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][0]['p8_r7']}}
-                    </td>
-                    {% else %}
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                    {% if model[item.num]|length > 1 %}
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}">
-                        {{model[item.num][1]['p8_r7']}}
-                    </td>
-                    {% else %}
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    {% endif %}
-                {% else %}
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
-                    <td title="Чашка, АЗС: {{item.num}}-{{item.title}}"></td>
-                {% endif %}
+                {% endfor %}
             {% endfor %}
         </tr>
     </tfoot>
