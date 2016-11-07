@@ -178,7 +178,11 @@
             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[1].questions %}
-                    {{ question(item, values[item.field_name]) }}
+                        {% if item.child %}
+                            {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                        {% else %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -201,7 +205,11 @@
             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[2].questions %}
-                    {{ question(item, values[item.field_name]) }}
+                        {% if item.child %}
+                            {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                        {% else %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -224,7 +232,11 @@
             <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[3].questions %}
-                    {{ question(item, values[item.field_name]) }}
+                        {% if item.child %}
+                            {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                        {% else %}
+                            {{ question(item, values[item.field_name]) }}
+                        {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel-collapse -->
@@ -248,7 +260,11 @@
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[4].questions %}
                         {% if selected.applies(item) %}
-                            {{ question(item, values[item.field_name]) }}
+                            {% if item.child %}
+                                {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                            {% else %}
+                                {{ question(item, values[item.field_name]) }}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
@@ -274,7 +290,11 @@
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[5].questions %}
                         {% if selected.applies(item) %}
-                            {{ question(item, values[item.field_name]) }}
+                            {% if item.child %}
+                                {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                            {% else %}
+                                {{ question(item, values[item.field_name]) }}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
@@ -301,7 +321,11 @@
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[6].questions %}
                         {% if selected.applies(item) %}
-                            {{ question(item, values[item.field_name]) }}
+                            {% if item.child %}
+                                {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                            {% else %}
+                                {{ question(item, values[item.field_name]) }}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->
@@ -327,7 +351,11 @@
                 <div class="panel-body js-section-body">
                     {% for item in checklist.pages[7].questions %}
                         {% if selected.applies(item) %}
-                            {{ question(item, values[item.field_name]) }}
+                            {% if item.child %}
+                                {{ question(item, values[item.field_name], values[item.child.field_name]) }}
+                            {% else %}
+                                {{ question(item, values[item.field_name]) }}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div><!-- /.panel-body -->

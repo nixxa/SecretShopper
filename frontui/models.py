@@ -1,6 +1,6 @@
 """ Data models """
 from datetime import datetime
-from frontui.linq import where
+from frontui.linq import where, first_or_default
 
 
 class User:
@@ -63,7 +63,7 @@ class ObjectInfo:
 
     def __repr__(self):
         return '{{ num: {0}, type: {1} }}'.format(self.num, self.type)
-    
+
     @staticmethod
     def from_json(json_data):
         """
@@ -81,18 +81,19 @@ class ObjectInfo:
         :type question: QuestionInfo
         :rtype: bool
         """
-        s = ''
+        str_val = ''
         if self.with_shop:
-            s = 'shop'
+            str_val = 'shop'
         if self.with_cafe:
-            s = 'cafe'
-        if s == '' and len(question.applies) == 0 and not self.num in question.excepts:
+            str_val = 'cafe'
+        if str_val == '' and len(question.applies) == 0 and not self.num in question.excepts:
             return True
-        if s == '' and len(question.applies) > 0 and self.num in question.applies:
+        if str_val == '' and len(question.applies) > 0 and self.num in question.applies:
             return True
-        if s != '' and len(question.applies) == 0 and not self.num in question.excepts:
+        if str_val != '' and len(question.applies) == 0 and not self.num in question.excepts:
             return True
-        return (s in question.applies or self.num in question.applies) and not self.num in question.excepts
+        return (str_val in question.applies or self.num in question.applies) \
+                and not self.num in question.excepts
 
 
 class PageInfo:
@@ -108,8 +109,8 @@ class PageInfo:
 
     @staticmethod
     def from_json(json_data):
-        """ 
-        Parse JSON 
+        """
+        Parse JSON
         :type json_data: str
         :rtype: PageInfo
         """
@@ -119,12 +120,20 @@ class PageInfo:
         page.title = json_data['title']
         page.num = int(json_data['num'])
         if 'cost' in json_data:
-            page.cost = int(json_data['cost']) 
+            page.cost = int(json_data['cost'])
         for item in json_data['questions']:
             question = QuestionInfo.from_json(item)
             question.cost = page.cost
-            if question is not None:
-                page.questions.append(question)
+            page.questions.append(question)
+        collection = list()
+        for question in page.questions:
+            if question.parent_id is None:
+                collection.append(question)
+            parent = first_or_default(page.questions, lambda s: s.field_name == question.parent_id)
+            if parent is not None:
+                question.parent = parent
+                parent.child = question
+        page.questions = collection
         return page
 
     def max_cost(self, obj_info):
@@ -133,17 +142,17 @@ class PageInfo:
         :type obj_info: ObjectInfo
         :rtype: int
         """
-        applied = len(where(self.questions, lambda s: obj_info.applies(s)))
+        applied = len(where(self.questions, obj_info.applies))
         excepts = 0 #len(where(self.questions, lambda s: obj_info.num in s.excepts))
         return self.cost * (applied - excepts)
-        
+
     def max_questions(self, obj_info):
         """
         Return max questions count
         :type obj_info: ObjectInfo
         :rtype: int
         """
-        applied = len(where(self.questions, lambda s: obj_info.applies(s)))
+        applied = len(where(self.questions, obj_info.applies))
         excepts = 0 #len(where(self.questions, lambda s: obj_info.num in s.excepts))
         return applied - excepts
 
@@ -157,6 +166,10 @@ class QuestionInfo:
         self.applies = []
         self.excepts = []
         self.optional = False
+        self.activate_on = None
+        self.parent = None
+        self.parent_id = None
+        self.child = None
 
     def __repr__(self):
         return '{{ field: {0}, title: {1} }}'.format(self.field_name, self.label)
@@ -179,6 +192,10 @@ class QuestionInfo:
             question.excepts = json_data['excepts'].split(',')
         if 'optional' in json_data:
             question.optional = True
+        if 'parent' in json_data:
+            question.parent_id = json_data['parent']
+        if 'activate_on' in json_data:
+            question.activate_on = json_data['activate_on']
         return question
 
 

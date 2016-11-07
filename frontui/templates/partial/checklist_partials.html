@@ -1,6 +1,6 @@
 
-{% macro question(item, value = '') -%}
-<div class="question {% if item.optional %}question-optional{% endif %} js-question">
+{% macro question(item, value = '', additional_value = '') -%}
+<div class="question {% if item.optional %}question-optional{% endif %} js-question" data-field="{{ item.field_name }}">
     <input type="hidden" name="{{ item.field_name }}" value="{{ value }}" role="checkbox" />
     <div class="btn-group btn-group-xs mr5 js-question-btns" role="group">
         <button type="button" class="btn btn-default" value="yes">ДА</button>
@@ -13,4 +13,12 @@
     {{ item.label }}
     </label>
 </div>
+{% if item.child %}
+<div class="mb10 {% if additional_value == '' %}hidden{% endif %} js-if-question" 
+    data-field="{{ item.field_name }}" 
+    data-parent="{{ item.field_name }}" 
+    data-activate-on="{{ item.child.activate_on }}">
+    <input type="text" name="{{ item.child.field_name }}" value="{{ additional_value }}" class="form-control" placeholder="{{ item.child.label }}" />
+</div>
+{% endif %}
 {%- endmacro %}

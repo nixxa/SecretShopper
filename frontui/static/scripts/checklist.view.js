@@ -127,6 +127,16 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
             
             var $question = $grp.parents('.js-question');
             $question.attr('data-filled', '1');
+            var children = $question.parents('.js-section-body')
+                .find('.js-if-question[data-parent="' + $question.data('field') + '"]');
+            for (var i = 0; i < children.length; i++) {
+                var $item = $(children[i]);
+                if ($item.data('activate-on') == $target.val()) {
+                    $item.removeClass('hidden');
+                } else {
+                    $item.addClass('hidden');
+                }
+            }
             var $input = $question.find('input[type=hidden]');
             $input.val($target.val());
 
@@ -160,10 +170,10 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
         });
         // init min-diff setter
         $('#minute1,#minute3').change(function (evt) {
-            var min = $('#minute1').val();
-            var max = $('#minute3').val();
+            var min = parseInt($('#hour1').val(), 10) * 60 + parseInt($('#minute1').val(), 10);
+            var max = parseInt($('#hour3').val(), 10) * 60 + parseInt($('#minute3').val(), 10);
             if (/^[\d]+$/.test(min) && /^[\d]+$/.test(max)) {
-                $('#min-diff').val(+max - +min);
+                $('#min-diff').val(max - min);
                 $('#min-diff').attr('data-filled', '1');
                 changeBadge($('#min-diff'));
             }
