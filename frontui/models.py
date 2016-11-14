@@ -243,9 +243,8 @@ class Checklist:
             if 'create_date' in json_data:
                 self.create_date = \
                     datetime.strptime(json_data['create_date'], '%Y-%m-%dT%H:%M:%S')
-            if 'p1_r1' in json_data:
-                self.date = \
-                    datetime.strptime(json_data['p1_r1'],'%Y-%m-%d')
+            if 'date' in json_data:
+                self.date = datetime.strptime(json_data['date'], '%Y-%m-%dT%H:%M:%S')
         self.max_points = 0
         self.points = 0
         self.points_percent = 0
