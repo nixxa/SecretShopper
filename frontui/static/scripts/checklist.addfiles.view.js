@@ -271,6 +271,9 @@ define(['jquery', 'dropzone', 'pica', 'bootstrap'], function($, dropzone, pica, 
                 $.post('/checklist/complete/' + uid, { 'author_email': $('#js-author-email').val() }, function (data) {
                     $('#myModal').modal('hide');
                     $('#js-content').hide();
+                }).fail(function () {
+                    $('#myModal').modal('hide');
+                    $('#js-content').hide();
                 });
             }
         });

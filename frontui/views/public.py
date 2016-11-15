@@ -62,6 +62,9 @@ def checklist_new():
     data['verify_date'] = None
     for key in request.form:
         data[key] = request.form[key]
+    # set DATE same to checklist date field
+    data['date'] = data['p1_r1'] + 'T00:00:00'
+    # save checklist
     database.save_checklist(object_num, selected_date, data)
     session['checklist-uid'] = data['uid']
     logger.info("Checklist for %s saved with uid: %s", object_num, data['uid'])
