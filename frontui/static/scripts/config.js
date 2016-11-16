@@ -1,5 +1,6 @@
 ﻿/* RequireJS config */
 require.config({
+	urlArgs: 'r=v1',
 	shim: {
 		'bootstrap': { 'deps': ['jquery'] },
 		'date-input': { 'deps': ['jquery'] },
@@ -8,11 +9,11 @@ require.config({
 	},
 	paths: {
 		'jquery': [
-			'//code.jquery.com/jquery-2.2.3.min',
+			'https://code.jquery.com/jquery-2.2.3.min',
 			'/static/content/jquery-2.2.3/jquery.min'
 		],
 		'bootstrap': [
-			'//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap',
+			'https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap',
 			'/static/content/bootstrap-3.3.6/js/bootstrap'
 		],
 		'moment': '/static/content/momentjs/moment-with-locales',
