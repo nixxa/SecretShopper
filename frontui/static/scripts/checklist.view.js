@@ -110,6 +110,13 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
         });
     }
 
+    Array.prototype.contains = function (value) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == value) return true;
+        }
+        return false;
+    }
+
     function initHandlers() {
         // init mouse handlers for checkboxes
         $('.js-question-btns .btn').click(function (evt) {
@@ -131,7 +138,8 @@ define(['require','jquery','bootstrap', 'dropzone', 'audiojs'],
                 .find('.js-if-question[data-parent="' + $question.data('field') + '"]');
             for (var i = 0; i < children.length; i++) {
                 var $item = $(children[i]);
-                if ($item.data('activate-on') == $target.val()) {
+                var answers = $item.data('activate-on').split(',');
+                if (answers.contains($target.val())) {
                     $item.removeClass('hidden');
                 } else {
                     $item.addClass('hidden');
