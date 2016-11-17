@@ -57,6 +57,7 @@ class DataProvider:
                 with open(os.path.join(dirpath, fname), 'r', encoding='utf8') as file:
                     json_data = json.load(file)
                 item = Checklist(json_data)
+                item.filename = fname
                 if not hasattr(item, 'files'):
                     item.files = list()
                 obj_info = linq.first_or_default(self.objects, lambda x: x.num == json_data['object_name'])
@@ -116,10 +117,10 @@ class DataProvider:
     def update_checklist(self, obj):
         """
         Update checklist
+        :type obj: Checklist
         :rtype: None
         """
         obj_num = obj.object_info.num
-        obj_date = obj.date.strftime('%Y-%m-%d')
         obj_dict = obj.__dict__.copy()
         del obj_dict['object_info']
         del obj_dict['checklist_info']
@@ -127,7 +128,7 @@ class DataProvider:
         filedir = os.path.join(self.checklists_dir, obj_num)
         if not os.path.exists(filedir):
             os.makedirs(filedir)
-        filename = obj_date + '.json'
+        filename = obj.filename
         with open(os.path.join(filedir, filename), 'w', encoding='utf8') as file:
             file.write(obj_json)
         return
@@ -146,7 +147,7 @@ class DataProvider:
         # rename checklist file
         logger.info('Removing checklist: %s', checklist.uid)
         filedir = os.path.join(self.checklists_dir, checklist.object_info.num)
-        filename = checklist.date.strftime('%Y-%m-%d') + '.json'
+        filename = checklist.filename
         backup_filename = checklist.date.strftime('%Y-%m-%d') + '.json.bak'
         shutil.move(os.path.join(filedir, filename), os.path.join(filedir, backup_filename))
         # rename uploads

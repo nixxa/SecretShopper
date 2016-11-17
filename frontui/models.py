@@ -236,6 +236,7 @@ class Checklist:
         self.create_date = datetime.utcnow()
         self.verify_date = None
         self.date = None
+        self.filename = ''
         self.files = list()
         self.visited_by = dict()
         if json_data is not None:
@@ -280,13 +281,13 @@ class Checklist:
         :type page: int
         :rtype: int
         """
-        p = 0
-        for q in page.questions:
-            answer = self.get(q.field_name) == 'yes'
-            if not self.object_info.applies(q):
+        sum_points = 0
+        for question in page.questions:
+            answer = self.get(question.field_name) == 'yes'
+            if not self.object_info.applies(question):
                 continue
-            p = p + (page.cost if answer else 0)
-        return p
+            sum_points = sum_points + (page.cost if answer else 0)
+        return sum_points
 
     def visit_by(self, username):
         """
@@ -314,13 +315,15 @@ class UserActionInfo:
         self.username = None
         self.last_login_time = datetime(2000, 1, 1)
         self.last_edit_time = datetime(2000, 1, 1)
-        if (json_data is not None):
+        if json_data is not None:
             if 'username' in json_data:
                 self.username = json_data['username']
             if 'last_login_time' in json_data and json_data['last_login_time'] is not None:
-                self.last_login_time = datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
+                self.last_login_time = \
+                    datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
             if 'last_login_time' in json_data and json_data['last_login_time'] is not None:
-                self.last_login_time = datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
+                self.last_login_time = \
+                    datetime.strptime(json_data['last_login_time'], '%Y-%m-%dT%H:%M:%S')
         return
 
     def update_login_time(self):
