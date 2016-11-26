@@ -151,6 +151,19 @@ def remove_report(uid):
     return redirect('/reports/%s' % obj_num)
 
 
+@member_ui.route('/report/changemonth', methods=['POST'])
+@authorize
+def change_month():
+    """ Change date of checklist """
+    uid = request.form['uid']
+    new_month = int(request.form['month'])
+    database = DataProvider()
+    item = first_or_default(database.checklists, lambda x: x.uid == uid)
+    item.date = item.date.replace(month=new_month).replace(day=10)
+    database.update_checklist(item)
+    return '', 200
+
+
 @member_ui.route('/annual/all')
 @authorize
 def annual_reports():

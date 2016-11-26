@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>##</th>
+            <th>Отчетный месяц</th>
             <th>Дата отчета</th>
             <th>Статус отчета</th>
             <th></th>
@@ -21,7 +22,29 @@
             <tr>
                 <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
                 <td>
-                	<span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    <div class="js-change-month-container">
+                        <div class="js-change-month">
+                            <span class="js-month" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                            <a class="btn-link" href="#"><i class="glyphicon glyphicon-edit"></i></a>
+                        </div>
+                        <select class="form-control hidden js-change-month-select" style="padding:0;height:auto;" data-uid="{{obj.uid}}">
+                            <option value="01" {% if obj.date.strftime("%m") == '01' %}selected{% endif %}>январь</option>
+                            <option value="02" {% if obj.date.strftime("%m") == '02' %}selected{% endif %}>февраль</option>
+                            <option value="03" {% if obj.date.strftime("%m") == '03' %}selected{% endif %}>март</option>
+                            <option value="04" {% if obj.date.strftime("%m") == '04' %}selected{% endif %}>апрель</option>
+                            <option value="05" {% if obj.date.strftime("%m") == '05' %}selected{% endif %}>май</option>
+                            <option value="06" {% if obj.date.strftime("%m") == '06' %}selected{% endif %}>июнь</option>
+                            <option value="07" {% if obj.date.strftime("%m") == '07' %}selected{% endif %}>июль</option>
+                            <option value="08" {% if obj.date.strftime("%m") == '08' %}selected{% endif %}>август</option>
+                            <option value="09" {% if obj.date.strftime("%m") == '09' %}selected{% endif %}>сентябрь</option>
+                            <option value="10" {% if obj.date.strftime("%m") == '10' %}selected{% endif %}>октябрь</option>
+                            <option value="11" {% if obj.date.strftime("%m") == '11' %}selected{% endif %}>ноябрь</option>
+                            <option value="12" {% if obj.date.strftime("%m") == '12' %}selected{% endif %}>декабрь</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <span class="js-datetime-from" data-datetime="{{ obj.get('p1_r1') }}"></span>
                 </td>
                 <td>новый</td>
                 <td>
@@ -35,7 +58,29 @@
             <tr>
                 <td><a href="/report/{{obj.uid}}">{{ obj.uid }}</a></td>
                 <td>
-                    <span class="js-datetime-from" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                    <div class="js-change-month-container">
+                        <div class="js-change-month">
+                            <span class="js-month" data-datetime="{{ obj.date.strftime("%Y-%m-%dT%H:%M:%S") }}"></span>
+                            <a class="btn-link" href="#"><i class="glyphicon glyphicon-edit"></i></a>
+                        </div>
+                        <select class="form-control hidden js-change-month-select" style="padding:0;height:auto;" data-uid="{{obj.uid}}">
+                            <option value="01" {% if obj.date.strftime("%m") == '01' %}selected{% endif %}>январь</option>
+                            <option value="02" {% if obj.date.strftime("%m") == '02' %}selected{% endif %}>февраль</option>
+                            <option value="03" {% if obj.date.strftime("%m") == '03' %}selected{% endif %}>март</option>
+                            <option value="04" {% if obj.date.strftime("%m") == '04' %}selected{% endif %}>апрель</option>
+                            <option value="05" {% if obj.date.strftime("%m") == '05' %}selected{% endif %}>май</option>
+                            <option value="06" {% if obj.date.strftime("%m") == '06' %}selected{% endif %}>июнь</option>
+                            <option value="07" {% if obj.date.strftime("%m") == '07' %}selected{% endif %}>июль</option>
+                            <option value="08" {% if obj.date.strftime("%m") == '08' %}selected{% endif %}>август</option>
+                            <option value="09" {% if obj.date.strftime("%m") == '09' %}selected{% endif %}>сентябрь</option>
+                            <option value="10" {% if obj.date.strftime("%m") == '10' %}selected{% endif %}>октябрь</option>
+                            <option value="11" {% if obj.date.strftime("%m") == '11' %}selected{% endif %}>ноябрь</option>
+                            <option value="12" {% if obj.date.strftime("%m") == '12' %}selected{% endif %}>декабрь</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <span class="js-datetime-from" data-datetime="{{ obj.get('p1_r1') }}"></span>
                 </td>
                 <td>
                     {% if obj.state == 'new' %}
@@ -65,10 +110,24 @@
                     var $this = $(this);
                     $this.text(moment.utc($this.data('datetime')).format('D MMMM YYYY'));
                 });
+                $.each($('.js-month'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).format('MMMM'));
+                });
                 $('.js-remove-report-btn').click(function (e) {
                     if (!confirm('Вы действительно желаете удалить анкету?')) {
                         e.preventDefault();
                     }
+                });
+                $('.js-change-month>a.btn-link').click(function (e) {
+                    var $this = $(this);
+                    $this.parent().addClass('hidden');
+                    $this.parents('.js-change-month-container').find('.js-change-month-select').removeClass('hidden');
+                });
+                $('.js-change-month-select').change(function (e) {
+                    $.post('/report/changemonth', { uid: $(this).data('uid'), month: $(this).val() }, function (data) {
+                        window.location.reload();
+                    });                    
                 });
             });
         });
