@@ -19,6 +19,7 @@ def create_app(app_mode='DEBUG'):
     # set logging
     configure_logging(app_mode, app)
     if app_mode == 'DEBUG':
+        # debugging in VSCode works only if following 2 lines are commented out
         #app.debug = True
         #app.config['DEBUG'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
