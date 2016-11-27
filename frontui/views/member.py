@@ -411,7 +411,13 @@ def fill_cells(rprt, cells):
         #cells[index].value = rprt.sum_points(page)
         index += 1
         for question in page.questions:
-            cells[index].value = rprt.get_points(question.field_name, question)
+            cell_value = rprt.get_points(question.field_name, question)
+            cells[index].value = cell_value
+            if question.child is not None and (cell_value is None or cell_value == 0):
+                # insert comment, cause question has description in some cases
+                comment_value = rprt.get(question.child.field_name)
+                if comment_value != '' and comment_value is not None:
+                    cells[index].comment = Comment(rprt.get(question.child.field_name), 'Author')
             index += 1
     cells[index].value = rprt.max_points
     index += 1
