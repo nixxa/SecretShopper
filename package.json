@@ -1,0 +1,47 @@
+{
+  "name": "secretshopper",
+  "version": "1.0.0",
+  "description": "Secret shopper quiz and report builder",
+  "main": "./js/site.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.16.0",
+    "babel-runtime": "^6.18.0",
+    "bootstrap": "^3.3.7",
+    "bootswatch": "^3.3.7",
+    "dropzone": "^4.3.0",
+    "jquery": "^3.1.1",
+    "moment": "^2.17.0",
+    "pica": "^2.0.8"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-1": "^6.16.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nixxa/SecretShopper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nixxa/SecretShopper/issues"
+  },
+  "homepage": "https://github.com/nixxa/SecretShopper#readme"
+}

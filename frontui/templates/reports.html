@@ -32,16 +32,10 @@
 </table>
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/reports.css" />
+{% endblock %}
+
 {% block scripts %}
-    <script type="text/javascript">
-        require(['moment', 'jquery'], function (moment, $) {
-            $(function () {
-                moment.locale('ru');
-                $.each($('.js-datetime-from'), function () {
-                    var $this = $(this);
-                    $this.text(moment.utc($this.data('datetime')).fromNow());
-                });
-            });
-        });
-    </script>
+    <script type="text/javascript" src="/static/assets/reports.js"></script>
 {% endblock %}

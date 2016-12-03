@@ -76,3 +76,10 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Nodejs modules
+node_modules
+
+# JavaScript and CSS maps
+**/*.js.map
+**/*.css.map

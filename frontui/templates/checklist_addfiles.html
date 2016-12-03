@@ -10,7 +10,7 @@
     </ul>
 
     <h3>Добавление файлов к листу посещения</h3>
-    <form action="/file/upload" id="myDropzone" class="dropzone mb20" data-uid="{{ uid }}">
+    <form action="/file/upload" id="myDropzone" class="dropzone my-dropzone mb20" data-uid="{{ uid }}">
         <div class="dz-message">
             Перетащите сюда файлы для добавления их на сервер или кликните мышкой.
         </div>
@@ -51,14 +51,12 @@
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="/static/content/dropzone.css" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/checklist.addfiles.css" />
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
         window.checklist_files = {{ files|tojson }};
     </script> 
-    <script type="text/javascript">
-        require(['/static/scripts/checklist.addfiles.view.js']);
-    </script>
+    <script type="text/javascript" src="/static/assets/checklist.addfiles.js"></script>
 {% endblock %}

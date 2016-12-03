@@ -1,0 +1,141 @@
+/* Mine */
+body {
+    padding-top: 50px;
+    padding-bottom: 90px;
+}
+
+.navbar-mobile .navbar-brand {
+    padding: 9px 12px;
+}
+
+.navbar-brand img {
+    height: 25px;
+    display: inline;
+    margin-right: 8px;
+}
+
+.form-xs .form-control {
+    width: auto;
+    height: auto;
+    display: inline;
+    font-size: 85%;
+    padding: 4px 6px;
+}
+
+/* --- margins and paddings --- */
+.mb20 {
+    margin-bottom: 20px !important;
+}
+.mt10 {
+    margin-top: 10px !important;
+}
+.mb10 {
+    margin-bottom: 10px !important;
+}
+.mb5 {
+    margin-bottom: 5px !important;
+}
+.ml5 {
+    margin-left: 5px !important;
+}
+.mr5 {
+    margin-right: 5px !important;
+}
+/* --- /margins and paddings --- */
+
+label {
+    font-size: 14px;
+}
+
+.checkbox label {
+    font-size: 14px;
+}
+
+.radio input[type="radio"], 
+.radio-inline input[type="radio"], 
+.checkbox input[type="checkbox"], 
+.checkbox-inline input[type="checkbox"] {
+    margin-top: 4px;
+}
+
+.question {
+    margin-bottom: 8px;
+}
+
+.question label {
+    margin-left: 115px;
+    display: table-cell;
+}
+.question .btn-group {
+    display: table-cell;
+    width: 115px;
+    vertical-align: top;
+}
+
+.question .btn-group .btn {
+    width: 54px;
+}
+
+.question-optional .btn-group {
+    width: 165px;
+}
+
+.question-optional label {
+    margin-left: 165px;
+}
+
+.badge.badge-success {
+    background-color: #5cb85c;
+}
+
+.badge.badge-danger {
+    background-color: #d9534f;
+}
+
+.my-dropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.my-dropzone .dz-message {
+    font-weight: 400;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.bl {
+    border-left: 1px solid #ddd !important;
+}
+
+.bl-2x {
+    border-left: 2px solid #ddd !important;
+}
+
+.fixed {
+    top:0;
+    position:fixed;
+    width:auto;
+    display:none;
+    border:none;
+}
+
+.fixed-table-container {
+    width:90%;
+    margin:auto;
+}
+
+.header-form {
+    float: right;
+    padding: 0px 0px 10px 0px;
+}
+
+.header-form > select {
+    font-size: 60%;
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 1px solid #808080;
+}

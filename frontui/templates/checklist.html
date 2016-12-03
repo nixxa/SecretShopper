@@ -456,8 +456,10 @@
 </form><!-- /form -->
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/checklist.css" />
+{% endblock %}
+
 {% block scripts %}
-    <script type="text/javascript">
-        require(['/static/scripts/checklist.view.js']);
-    </script>
+    <script type="text/javascript" src="/static/assets/checklist.js"></script>
 {% endblock %}
