@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/dashboard.css" />
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top navbar-mobile">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="/static/img/logo.svg" style="display:inline" />Secret Shooper</a>
+            </div>
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false">
+                {% if request.authorization %}
+                    <ul class="nav navbar-nav">
+                        {% if session['user_role'] == 'internal' %}
+                        <li><a href="/reports">Контрольные листы</a></li>
+                        <li><a href="/annual/all">Месячный отчет</a></li>
+                        <li><a href="/dashboard">Трекер</a></li>
+                        {% endif %}
+                        {% if session['user_role'] == 'external' %}
+                        <li><a href="/customer/reports">Контрольные листы</a></li>
+                        <li><a href="/annual/all">Месячный отчет</a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </nav><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                <div id="app"></div>
+            </div><!-- /.col-*-* -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+    <!-- BEGIN scripts -->
+    <script src="/static/assets/dashboard.js"></script>
+	<!-- END scripts -->
+</body>
+</html>

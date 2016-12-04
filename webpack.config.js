@@ -1,8 +1,9 @@
+var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
+var config = {
     entry: {
-        bundle: "./src/js/bundle.js"
+        dashboard: "./src/js/dashboard.js"
     },
     output: {
         path: 'frontui/static/assets/',
@@ -39,3 +40,9 @@ module.exports = {
         fs: "empty"
     }
 };
+
+if (process.env.NODE_ENV === 'production') {
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }));
+}
+
+module.exports = config;
