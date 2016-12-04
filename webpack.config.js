@@ -2,14 +2,11 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
-        index: "./src/js/index.js",
-        checklist: "./src/js/checklist.view.js",
-        'checklist.addfiles': './src/js/checklist.addfiles.view.js',
-        reports: "./src/js/reports.view.js",
-        'reports.object': "./src/js/reports.object.view.js"
+        bundle: "./src/js/bundle.js"
     },
     output: {
         path: 'frontui/static/assets/',
+        publicPath: '/static/assets/',
         filename: "[name].js",
         chunkFilename: "[id].js"
     },
@@ -31,7 +28,7 @@ module.exports = {
             // Font Definitions
             { 
                 test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/, 
-                loader: 'url-loader' 
+                loader: 'file-loader?name=fonts/[name].[ext]' 
             },
         ]
     },

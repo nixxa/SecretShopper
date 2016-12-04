@@ -51,12 +51,14 @@
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="/static/assets/css/checklist.addfiles.css" />
+    <link rel="stylesheet" type="text/css" href="/static/content/dropzone.css" />
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
         window.checklist_files = {{ files|tojson }};
     </script> 
-    <script type="text/javascript" src="/static/assets/checklist.addfiles.js"></script>
+    <script type="text/javascript">
+        require(['/static/scripts/checklist.addfiles.view.js']);
+    </script>
 {% endblock %}

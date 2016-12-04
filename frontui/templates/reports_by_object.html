@@ -100,10 +100,36 @@
 </table>
 {% endblock %}
 
-{% block styles %}
-    <link rel="stylesheet" type="text/css" href="/static/assets/css/reports.object.css" />
-{% endblock %}
-
 {% block scripts %}
-    <script type="text/javascript" src="/static/assets/reports.object.js"></script>
+    <script type="text/javascript">
+        require(['moment', 'jquery'], function (moment, $) {
+            // documenr.ready function
+            $(function () {
+                moment.locale('ru');
+                $.each($('.js-datetime-from'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).format('D MMMM YYYY'));
+                });
+                $.each($('.js-month'), function () {
+                    var $this = $(this);
+                    $this.text(moment.utc($this.data('datetime')).format('MMMM'));
+                });
+                $('.js-remove-report-btn').click(function (e) {
+                    if (!confirm('Вы действительно желаете удалить анкету?')) {
+                        e.preventDefault();
+                    }
+                });
+                $('.js-change-month>a.btn-link').click(function (e) {
+                    var $this = $(this);
+                    $this.parent().addClass('hidden');
+                    $this.parents('.js-change-month-container').find('.js-change-month-select').removeClass('hidden');
+                });
+                $('.js-change-month-select').change(function (e) {
+                    $.post('/report/changemonth', { uid: $(this).data('uid'), month: $(this).val() }, function (data) {
+                        window.location.reload();
+                    });                    
+                });
+            });
+        });
+    </script>
 {% endblock %}
