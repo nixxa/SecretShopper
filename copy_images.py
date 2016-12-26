@@ -25,6 +25,8 @@ for obj in objects:
     for indx, rprt in enumerate(reports_list, start=1):
         filedest = os.path.join(args.destination, obj + '_' + str(indx))
         print('Copy to %s' % filedest)
+        if not os.path.exists(filedest):
+            os.makedirs(filedest)
         for fdesc in rprt.files:
             filepath = fdesc['local_path']
             filedest = os.path.join(filedest, fdesc['filename'])
