@@ -23,13 +23,13 @@ objects = list(set(select(checklists, lambda x: x.object_info.num)))
 for obj in objects:
     reports_list = sorted(where(checklists, lambda x: x.object_info.num == obj), key=lambda x: x.date)
     for indx, rprt in enumerate(reports_list, start=1):
-        filedest = os.path.join(args.destination, obj + '_' + str(indx))
-        print('Copy to %s' % filedest)
-        if not os.path.exists(filedest):
-            os.makedirs(filedest)
+        dirdest = os.path.join(args.destination, obj + '_' + str(indx))
+        print('Copy to %s' % dirdest)
+        if not os.path.exists(dirdest):
+            os.makedirs(dirdest)
         for fdesc in rprt.files:
             filepath = fdesc['local_path']
-            filedest = os.path.join(filedest, fdesc['filename'])
+            filedest = os.path.join(dirdest, fdesc['filename'])
             try:
                 shutil.copy(filepath, filedest)
             except Exception as err:
