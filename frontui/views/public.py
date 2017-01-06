@@ -8,6 +8,7 @@ from datetime import datetime
 from flask import render_template, request, Blueprint, current_app, session, send_file
 from werkzeug.utils import secure_filename
 from frontui.data_provider import DataProvider
+from frontui.auth import authorize
 from frontui.linq import first_or_default
 from frontui.sendmail import MailProvider
 from frontui.views import ALLOWED_EXTENSIONS, IMAGE_EXTENSIONS, AUDIO_EXTENSIONS, EXCEL_EXTENSIONS
@@ -30,6 +31,7 @@ def home():
 
 
 @public_ui.route('/checklist/<num>')
+@authorize
 def checklist(num):
     """Renders questionnaire page"""
     logger.info("Start filling checklist for %s", num)
@@ -47,6 +49,7 @@ def checklist(num):
 
 
 @public_ui.route('/checklist/new', methods=['POST'])
+@authorize
 def checklist_new():
     """ Save questionnaire and render success page """
     object_num = request.form['object_name']
@@ -81,6 +84,7 @@ def checklist_new():
 
 @public_ui.route('/checklist/view/<uid>')
 @public_ui.route('/checklist/addfiles/<uid>')
+@authorize
 def checklist_addfiles(uid):
     """ View saved checklist by ID """
     database = DataProvider()
@@ -116,6 +120,7 @@ def checklist_edit(uid):
 
 
 @public_ui.route('/checklist/save', methods=['POST'])
+@authorize
 def checklist_save():
     """ Save verified checklist """
     database = DataProvider()
@@ -157,6 +162,7 @@ def checklist_complete(uid):
 
 
 @public_ui.route('/file/upload', methods=['POST'])
+@authorize
 def upload():
     """ Upload and save file """
     uid = session['checklist-uid']
