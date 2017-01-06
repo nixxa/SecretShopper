@@ -360,6 +360,14 @@
         "with_shop": true
     },
     {
+        "object_num": "46",
+        "object_type": "АЗС киоск",
+        "object_title": "Зеленоград",
+        "object_address": "г. Москва, г. Зеленоград, пр. №4807, д. 6",
+        "with_cafe": false,
+        "with_shop": false
+    },
+    {
         "object_num": "83",
         "object_type": "АЗС киоск",
         "object_title": "Лужники",
