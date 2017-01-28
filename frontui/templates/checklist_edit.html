@@ -3,10 +3,16 @@
 
 {% block content %}
 {% if values.state == 'new' %}
-<h2>Режим проверки.</h2>
+<h2>
+    #{{ selected.num }} - {{ selected.title }}
+    <small>{{ selected.type }}</small>
+</h2>
 <span class="help-block">В режиме проверки можно исправить заполненную анкету.</span>
 {% else %}
-<h2>Режим просмотра.</h2>
+<h2>
+    #{{ selected.num }} - {{ selected.title }}
+    <small>{{ selected.type }}</small>
+</h2>
 <span class="help-block">В режиме просмотра можно скачать файлы, приложенные к анкете. <br />Для просмотра ответов, кликните на названии секции вопросов.</span>
 {% endif %}
 <form action="{% if edit_mode == 'edit' %}/checklist/save{% else %}/report/verify{% endif %}" method="POST">
