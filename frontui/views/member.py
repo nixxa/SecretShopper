@@ -261,7 +261,7 @@ def annual_month(date):
     return render_template(
         'annual_month.html',
         model=rprt,
-        title='Отчет за {0}'.format(start_date.strftime('%B %Y'))
+        title='Отчет за {0}'.format(rprt['date'].strftime('%B %Y'))
     )
 
 
