@@ -291,7 +291,7 @@ def annual_excel_month(date):
             try:
                 cells = worksheet.get_named_range(range_name)
                 fill_cells(rprt, cells)
-            except NamedRangeException as nre:
+            except NamedRangeException:
                 logger.debug('Error while trying to get named range \'%s\'', range_name)
     workbook.save(os.path.join(BASE_DIR, 'files/report_%s.xlsx' % date))
     return send_file('./files/report_%s.xlsx' % date, mimetype='application/excel', as_attachment=True, attachment_filename='report_%s.xlsx' % date)
@@ -303,6 +303,9 @@ def get_report_template(report_date):
     :type report_date: datetime
     :rtype: str
     """
+    if report_date >= datetime(year=2016, month=12, day=26):
+        logger.info('Using new template: valar_report_tmpl_20170101.xlsx')
+        return 'valar_report_tmpl_20170101.xlsx'
     if report_date >= datetime(year=2016, month=9, day=1):
         logger.info('Using new template: valar_report_tmpl_20161001.xlsx')
         return 'valar_report_tmpl_20161001.xlsx'
