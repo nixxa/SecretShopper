@@ -368,6 +368,14 @@
         "with_shop": false
     },
     {
+        "object_num": "47",
+        "object_type": "АЗК с магазином и кафе",
+        "object_title": "Бронницы",
+        "object_address": "МО, г. Бронницы, ул. Льва Толстого, д. 16",
+        "with_cafe": true,
+        "with_shop": true
+    },
+    {
         "object_num": "83",
         "object_type": "АЗС киоск",
         "object_title": "Лужники",
