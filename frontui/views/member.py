@@ -303,7 +303,7 @@ def get_report_template(report_date):
     :type report_date: datetime
     :rtype: str
     """
-    if report_date >= datetime(year=2017, month=4, day=1):
+    if report_date >= datetime(year=2017, month=3, day=27):
         logger.info('Using new template: valar_report_tmpl_20170401.xlsx')
         return 'valar_report_tmpl_20170401.xlsx'
     if report_date >= datetime(year=2016, month=12, day=26):
