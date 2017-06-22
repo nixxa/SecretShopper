@@ -159,7 +159,7 @@ def change_month():
     new_month = int(request.form['month'])
     database = DataProvider()
     item = first_or_default(database.checklists, lambda x: x.uid == uid)
-    item.date = item.date.replace(month=new_month).replace(day=10).replace(year=datetime.utcnow().year)
+    item.date = item.date.replace(day=10).replace(month=new_month).replace(year=datetime.utcnow().year)
     database.update_checklist(item)
     return '', 200
 
