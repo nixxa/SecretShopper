@@ -81,6 +81,8 @@ class ObjectInfo:
         :type question: QuestionInfo
         :rtype: bool
         """
+        if len(question.excepts) > 0 and question.excepts[0] == 'all':
+            return False
         str_val = ''
         if self.with_shop:
             str_val = 'shop'
