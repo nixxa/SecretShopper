@@ -305,11 +305,11 @@
     },
     {
         "object_num": "38",
-        "object_type": "АЗС киоск",
+        "object_type": "АЗК с магазином и кафе",
         "object_title": "Котельники",
         "object_address": "МО, Люберецкий район, пос. Котельники, Дзержинское шоссе, строение 7/1",
-        "with_cafe": false,
-        "with_shop": false
+        "with_cafe": true,
+        "with_shop": true
     },
     {
         "object_num": "39",
